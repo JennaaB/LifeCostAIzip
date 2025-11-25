@@ -2,8 +2,16 @@ import { useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Globe, TrendingUp, TrendingDown, Minus } from "lucide-react";
+import {
+  ComposableMap,
+  Geographies,
+  Geography,
+  Marker,
+  ZoomableGroup,
+} from "react-simple-maps";
 
-//todo: remove mock functionality
+const geoUrl = "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json";
+
 const cityData = [
   { name: "Calgary", country: "Canada", multiplier: 1.0, lat: 51.0447, lng: -114.0719 },
   { name: "Toronto", country: "Canada", multiplier: 1.15, lat: 43.6532, lng: -79.3832 },
@@ -42,6 +50,13 @@ export default function GlobalMap({ baseAmount, baseCity }: GlobalMapProps) {
     return diff > 0 ? `+${diffStr}%` : `${diffStr}%`;
   };
 
+  const getMarkerColor = (multiplier: number) => {
+    if (multiplier > 1.5) return "#ef4444";
+    if (multiplier > 1.2) return "#f97316";
+    if (multiplier > 0.95) return "#3b82f6";
+    return "#22c55e";
+  };
+
   return (
     <Card className="p-6 space-y-6">
       <div className="flex items-center gap-2">
@@ -53,32 +68,94 @@ export default function GlobalMap({ baseAmount, baseCity }: GlobalMapProps) {
         See how your lifestyle would cost in major cities around the world, adjusted for local cost of living.
       </p>
 
-      {/* Map Placeholder - Visual representation */}
       <div className="relative h-96 bg-gradient-to-br from-primary/5 to-chart-2/5 rounded-lg border overflow-hidden">
-        <div className="absolute inset-0 flex items-center justify-center">
-          <div className="text-center space-y-2 p-6">
-            <Globe className="w-16 h-16 text-primary/40 mx-auto" />
-            <p className="text-sm text-muted-foreground">Interactive world map visualization</p>
-            <p className="text-xs text-muted-foreground">Click cities below to see detailed comparisons</p>
+        <ComposableMap
+          projection="geoMercator"
+          projectionConfig={{
+            scale: 120,
+            center: [0, 30],
+          }}
+          style={{
+            width: "100%",
+            height: "100%",
+          }}
+        >
+          <ZoomableGroup>
+            <Geographies geography={geoUrl}>
+              {({ geographies }) =>
+                geographies.map((geo) => (
+                  <Geography
+                    key={geo.rsmKey}
+                    geography={geo}
+                    fill="#e2e8f0"
+                    stroke="#cbd5e1"
+                    strokeWidth={0.5}
+                    style={{
+                      default: { outline: "none" },
+                      hover: { fill: "#cbd5e1", outline: "none" },
+                      pressed: { outline: "none" },
+                    }}
+                  />
+                ))
+              }
+            </Geographies>
+            {cityData.map((city) => {
+              const isSelected = selectedCity === city.name;
+              const isBase = city.name === baseCity;
+              return (
+                <Marker
+                  key={city.name}
+                  coordinates={[city.lng, city.lat]}
+                  onClick={() => setSelectedCity(city.name)}
+                >
+                  <circle
+                    r={isSelected || isBase ? 8 : 6}
+                    fill={getMarkerColor(city.multiplier)}
+                    stroke="#fff"
+                    strokeWidth={2}
+                    style={{ cursor: "pointer" }}
+                    className="transition-all duration-200 hover:opacity-80"
+                  />
+                  {(isSelected || isBase) && (
+                    <text
+                      textAnchor="middle"
+                      y={-14}
+                      style={{
+                        fontFamily: "Inter, sans-serif",
+                        fontSize: 10,
+                        fontWeight: 600,
+                        fill: "#1e293b",
+                      }}
+                    >
+                      {city.name}
+                    </text>
+                  )}
+                </Marker>
+              );
+            })}
+          </ZoomableGroup>
+        </ComposableMap>
+        
+        <div className="absolute bottom-3 left-3 bg-white/90 backdrop-blur-sm rounded-md p-2 text-xs space-y-1 shadow-sm">
+          <div className="flex items-center gap-2">
+            <span className="w-3 h-3 rounded-full bg-green-500"></span>
+            <span>Lower cost (&lt;-5%)</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <span className="w-3 h-3 rounded-full bg-blue-500"></span>
+            <span>Similar cost</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <span className="w-3 h-3 rounded-full bg-orange-500"></span>
+            <span>Higher cost (+20%)</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <span className="w-3 h-3 rounded-full bg-red-500"></span>
+            <span>Much higher (&gt;+50%)</span>
           </div>
         </div>
-        
-        {/* Decorative dots for cities */}
-        {cityData.slice(0, 8).map((city, i) => (
-          <div
-            key={city.name}
-            className="absolute w-3 h-3 rounded-full bg-primary cursor-pointer hover-elevate"
-            style={{
-              left: `${15 + (i * 10)}%`,
-              top: `${30 + (i % 3) * 20}%`,
-            }}
-            onClick={() => setSelectedCity(city.name)}
-            data-testid={`map-pin-${city.name.toLowerCase()}`}
-          />
-        ))}
       </div>
 
-      {/* City List */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
         {cityData.map((city) => {
           const adjustedCost = Math.round(baseAmount * city.multiplier);

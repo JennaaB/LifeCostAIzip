@@ -35,6 +35,11 @@ export default function Home() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
+  const handleSeeExample = () => {
+    setView("dashboard");
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
   if (view === "form") {
     return <LifestyleForm onSubmit={handleFormSubmit} onBack={handleBackToLanding} />;
   }
@@ -45,7 +50,7 @@ export default function Home() {
 
   return (
     <div>
-      <Hero onGetStarted={handleGetStarted} />
+      <Hero onGetStarted={handleGetStarted} onSeeExample={handleSeeExample} />
       <HowItWorks />
       <PrivacyPromise />
       <UseCases />
