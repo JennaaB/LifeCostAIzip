@@ -1,3 +1,4 @@
+import { useRef, useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -12,9 +13,12 @@ import {
   ShoppingBag,
   Edit,
   Download,
-  Sparkles
+  Sparkles,
+  Loader2
 } from "lucide-react";
 import GlobalMap from "./GlobalMap";
+import jsPDF from "jspdf";
+import html2canvas from "html2canvas";
 
 //todo: remove mock functionality
 const mockData = {
@@ -63,6 +67,62 @@ interface DashboardProps {
 
 export default function Dashboard({ onEdit }: DashboardProps) {
   const maxCategory = Math.max(...mockData.categories.map(c => c.amount));
+  const dashboardRef = useRef<HTMLDivElement>(null);
+  const [isExporting, setIsExporting] = useState(false);
+
+  const handleExportPDF = async () => {
+    if (!dashboardRef.current) return;
+    
+    setIsExporting(true);
+    
+    try {
+      const element = dashboardRef.current;
+      const canvas = await html2canvas(element, {
+        scale: 2,
+        useCORS: true,
+        allowTaint: true,
+        backgroundColor: "#ffffff",
+        logging: false,
+      });
+      
+      const imgData = canvas.toDataURL("image/png");
+      const pdf = new jsPDF({
+        orientation: "portrait",
+        unit: "mm",
+        format: "a4",
+      });
+      
+      const pdfWidth = pdf.internal.pageSize.getWidth();
+      const pdfHeight = pdf.internal.pageSize.getHeight();
+      const imgWidth = canvas.width;
+      const imgHeight = canvas.height;
+      const ratio = Math.min(pdfWidth / imgWidth, pdfHeight / imgHeight);
+      const imgX = (pdfWidth - imgWidth * ratio) / 2;
+      const imgY = 10;
+      
+      const scaledHeight = imgHeight * ratio;
+      const pageHeight = pdfHeight - 20;
+      let heightLeft = scaledHeight;
+      let position = imgY;
+      
+      pdf.addImage(imgData, "PNG", imgX, position, imgWidth * ratio, scaledHeight);
+      heightLeft -= pageHeight;
+      
+      while (heightLeft > 0) {
+        position = heightLeft - scaledHeight + imgY;
+        pdf.addPage();
+        pdf.addImage(imgData, "PNG", imgX, position, imgWidth * ratio, scaledHeight);
+        heightLeft -= pageHeight;
+      }
+      
+      const date = new Date().toISOString().split("T")[0];
+      pdf.save(`LifeCostAI-Snapshot-${date}.pdf`);
+    } catch (error) {
+      console.error("Error generating PDF:", error);
+    } finally {
+      setIsExporting(false);
+    }
+  };
 
   return (
     <div className="min-h-screen py-12 px-6 bg-background">
@@ -78,14 +138,25 @@ export default function Dashboard({ onEdit }: DashboardProps) {
               <Edit className="w-4 h-4 mr-2" />
               Edit Responses
             </Button>
-            <Button variant="outline" data-testid="button-export">
-              <Download className="w-4 h-4 mr-2" />
-              Export Report
+            <Button 
+              variant="outline" 
+              onClick={handleExportPDF} 
+              disabled={isExporting}
+              data-testid="button-export"
+            >
+              {isExporting ? (
+                <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+              ) : (
+                <Download className="w-4 h-4 mr-2" />
+              )}
+              {isExporting ? "Generating..." : "Export Report"}
             </Button>
           </div>
         </div>
 
-        {/* Hero Metric */}
+        {/* Dashboard Content for PDF Export */}
+        <div ref={dashboardRef} className="space-y-8">
+          {/* Hero Metric */}
         <Card className="p-8">
           <div className="flex flex-col lg:flex-row gap-8 items-center">
             <div className="flex-1 text-center lg:text-left space-y-2">
@@ -203,6 +274,7 @@ export default function Dashboard({ onEdit }: DashboardProps) {
 
         {/* Global Map */}
         <GlobalMap baseAmount={mockData.totalMonthly} baseCity={mockData.city} />
+        </div>
       </div>
     </div>
   );
