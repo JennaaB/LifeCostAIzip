@@ -14,7 +14,7 @@ export default function FitnessStep({ data, onChange }: FitnessStepProps) {
   
   const wellnessOptions = ["Therapy/Psychologist", "Acupuncture", "Massage", "Other", "None"];
   
-  const wellnessFrequencies = ["Weekly", "Bi-weekly", "Monthly"];
+  const wellnessFrequencies = ["Weekly", "Bi-weekly", "Monthly", "Less than monthly"];
 
   const handleWellnessToggle = (option: string) => {
     const updated = data.fitness.wellnessSpend.includes(option)
