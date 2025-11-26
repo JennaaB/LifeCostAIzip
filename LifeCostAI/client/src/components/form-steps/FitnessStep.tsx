@@ -15,6 +15,10 @@ export default function FitnessStep({ data, onChange }: FitnessStepProps) {
   const wellnessOptions = ["Therapy/Psychologist", "Acupuncture", "Massage", "Other", "None"];
   
   const wellnessFrequencies = ["Weekly", "Bi-weekly", "Monthly", "Less than monthly"];
+  
+  const hairCutFrequencies = ["Never", "Every 3 months", "Every 2 months", "Monthly", "Every 2-3 weeks"];
+  
+  const hairServiceTypes = ["Basic cut only", "Cut and wash", "Cut and styling", "Color treatment", "Extensions or treatments", "Multiple services"];
 
   const handleWellnessToggle = (option: string) => {
     const updated = data.fitness.wellnessSpend.includes(option)
@@ -90,6 +94,44 @@ export default function FitnessStep({ data, onChange }: FitnessStepProps) {
               <div key={freq} className="flex items-center space-x-3 p-3 rounded-lg hover-elevate">
                 <RadioGroupItem value={freq} id={`dropin-${freq}`} data-testid={`radio-dropin-${freq.toLowerCase()}`} />
                 <Label htmlFor={`dropin-${freq}`} className="cursor-pointer font-normal flex-1">{freq}</Label>
+              </div>
+            ))}
+          </RadioGroup>
+        </div>
+      )}
+
+      <div className="space-y-4">
+        <Label className="text-base font-semibold">How often do you get your hair cut at a salon or barber?</Label>
+        <RadioGroup
+          value={data.fitness.hairCutFrequency}
+          onValueChange={(value) => onChange({
+            ...data,
+            fitness: { ...data.fitness, hairCutFrequency: value, hairServiceType: "" }
+          })}
+        >
+          {hairCutFrequencies.map((freq) => (
+            <div key={freq} className="flex items-center space-x-3 p-3 rounded-lg hover-elevate">
+              <RadioGroupItem value={freq} id={`haircut-${freq}`} data-testid={`radio-haircut-${freq.toLowerCase()}`} />
+              <Label htmlFor={`haircut-${freq}`} className="cursor-pointer font-normal flex-1">{freq}</Label>
+            </div>
+          ))}
+        </RadioGroup>
+      </div>
+
+      {data.fitness.hairCutFrequency && data.fitness.hairCutFrequency !== "Never" && (
+        <div className="space-y-4">
+          <Label className="text-base font-semibold">What type of service do you typically get?</Label>
+          <RadioGroup
+            value={data.fitness.hairServiceType}
+            onValueChange={(value) => onChange({
+              ...data,
+              fitness: { ...data.fitness, hairServiceType: value }
+            })}
+          >
+            {hairServiceTypes.map((type) => (
+              <div key={type} className="flex items-center space-x-3 p-3 rounded-lg hover-elevate">
+                <RadioGroupItem value={type} id={`hairservice-${type}`} data-testid={`radio-hairservice-${type.toLowerCase()}`} />
+                <Label htmlFor={`hairservice-${type}`} className="cursor-pointer font-normal flex-1">{type}</Label>
               </div>
             ))}
           </RadioGroup>
