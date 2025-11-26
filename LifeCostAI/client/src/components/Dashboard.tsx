@@ -19,54 +19,85 @@ import {
 import GlobalMap from "./GlobalMap";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
+import type { FormData } from "./LifestyleForm";
+import { calculateEstimates } from "@/lib/estimationEngine";
 
-//todo: remove mock functionality
-const mockData = {
-  totalMonthly: 2847,
-  city: "Calgary",
-  topCategory: "Food & Dining",
-  biggestOpportunity: "Reduce delivery orders",
-  goalAlignment: 78,
-  categories: [
-    { name: "Food & Dining", amount: 785, percentage: 27.6, icon: Coffee, color: "bg-chart-1" },
-    { name: "Transportation", amount: 520, percentage: 18.3, icon: Car, color: "bg-chart-2" },
-    { name: "Subscriptions", amount: 385, percentage: 13.5, icon: Tv, color: "bg-chart-3" },
-    { name: "Fitness", amount: 340, percentage: 11.9, icon: Dumbbell, color: "bg-chart-4" },
-    { name: "Shopping", amount: 817, percentage: 28.7, icon: ShoppingBag, color: "bg-chart-5" },
-  ],
-  topDrivers: [
-    { habit: "Food delivery 2-3x/week", monthlyCost: 320, icon: Coffee },
-    { habit: "Daily coffee purchases", monthlyCost: 185, icon: Coffee },
-    { habit: "Shopping 2-3x/month", monthlyCost: 450, icon: ShoppingBag },
-  ],
-  recommendations: [
-    {
-      title: "Meal Prep Sundays",
-      description: "Reduce delivery orders by planning meals ahead",
-      savings: 180,
-      icon: Target,
-    },
-    {
-      title: "Make Coffee at Home",
-      description: "Invest in a good coffee maker for your daily fix",
-      savings: 120,
-      icon: Coffee,
-    },
-    {
-      title: "Consolidate Streaming",
-      description: "Keep 2-3 favorites, rotate the rest seasonally",
-      savings: 45,
-      icon: Tv,
-    },
-  ],
+const categoryIcons: Record<string, any> = {
+  "Food & Dining": Coffee,
+  "Transportation": Car,
+  "Subscriptions": Tv,
+  "Fitness & Wellness": Dumbbell,
+  "Shopping": ShoppingBag,
+};
+
+const recommendationIcons: Record<string, any> = {
+  "Meal Prep Sundays": Target,
+  "Make Coffee at Home": Coffee,
+  "Consolidate Streaming": Tv,
 };
 
 interface DashboardProps {
   onEdit?: () => void;
+  formData?: FormData | null;
 }
 
-export default function Dashboard({ onEdit }: DashboardProps) {
-  const maxCategory = Math.max(...mockData.categories.map(c => c.amount));
+export default function Dashboard({ onEdit, formData }: DashboardProps) {
+  const estimationData = formData ? calculateEstimates(formData) : null;
+  
+  const dashboardData = estimationData ? {
+    ...estimationData,
+    categories: estimationData.categories.map(c => ({
+      ...c,
+      icon: categoryIcons[c.name] || Coffee,
+    })),
+    topDrivers: estimationData.topDrivers.map(d => ({
+      ...d,
+      icon: categoryIcons[d.habit.split(":")[0]] || Coffee,
+    })),
+    recommendations: estimationData.recommendations.map(r => ({
+      ...r,
+      icon: recommendationIcons[r.title] || Target,
+    })),
+  } : {
+    totalMonthly: 2847,
+    city: "Calgary",
+    topCategory: "Food & Dining",
+    biggestOpportunity: "Review your spending patterns",
+    goalAlignment: 70,
+    categories: [
+      { name: "Food & Dining", amount: 785, percentage: 27.6, icon: Coffee, color: "bg-chart-1" },
+      { name: "Transportation", amount: 520, percentage: 18.3, icon: Car, color: "bg-chart-2" },
+      { name: "Subscriptions", amount: 385, percentage: 13.5, icon: Tv, color: "bg-chart-3" },
+      { name: "Fitness & Wellness", amount: 340, percentage: 11.9, icon: Dumbbell, color: "bg-chart-4" },
+      { name: "Shopping", amount: 817, percentage: 28.7, icon: ShoppingBag, color: "bg-chart-5" },
+    ],
+    topDrivers: [
+      { habit: "Food delivery 2-3x/week", monthlyCost: 320, icon: Coffee },
+      { habit: "Daily coffee purchases", monthlyCost: 185, icon: Coffee },
+      { habit: "Shopping 2-3x/month", monthlyCost: 450, icon: ShoppingBag },
+    ],
+    recommendations: [
+      {
+        title: "Meal Prep Sundays",
+        description: "Reduce delivery orders by planning meals ahead",
+        savings: 180,
+        icon: Target,
+      },
+      {
+        title: "Make Coffee at Home",
+        description: "Invest in a good coffee maker for your daily fix",
+        savings: 120,
+        icon: Coffee,
+      },
+      {
+        title: "Consolidate Streaming",
+        description: "Keep 2-3 favorites, rotate the rest seasonally",
+        savings: 45,
+        icon: Tv,
+      },
+    ],
+  };
+  const maxCategory = Math.max(...dashboardData.categories.map(c => c.amount));
   const dashboardRef = useRef<HTMLDivElement>(null);
   const [isExporting, setIsExporting] = useState(false);
 
@@ -131,7 +162,7 @@ export default function Dashboard({ onEdit }: DashboardProps) {
         <div className="flex flex-wrap justify-between items-center gap-4">
           <div>
             <h1 className="text-4xl font-bold">Your Lifestyle Snapshot</h1>
-            <p className="text-muted-foreground mt-2">Based on typical costs in {mockData.city}</p>
+            <p className="text-muted-foreground mt-2">Based on typical costs in {dashboardData.city}</p>
           </div>
           <div className="flex gap-3">
             <Button variant="outline" onClick={onEdit} data-testid="button-edit-responses">
@@ -168,7 +199,7 @@ export default function Dashboard({ onEdit }: DashboardProps) {
                 <p className="text-muted-foreground text-lg">Estimated Monthly Lifestyle Cost</p>
                 <div className="flex items-baseline justify-center lg:justify-start gap-2">
                   <DollarSign className="w-8 h-8 text-muted-foreground" />
-                  <span className="text-6xl font-bold" data-testid="text-monthly-total">{mockData.totalMonthly.toLocaleString()}</span>
+                  <span className="text-6xl font-bold" data-testid="text-monthly-total">{dashboardData.totalMonthly.toLocaleString()}</span>
                   <span className="text-2xl text-muted-foreground">/month</span>
                 </div>
               </div>
@@ -177,15 +208,15 @@ export default function Dashboard({ onEdit }: DashboardProps) {
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 w-full lg:w-auto">
               <Card className="p-4 text-center space-y-1 bg-muted/50">
                 <p className="text-sm text-muted-foreground">Top Category</p>
-                <p className="font-semibold" data-testid="text-top-category">{mockData.topCategory}</p>
+                <p className="font-semibold" data-testid="text-top-category">{dashboardData.topCategory}</p>
               </Card>
               <Card className="p-4 text-center space-y-1 bg-muted/50">
                 <p className="text-sm text-muted-foreground">Biggest Opportunity</p>
-                <p className="font-semibold" data-testid="text-opportunity">{mockData.biggestOpportunity}</p>
+                <p className="font-semibold" data-testid="text-opportunity">{dashboardData.biggestOpportunity}</p>
               </Card>
               <Card className="p-4 text-center space-y-1 bg-muted/50">
                 <p className="text-sm text-muted-foreground">Goal Alignment</p>
-                <p className="font-semibold text-primary" data-testid="text-goal-alignment">{mockData.goalAlignment}%</p>
+                <p className="font-semibold text-primary" data-testid="text-goal-alignment">{dashboardData.goalAlignment}%</p>
               </Card>
             </div>
           </div>
@@ -197,12 +228,12 @@ export default function Dashboard({ onEdit }: DashboardProps) {
           <Card className="lg:col-span-3 p-6 space-y-6">
             <h3 className="text-xl font-semibold">Category Breakdown</h3>
             <div className="space-y-4">
-              {mockData.categories.map((category) => (
+              {dashboardData.categories.map((category) => (
                 <div key={category.name} className="space-y-2">
                   <div className="flex justify-between items-center">
                     <div className="flex items-center gap-3">
                       <div className={`w-8 h-8 rounded-lg ${category.color}/20 flex items-center justify-center`}>
-                        <category.icon className={`w-4 h-4 text-chart-${mockData.categories.indexOf(category) + 1}`} />
+                        <category.icon className={`w-4 h-4 text-chart-${dashboardData.categories.indexOf(category) + 1}`} />
                       </div>
                       <span className="font-medium">{category.name}</span>
                     </div>
@@ -229,7 +260,7 @@ export default function Dashboard({ onEdit }: DashboardProps) {
               <h3 className="text-xl font-semibold">Top Spending Drivers</h3>
             </div>
             <div className="space-y-4">
-              {mockData.topDrivers.map((driver, index) => (
+              {dashboardData.topDrivers.map((driver, index) => (
                 <div key={index} className="flex items-start gap-4 p-4 rounded-lg bg-muted/50">
                   <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
                     <span className="text-sm font-bold text-primary">{index + 1}</span>
@@ -253,7 +284,7 @@ export default function Dashboard({ onEdit }: DashboardProps) {
             <h3 className="text-2xl font-semibold">Personalized Recommendations</h3>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {mockData.recommendations.map((rec, index) => (
+            {dashboardData.recommendations.map((rec, index) => (
               <Card key={index} className="p-6 space-y-4 hover-elevate">
                 <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center">
                   <rec.icon className="w-6 h-6 text-primary" />
@@ -273,7 +304,7 @@ export default function Dashboard({ onEdit }: DashboardProps) {
         </div>
 
         {/* Global Map */}
-        <GlobalMap baseAmount={mockData.totalMonthly} baseCity={mockData.city} />
+        <GlobalMap baseAmount={dashboardData.totalMonthly} baseCity={dashboardData.city} />
         </div>
       </div>
     </div>
