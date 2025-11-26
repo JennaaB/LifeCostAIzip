@@ -18,7 +18,7 @@ export default function FitnessStep({ data, onChange }: FitnessStepProps) {
   
   const hairCutFrequencies = ["Every 2-3 weeks", "Monthly", "Every 2 months", "Every 3 months", "Never"];
   
-  const hairServiceTypes = ["Basic cut only", "Cut and wash/styling", "Color treatment/Extensions", "Multiple services"];
+  const hairServiceTypes = ["Basic cut only", "Cut and wash/styling", "Color treatment/Extensions"];
 
   const handleWellnessToggle = (option: string) => {
     const updated = data.fitness.wellnessSpend.includes(option)
