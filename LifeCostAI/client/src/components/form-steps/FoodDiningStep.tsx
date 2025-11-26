@@ -9,6 +9,12 @@ interface FoodDiningStepProps {
 
 export default function FoodDiningStep({ data, onChange }: FoodDiningStepProps) {
   const frequencies = ["Never", "Rarely (1-2x/month)", "Sometimes (1x/week)", "Often (2-3x/week)", "Daily"];
+  
+  const diningStyles = [
+    "Happy hour & daily specials (budget-friendly)",
+    "Mix of casual and upscale (balanced)",
+    "Full-course meals & premium drinks (fine dining)"
+  ];
 
   return (
     <div className="space-y-8">
@@ -54,7 +60,7 @@ export default function FoodDiningStep({ data, onChange }: FoodDiningStepProps) 
           value={data.foodDining.diningOutFrequency}
           onValueChange={(value) => onChange({
             ...data,
-            foodDining: { ...data.foodDining, diningOutFrequency: value }
+            foodDining: { ...data.foodDining, diningOutFrequency: value, diningStyle: "" }
           })}
         >
           {frequencies.map((freq) => (
@@ -65,6 +71,26 @@ export default function FoodDiningStep({ data, onChange }: FoodDiningStepProps) 
           ))}
         </RadioGroup>
       </div>
+
+      {data.foodDining.diningOutFrequency && data.foodDining.diningOutFrequency !== "Never" && (
+        <div className="space-y-4">
+          <Label className="text-base font-semibold">What's your typical dining style when eating out?</Label>
+          <RadioGroup
+            value={data.foodDining.diningStyle}
+            onValueChange={(value) => onChange({
+              ...data,
+              foodDining: { ...data.foodDining, diningStyle: value }
+            })}
+          >
+            {diningStyles.map((style) => (
+              <div key={style} className="flex items-center space-x-3 p-3 rounded-lg hover-elevate">
+                <RadioGroupItem value={style} id={`style-${style}`} data-testid={`radio-style-${style.toLowerCase()}`} />
+                <Label htmlFor={`style-${style}`} className="cursor-pointer font-normal flex-1">{style}</Label>
+              </div>
+            ))}
+          </RadioGroup>
+        </div>
+      )}
     </div>
   );
 }

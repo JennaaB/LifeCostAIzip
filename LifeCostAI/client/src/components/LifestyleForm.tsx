@@ -16,6 +16,7 @@ export interface FormData {
     coffeeFrequency: string;
     deliveryFrequency: string;
     diningOutFrequency: string;
+    diningStyle: string;
   };
   transportation: {
     commuteMethod: string;
@@ -45,7 +46,7 @@ export interface FormData {
 }
 
 const initialFormData: FormData = {
-  foodDining: { coffeeFrequency: "", deliveryFrequency: "", diningOutFrequency: "" },
+  foodDining: { coffeeFrequency: "", deliveryFrequency: "", diningOutFrequency: "", diningStyle: "" },
   transportation: { commuteMethod: "", distance: "", rideshareTripsPerWeek: "", transportationPasses: "" },
   fitness: { hasMembership: "", membershipTier: "", dropInSessionsPerWeek: "", wellnessSpend: [] },
   subscriptions: { hasSubscriptions: "", services: [], other: "" },
