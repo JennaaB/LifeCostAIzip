@@ -32,7 +32,7 @@ export default function ShoppingStep({ data, onChange }: ShoppingStepProps) {
       </div>
 
       <div className="space-y-4">
-        <Label className="text-base font-semibold">What's your typical approach to personal care?</Label>
+        <Label className="text-base font-semibold">What's your typical approach to personal care products?</Label>
         <RadioGroup
           value={data.shopping.personalCare}
           onValueChange={(value) => onChange({
