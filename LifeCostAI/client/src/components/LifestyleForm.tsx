@@ -91,69 +91,83 @@ export default function LifestyleForm({ onSubmit, onBack }: LifestyleFormProps) 
     const sh = formData.shopping;
     const go = formData.goals;
 
-    let completedSteps = 0;
+    let answeredQuestions = 0;
+    let totalQuestions = 0;
 
-    // Check Food & Dining
-    if (fd.coffeeFrequency && fd.deliveryFrequency && fd.diningOutFrequency) {
-      if (fd.diningOutFrequency !== "Never" && !fd.diningStyle) {
-        // diningStyle is required if they dine out
-      } else {
-        completedSteps++;
-      }
+    // Food & Dining questions
+    totalQuestions += 3; // coffee, delivery, diningOut
+    if (fd.coffeeFrequency) answeredQuestions++;
+    if (fd.deliveryFrequency) answeredQuestions++;
+    if (fd.diningOutFrequency) answeredQuestions++;
+    
+    if (fd.diningOutFrequency && fd.diningOutFrequency !== "Never") {
+      totalQuestions += 1; // diningStyle is conditional
+      if (fd.diningStyle) answeredQuestions++;
     }
 
-    // Check Transportation
-    if (tr.commuteMethod && tr.distance) {
-      if (tr.commuteMethod === "Rideshare" && !tr.rideshareTripsPerWeek) {
-        // rideshareTripsPerWeek required for rideshare
-      } else if (tr.commuteMethod === "Personal Car" && tr.payForParking === "" && !tr.parkingRateType) {
-        // check parking if applicable
-      } else if (tr.commuteMethod === "Public Transit" && !tr.transitPassType) {
-        // transitPassType required for public transit
-      } else {
-        completedSteps++;
-      }
+    // Transportation questions
+    totalQuestions += 2; // commuteMethod, distance
+    if (tr.commuteMethod) answeredQuestions++;
+    if (tr.distance) answeredQuestions++;
+
+    if (tr.commuteMethod === "Rideshare") {
+      totalQuestions += 1;
+      if (tr.rideshareTripsPerWeek) answeredQuestions++;
+    } else if (tr.commuteMethod === "Personal Car") {
+      totalQuestions += 2; // payForParking + parkingRateType
+      if (tr.payForParking) answeredQuestions++;
+      if (tr.payForParking === "Yes" && tr.parkingRateType) answeredQuestions++;
+    } else if (tr.commuteMethod === "Public Transit") {
+      totalQuestions += 1;
+      if (tr.transitPassType) answeredQuestions++;
     }
 
-    // Check Fitness & Wellness
-    if (fi.hasMembership) {
-      let fitnessComplete = true;
-      if (fi.hasMembership === "Yes" && !fi.membershipTier) fitnessComplete = false;
-      if (fi.hasMembership === "Drop-in Sessions" && !fi.dropInSessionsPerWeek) fitnessComplete = false;
-      if (fi.wellnessSpend.length === 0 && !fi.wellnessOther) fitnessComplete = false;
-      if (fi.wellnessSpend.length > 0 && !fi.wellnessFrequency) fitnessComplete = false;
-      if (fi.hairCutFrequency && fi.hairCutFrequency !== "Never" && !fi.hairServiceType) fitnessComplete = false;
-      if (fitnessComplete) completedSteps++;
+    // Fitness & Wellness questions
+    totalQuestions += 2; // hasMembership, hairCutFrequency
+    if (fi.hasMembership) answeredQuestions++;
+    if (fi.hairCutFrequency) answeredQuestions++;
+
+    if (fi.hasMembership === "Yes") {
+      totalQuestions += 1;
+      if (fi.membershipTier) answeredQuestions++;
+    } else if (fi.hasMembership === "Drop-in Sessions") {
+      totalQuestions += 1;
+      if (fi.dropInSessionsPerWeek) answeredQuestions++;
     }
 
-    // Check Subscriptions
-    if (su.hasSubscriptions) {
-      if (su.hasSubscriptions === "Yes" && su.services.length === 0) {
-        // need to select services
-      } else {
-        completedSteps++;
-      }
+    totalQuestions += 2; // wellnessSpend selection + frequency
+    if (fi.wellnessSpend.length > 0) answeredQuestions++;
+    if (fi.wellnessSpend.length > 0 && fi.wellnessFrequency) answeredQuestions++;
+
+    if (fi.hairCutFrequency && fi.hairCutFrequency !== "Never") {
+      totalQuestions += 1;
+      if (fi.hairServiceType) answeredQuestions++;
     }
 
-    // Check Shopping
-    if (sh.clothingFrequency && sh.buyingHabit && sh.shoppingStyle && sh.personalCare) {
-      completedSteps++;
+    // Subscriptions questions
+    totalQuestions += 1; // hasSubscriptions
+    if (su.hasSubscriptions) answeredQuestions++;
+
+    if (su.hasSubscriptions === "Yes") {
+      totalQuestions += 2; // services + other
+      if (su.services.length > 0) answeredQuestions++;
+      if (su.other) answeredQuestions++;
     }
 
-    // Check Goals
-    if (go.primaryGoal && go.values.length === 3) {
-      completedSteps++;
-    }
+    // Shopping questions
+    totalQuestions += 4; // clothingFrequency, buyingHabit, shoppingStyle, personalCare
+    if (sh.clothingFrequency) answeredQuestions++;
+    if (sh.buyingHabit) answeredQuestions++;
+    if (sh.shoppingStyle) answeredQuestions++;
+    if (sh.personalCare) answeredQuestions++;
 
-    // Current step bonus for being on that step (only if user started answering)
-    const hasStartedAnswering = completedSteps > 0;
-    if (hasStartedAnswering) {
-      const baseProgress = (completedSteps / (steps.length - 1)) * 100; // -1 for review step
-      const stepBonus = ((currentStep + 1) / steps.length) * 10; // Small bonus for navigating steps
-      return Math.min(baseProgress + stepBonus, 99); // Cap at 99% until submitted
-    }
+    // Goals questions
+    totalQuestions += 2; // primaryGoal + values (need 3)
+    if (go.primaryGoal) answeredQuestions++;
+    if (go.values.length === 3) answeredQuestions++;
 
-    return 0; // No progress until first section is complete
+    const progress = (answeredQuestions / totalQuestions) * 100;
+    return Math.min(progress, 99); // Cap at 99% until fully submitted
   };
 
   const progress = calculateProgress();
