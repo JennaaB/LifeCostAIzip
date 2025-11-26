@@ -21,6 +21,8 @@ export default function TransportationStep({ data, onChange }: TransportationSte
   const rideshareFrequencies = ["Never", "1-2 times", "3-5 times", "6-10 times", "10+ times"];
   
   const passesOptions = ["None", "Monthly pass/subscription", "Parking only", "Both pass and parking"];
+  
+  const parkingOptions = ["Yes, paid parking", "Yes, free parking", "No"];
 
   return (
     <div className="space-y-8">
@@ -30,7 +32,7 @@ export default function TransportationStep({ data, onChange }: TransportationSte
           value={data.transportation.commuteMethod}
           onValueChange={(value) => onChange({
             ...data,
-            transportation: { ...data.transportation, commuteMethod: value }
+            transportation: { ...data.transportation, commuteMethod: value, payForParking: "" }
           })}
         >
           {methods.map((method) => (
@@ -56,6 +58,26 @@ export default function TransportationStep({ data, onChange }: TransportationSte
               <div key={distance} className="flex items-center space-x-3 p-3 rounded-lg hover-elevate">
                 <RadioGroupItem value={distance} id={`distance-${distance}`} data-testid={`radio-distance-${distance.toLowerCase()}`} />
                 <Label htmlFor={`distance-${distance}`} className="cursor-pointer font-normal flex-1">{distance}</Label>
+              </div>
+            ))}
+          </RadioGroup>
+        </div>
+      )}
+
+      {data.transportation.commuteMethod === "Personal Car" && (
+        <div className="space-y-4">
+          <Label className="text-base font-semibold">Do you pay for parking?</Label>
+          <RadioGroup
+            value={data.transportation.payForParking}
+            onValueChange={(value) => onChange({
+              ...data,
+              transportation: { ...data.transportation, payForParking: value }
+            })}
+          >
+            {parkingOptions.map((option) => (
+              <div key={option} className="flex items-center space-x-3 p-3 rounded-lg hover-elevate">
+                <RadioGroupItem value={option} id={`parking-${option}`} data-testid={`radio-parking-${option.toLowerCase()}`} />
+                <Label htmlFor={`parking-${option}`} className="cursor-pointer font-normal flex-1">{option}</Label>
               </div>
             ))}
           </RadioGroup>
