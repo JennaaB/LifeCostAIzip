@@ -30,6 +30,7 @@ export interface FormData {
     membershipTier: string;
     dropInSessionsPerWeek: string;
     wellnessSpend: string[];
+    wellnessOther: string;
   };
   subscriptions: {
     hasSubscriptions: string;
@@ -49,7 +50,7 @@ export interface FormData {
 const initialFormData: FormData = {
   foodDining: { coffeeFrequency: "", deliveryFrequency: "", diningOutFrequency: "", diningStyle: "" },
   transportation: { commuteMethod: "", distance: "", rideshareTripsPerWeek: "", transportationPasses: "", payForParking: "" },
-  fitness: { hasMembership: "", membershipTier: "", dropInSessionsPerWeek: "", wellnessSpend: [] },
+  fitness: { hasMembership: "", membershipTier: "", dropInSessionsPerWeek: "", wellnessSpend: [], wellnessOther: "" },
   subscriptions: { hasSubscriptions: "", services: [], other: "" },
   shopping: { clothingFrequency: "", personalCare: "" },
   goals: { primaryGoal: "", values: [] },

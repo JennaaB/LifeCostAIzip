@@ -1,6 +1,7 @@
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Input } from "@/components/ui/input";
 import type { FormData } from "../LifestyleForm";
 
 interface FitnessStepProps {
@@ -11,7 +12,7 @@ interface FitnessStepProps {
 export default function FitnessStep({ data, onChange }: FitnessStepProps) {
   const dropInFrequencies = ["Never", "1-2 per week", "3-4 per week", "5-6 per week", "Daily"];
   
-  const wellnessOptions = ["Therapy", "Massage", "Spa", "None"];
+  const wellnessOptions = ["Therapy/Psychologist", "Acupuncture", "Massage", "Tanning/Red Light Therapy", "Other", "None"];
 
   const handleWellnessToggle = (option: string) => {
     const updated = data.fitness.wellnessSpend.includes(option)
@@ -92,7 +93,7 @@ export default function FitnessStep({ data, onChange }: FitnessStepProps) {
       )}
 
       <div className="space-y-4">
-        <Label className="text-base font-semibold">Any other wellness spend? (Therapy, Massage, Spa)</Label>
+        <Label className="text-base font-semibold">Any other wellness spend?</Label>
         <div className="space-y-3">
           {wellnessOptions.map((option) => (
             <div key={option} className="flex items-center space-x-3 p-3 rounded-lg border hover-elevate">
@@ -108,6 +109,20 @@ export default function FitnessStep({ data, onChange }: FitnessStepProps) {
             </div>
           ))}
         </div>
+
+        {data.fitness.wellnessSpend.includes("Other") && (
+          <div className="mt-4">
+            <Input
+              placeholder="Please specify..."
+              value={data.fitness.wellnessOther}
+              onChange={(e) => onChange({
+                ...data,
+                fitness: { ...data.fitness, wellnessOther: e.target.value }
+              })}
+              data-testid="input-wellness-other"
+            />
+          </div>
+        )}
       </div>
     </div>
   );
