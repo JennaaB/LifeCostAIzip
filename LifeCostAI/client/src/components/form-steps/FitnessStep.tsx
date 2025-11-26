@@ -18,7 +18,7 @@ export default function FitnessStep({ data, onChange }: FitnessStepProps) {
   
   const hairCutFrequencies = ["Every 2-3 weeks", "Monthly", "Every 2 months", "Every 3 months", "Never"];
   
-  const hairServiceTypes = ["Basic cut only", "Cut and wash", "Cut and styling", "Color treatment", "Extensions or treatments", "Multiple services"];
+  const hairServiceTypes = ["Basic cut only", "Cut and wash/styling", "Color treatment/Extensions", "Multiple services"];
 
   const handleWellnessToggle = (option: string) => {
     const updated = data.fitness.wellnessSpend.includes(option)
@@ -120,7 +120,7 @@ export default function FitnessStep({ data, onChange }: FitnessStepProps) {
 
       {data.fitness.hairCutFrequency && data.fitness.hairCutFrequency !== "Never" && (
         <div className="space-y-4">
-          <Label className="text-base font-semibold">What type of service do you typically get?</Label>
+          <Label className="text-base font-semibold">What level of service do you typically get?</Label>
           <RadioGroup
             value={data.fitness.hairServiceType}
             onValueChange={(value) => onChange({
