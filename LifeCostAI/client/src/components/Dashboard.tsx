@@ -207,7 +207,7 @@ export default function Dashboard({ onEdit, onBackToHome, formData }: DashboardP
                 <p className="text-muted-foreground text-lg">Estimated Monthly Lifestyle Cost</p>
                 <div className="flex items-baseline justify-center lg:justify-start gap-2">
                   <DollarSign className="w-8 h-8 text-muted-foreground" />
-                  <span className="text-6xl font-bold" data-testid="text-monthly-total">${dashboardData.totalMonthlyMin.toLocaleString()} - ${dashboardData.totalMonthlyMax.toLocaleString()}</span>
+                  <span className="text-4xl font-bold" data-testid="text-monthly-total">${dashboardData.totalMonthlyMin.toLocaleString()} - ${dashboardData.totalMonthlyMax.toLocaleString()}</span>
                   <span className="text-2xl text-muted-foreground">/month</span>
                 </div>
               </div>
