@@ -19,7 +19,6 @@ export default function TransportationStep({ data, onChange }: TransportationSte
   
   const rideshareFrequencies = ["Never", "1-2 times", "3-5 times", "6-10 times", "10+ times"];
   
-  const passesOptions = ["None", "Monthly pass/subscription", "Parking only", "Both pass and parking"];
   
   const parkingOptions = ["Yes", "No"];
   
@@ -125,23 +124,6 @@ export default function TransportationStep({ data, onChange }: TransportationSte
         </RadioGroup>
       </div>
 
-      <div className="space-y-4">
-        <Label className="text-base font-semibold">Do you pay for any transportation passes or parking?</Label>
-        <RadioGroup
-          value={data.transportation.transportationPasses}
-          onValueChange={(value) => onChange({
-            ...data,
-            transportation: { ...data.transportation, transportationPasses: value }
-          })}
-        >
-          {passesOptions.map((option) => (
-            <div key={option} className="flex items-center space-x-3 p-3 rounded-lg hover-elevate">
-              <RadioGroupItem value={option} id={`passes-${option}`} data-testid={`radio-passes-${option.toLowerCase()}`} />
-              <Label htmlFor={`passes-${option}`} className="cursor-pointer font-normal flex-1">{option}</Label>
-            </div>
-          ))}
-        </RadioGroup>
-      </div>
     </div>
   );
 }
