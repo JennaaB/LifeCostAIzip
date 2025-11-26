@@ -16,7 +16,6 @@ export default function TransportationStep({ data, onChange }: TransportationSte
     "Work from Home"
   ];
 
-  const distances = ["Under 5 km", "5-10 km", "10-20 km", "20-50 km", "50+ km"];
   
   const rideshareFrequencies = ["Never", "1-2 times", "3-5 times", "6-10 times", "10+ times"];
   
@@ -44,25 +43,6 @@ export default function TransportationStep({ data, onChange }: TransportationSte
         </RadioGroup>
       </div>
 
-      {data.transportation.commuteMethod && data.transportation.commuteMethod !== "Work from Home" && (
-        <div className="space-y-4">
-          <Label className="text-base font-semibold">What's your typical one-way commute distance?</Label>
-          <RadioGroup
-            value={data.transportation.distance}
-            onValueChange={(value) => onChange({
-              ...data,
-              transportation: { ...data.transportation, distance: value }
-            })}
-          >
-            {distances.map((distance) => (
-              <div key={distance} className="flex items-center space-x-3 p-3 rounded-lg hover-elevate">
-                <RadioGroupItem value={distance} id={`distance-${distance}`} data-testid={`radio-distance-${distance.toLowerCase()}`} />
-                <Label htmlFor={`distance-${distance}`} className="cursor-pointer font-normal flex-1">{distance}</Label>
-              </div>
-            ))}
-          </RadioGroup>
-        </div>
-      )}
 
       {data.transportation.commuteMethod === "Personal Car" && (
         <div className="space-y-4">
