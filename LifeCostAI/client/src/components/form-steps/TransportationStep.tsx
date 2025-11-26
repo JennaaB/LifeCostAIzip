@@ -22,6 +22,8 @@ export default function TransportationStep({ data, onChange }: TransportationSte
   const passesOptions = ["None", "Monthly pass/subscription", "Parking only", "Both pass and parking"];
   
   const parkingOptions = ["Yes", "No"];
+  
+  const parkingRateTypes = ["Hourly rate", "Daily rate", "Monthly subscription", "Seasonal pass"];
 
   return (
     <div className="space-y-8">
@@ -31,7 +33,7 @@ export default function TransportationStep({ data, onChange }: TransportationSte
           value={data.transportation.commuteMethod}
           onValueChange={(value) => onChange({
             ...data,
-            transportation: { ...data.transportation, commuteMethod: value, payForParking: "" }
+            transportation: { ...data.transportation, commuteMethod: value, payForParking: "", parkingRateType: "" }
           })}
         >
           {methods.map((method) => (
@@ -51,13 +53,33 @@ export default function TransportationStep({ data, onChange }: TransportationSte
             value={data.transportation.payForParking}
             onValueChange={(value) => onChange({
               ...data,
-              transportation: { ...data.transportation, payForParking: value }
+              transportation: { ...data.transportation, payForParking: value, parkingRateType: "" }
             })}
           >
             {parkingOptions.map((option) => (
               <div key={option} className="flex items-center space-x-3 p-3 rounded-lg hover-elevate">
                 <RadioGroupItem value={option} id={`parking-${option}`} data-testid={`radio-parking-${option.toLowerCase()}`} />
                 <Label htmlFor={`parking-${option}`} className="cursor-pointer font-normal flex-1">{option}</Label>
+              </div>
+            ))}
+          </RadioGroup>
+        </div>
+      )}
+
+      {data.transportation.payForParking === "Yes" && (
+        <div className="space-y-4">
+          <Label className="text-base font-semibold">What type of parking rate do you pay?</Label>
+          <RadioGroup
+            value={data.transportation.parkingRateType}
+            onValueChange={(value) => onChange({
+              ...data,
+              transportation: { ...data.transportation, parkingRateType: value }
+            })}
+          >
+            {parkingRateTypes.map((rate) => (
+              <div key={rate} className="flex items-center space-x-3 p-3 rounded-lg hover-elevate">
+                <RadioGroupItem value={rate} id={`rate-${rate}`} data-testid={`radio-rate-${rate.toLowerCase()}`} />
+                <Label htmlFor={`rate-${rate}`} className="cursor-pointer font-normal flex-1">{rate}</Label>
               </div>
             ))}
           </RadioGroup>
