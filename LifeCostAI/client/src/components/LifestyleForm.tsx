@@ -25,6 +25,7 @@ export interface FormData {
     transportationPasses: string;
     payForParking: string;
     parkingRateType: string;
+    transitPassType: string;
   };
   fitness: {
     hasMembership: string;
@@ -52,7 +53,7 @@ export interface FormData {
 
 const initialFormData: FormData = {
   foodDining: { coffeeFrequency: "", deliveryFrequency: "", diningOutFrequency: "", diningStyle: "" },
-  transportation: { commuteMethod: "", distance: "", rideshareTripsPerWeek: "", transportationPasses: "", payForParking: "", parkingRateType: "" },
+  transportation: { commuteMethod: "", distance: "", rideshareTripsPerWeek: "", transportationPasses: "", payForParking: "", parkingRateType: "", transitPassType: "" },
   fitness: { hasMembership: "", membershipTier: "", dropInSessionsPerWeek: "", wellnessSpend: [], wellnessOther: "" },
   subscriptions: { hasSubscriptions: "", services: [], other: "" },
   shopping: { clothingFrequency: "", buyingHabit: "", shoppingStyle: "", personalCare: "" },

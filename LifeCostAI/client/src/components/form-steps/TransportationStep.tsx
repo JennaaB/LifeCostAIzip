@@ -24,6 +24,8 @@ export default function TransportationStep({ data, onChange }: TransportationSte
   const parkingOptions = ["Yes", "No"];
   
   const parkingRateTypes = ["Hourly rate", "Daily rate", "Monthly pass", "Seasonal pass"];
+  
+  const transitPassTypes = ["Daily rate", "Monthly pass", "Free (school/employer provided)"];
 
   return (
     <div className="space-y-8">
@@ -33,7 +35,7 @@ export default function TransportationStep({ data, onChange }: TransportationSte
           value={data.transportation.commuteMethod}
           onValueChange={(value) => onChange({
             ...data,
-            transportation: { ...data.transportation, commuteMethod: value, payForParking: "", parkingRateType: "" }
+            transportation: { ...data.transportation, commuteMethod: value, payForParking: "", parkingRateType: "", transitPassType: "" }
           })}
         >
           {methods.map((method) => (
@@ -45,6 +47,25 @@ export default function TransportationStep({ data, onChange }: TransportationSte
         </RadioGroup>
       </div>
 
+      {data.transportation.commuteMethod === "Public Transit" && (
+        <div className="space-y-4">
+          <Label className="text-base font-semibold">What type of public transit pass do you use?</Label>
+          <RadioGroup
+            value={data.transportation.transitPassType}
+            onValueChange={(value) => onChange({
+              ...data,
+              transportation: { ...data.transportation, transitPassType: value }
+            })}
+          >
+            {transitPassTypes.map((type) => (
+              <div key={type} className="flex items-center space-x-3 p-3 rounded-lg hover-elevate">
+                <RadioGroupItem value={type} id={`transit-${type}`} data-testid={`radio-transit-${type.toLowerCase()}`} />
+                <Label htmlFor={`transit-${type}`} className="cursor-pointer font-normal flex-1">{type}</Label>
+              </div>
+            ))}
+          </RadioGroup>
+        </div>
+      )}
 
       {data.transportation.commuteMethod === "Personal Car" && (
         <div className="space-y-4">
