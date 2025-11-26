@@ -241,9 +241,9 @@ export default function Dashboard({ onEdit, onBackToHome, formData }: DashboardP
                   <div className="flex justify-between items-center">
                     <div className="flex items-center gap-3">
                       <div className={`w-8 h-8 rounded-lg ${category.color}/20 flex items-center justify-center`}>
-                        <category.icon className={`w-4 h-4 ${category.color.replace('bg-', 'text-')}`} />
+                        <category.icon className={`w-4 h-4 text-chart-${dashboardData.categories.indexOf(category) + 1}`} />
                       </div>
-                      <span className={`font-medium ${category.color.replace('bg-', 'text-')}`}>{category.name}</span>
+                      <span className={`font-medium text-chart-${dashboardData.categories.indexOf(category) + 1}`}>{category.name}</span>
                     </div>
                     <div className="text-right">
                       <p className="font-semibold">~${category.amount}</p>
