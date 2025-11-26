@@ -246,7 +246,7 @@ export default function Dashboard({ onEdit, onBackToHome, formData }: DashboardP
                       <span className="font-medium">{category.name}</span>
                     </div>
                     <div className="text-right">
-                      <p className="font-semibold">${category.amount}</p>
+                      <p className="font-semibold">~${category.amount}</p>
                       <p className="text-sm text-muted-foreground">{category.percentage}%</p>
                     </div>
                   </div>
