@@ -20,6 +20,8 @@ export interface FormData {
   transportation: {
     commuteMethod: string;
     distance: string;
+    rideshareTripsPerWeek: string;
+    transportationPasses: string;
   };
   fitness: {
     gymMembership: boolean;
@@ -41,7 +43,7 @@ export interface FormData {
 
 const initialFormData: FormData = {
   foodDining: { coffeeFrequency: "", deliveryFrequency: "", diningOutFrequency: "" },
-  transportation: { commuteMethod: "", distance: "" },
+  transportation: { commuteMethod: "", distance: "", rideshareTripsPerWeek: "", transportationPasses: "" },
   fitness: { gymMembership: false, classesPerMonth: "" },
   subscriptions: { streaming: [], other: "" },
   shopping: { clothingFrequency: "", personalCare: "" },
