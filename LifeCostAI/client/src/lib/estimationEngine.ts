@@ -2,6 +2,8 @@ import type { FormData } from "@/components/LifestyleForm";
 
 export interface EstimationResult {
   totalMonthly: number;
+  totalMonthlyMin: number;
+  totalMonthlyMax: number;
   city: string;
   topCategory: string;
   biggestOpportunity: string;
@@ -183,6 +185,8 @@ export function calculateEstimates(formData: FormData): Omit<EstimationResult, '
   shopping *= buyingHabitMultiplier[formData.shopping.buyingHabit] || 1;
 
   const totalMonthly = Math.round(foodDining + transportation + fitness + subscriptions + shopping);
+  const totalMonthlyMin = Math.round(totalMonthly * 0.85);
+  const totalMonthlyMax = Math.round(totalMonthly * 1.15);
 
   // Build category breakdown
   const categories = [
@@ -249,6 +253,8 @@ export function calculateEstimates(formData: FormData): Omit<EstimationResult, '
 
   return {
     totalMonthly,
+    totalMonthlyMin,
+    totalMonthlyMax,
     city: "Calgary",
     topCategory,
     biggestOpportunity,
