@@ -9,46 +9,105 @@ interface FitnessStepProps {
 }
 
 export default function FitnessStep({ data, onChange }: FitnessStepProps) {
-  const classFrequencies = ["None", "1-2 per month", "1 per week", "2-3 per week", "4+ per week"];
+  const dropInFrequencies = ["Never", "1-2 per week", "3-4 per week", "5-6 per week", "Daily"];
+  
+  const wellnessOptions = ["Therapy", "Massage", "Spa", "None"];
+
+  const handleWellnessToggle = (option: string) => {
+    const updated = data.fitness.wellnessSpend.includes(option)
+      ? data.fitness.wellnessSpend.filter((item) => item !== option)
+      : [...data.fitness.wellnessSpend, option];
+    onChange({
+      ...data,
+      fitness: { ...data.fitness, wellnessSpend: updated },
+    });
+  };
 
   return (
     <div className="space-y-8">
       <div className="space-y-4">
-        <Label className="text-base font-semibold">Do you have a gym membership?</Label>
-        <div className="flex items-center space-x-3 p-4 rounded-lg border hover-elevate">
-          <Checkbox
-            id="gym-membership"
-            checked={data.fitness.gymMembership}
-            onCheckedChange={(checked) => onChange({
-              ...data,
-              fitness: { ...data.fitness, gymMembership: checked as boolean }
-            })}
-            data-testid="checkbox-gym-membership"
-          />
-          <Label htmlFor="gym-membership" className="cursor-pointer font-normal flex-1">
-            Yes, I have a gym membership
-          </Label>
-        </div>
-      </div>
-
-      <div className="space-y-4">
-        <Label className="text-base font-semibold">
-          How often do you attend fitness classes? (yoga, spin, CrossFit, etc.)
-        </Label>
+        <Label className="text-base font-semibold">Do you have a fitness membership? (Gym, Yoga, Pilates, Boxing, etc.)</Label>
         <RadioGroup
-          value={data.fitness.classesPerMonth}
+          value={data.fitness.hasMembership}
           onValueChange={(value) => onChange({
             ...data,
-            fitness: { ...data.fitness, classesPerMonth: value }
+            fitness: { ...data.fitness, hasMembership: value, membershipTier: "", dropInSessionsPerWeek: "" }
           })}
         >
-          {classFrequencies.map((freq) => (
-            <div key={freq} className="flex items-center space-x-3 p-3 rounded-lg hover-elevate">
-              <RadioGroupItem value={freq} id={`classes-${freq}`} data-testid={`radio-classes-${freq.toLowerCase()}`} />
-              <Label htmlFor={`classes-${freq}`} className="cursor-pointer font-normal flex-1">{freq}</Label>
+          <div className="flex items-center space-x-3 p-3 rounded-lg hover-elevate">
+            <RadioGroupItem value="yes" id="membership-yes" data-testid="radio-membership-yes" />
+            <Label htmlFor="membership-yes" className="cursor-pointer font-normal flex-1">Yes</Label>
+          </div>
+          <div className="flex items-center space-x-3 p-3 rounded-lg hover-elevate">
+            <RadioGroupItem value="no" id="membership-no" data-testid="radio-membership-no" />
+            <Label htmlFor="membership-no" className="cursor-pointer font-normal flex-1">No</Label>
+          </div>
+        </RadioGroup>
+      </div>
+
+      {data.fitness.hasMembership === "yes" && (
+        <div className="space-y-4">
+          <Label className="text-base font-semibold">What type of membership plan do you have?</Label>
+          <RadioGroup
+            value={data.fitness.membershipTier}
+            onValueChange={(value) => onChange({
+              ...data,
+              fitness: { ...data.fitness, membershipTier: value }
+            })}
+          >
+            <div className="flex items-center space-x-3 p-3 rounded-lg hover-elevate">
+              <RadioGroupItem value="basic" id="tier-basic" data-testid="radio-tier-basic" />
+              <Label htmlFor="tier-basic" className="cursor-pointer font-normal flex-1">Basic</Label>
+            </div>
+            <div className="flex items-center space-x-3 p-3 rounded-lg hover-elevate">
+              <RadioGroupItem value="mid-tier" id="tier-mid" data-testid="radio-tier-mid" />
+              <Label htmlFor="tier-mid" className="cursor-pointer font-normal flex-1">Mid-Tier</Label>
+            </div>
+            <div className="flex items-center space-x-3 p-3 rounded-lg hover-elevate">
+              <RadioGroupItem value="premium" id="tier-premium" data-testid="radio-tier-premium" />
+              <Label htmlFor="tier-premium" className="cursor-pointer font-normal flex-1">Premium (Unlimited)</Label>
+            </div>
+          </RadioGroup>
+        </div>
+      )}
+
+      {data.fitness.hasMembership === "no" && (
+        <div className="space-y-4">
+          <Label className="text-base font-semibold">How many drop-in fitness sessions (Gym, Yoga, Pilates, Boxing, etc.) do you attend per week?</Label>
+          <RadioGroup
+            value={data.fitness.dropInSessionsPerWeek}
+            onValueChange={(value) => onChange({
+              ...data,
+              fitness: { ...data.fitness, dropInSessionsPerWeek: value }
+            })}
+          >
+            {dropInFrequencies.map((freq) => (
+              <div key={freq} className="flex items-center space-x-3 p-3 rounded-lg hover-elevate">
+                <RadioGroupItem value={freq} id={`dropin-${freq}`} data-testid={`radio-dropin-${freq.toLowerCase()}`} />
+                <Label htmlFor={`dropin-${freq}`} className="cursor-pointer font-normal flex-1">{freq}</Label>
+              </div>
+            ))}
+          </RadioGroup>
+        </div>
+      )}
+
+      <div className="space-y-4">
+        <Label className="text-base font-semibold">Any other wellness spend? (Therapy, Massage, Spa)</Label>
+        <div className="space-y-3">
+          {wellnessOptions.map((option) => (
+            <div key={option} className="flex items-center space-x-3 p-3 rounded-lg border hover-elevate">
+              <Checkbox
+                id={`wellness-${option}`}
+                checked={data.fitness.wellnessSpend.includes(option)}
+                onCheckedChange={() => handleWellnessToggle(option)}
+                data-testid={`checkbox-wellness-${option.toLowerCase()}`}
+              />
+              <Label htmlFor={`wellness-${option}`} className="cursor-pointer font-normal flex-1">
+                {option}
+              </Label>
             </div>
           ))}
-        </RadioGroup>
+        </div>
       </div>
     </div>
   );
