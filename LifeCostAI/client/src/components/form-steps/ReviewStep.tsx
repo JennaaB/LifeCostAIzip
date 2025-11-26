@@ -73,7 +73,7 @@ export default function ReviewStep({ data }: ReviewStepProps) {
   return (
     <div className="space-y-6">
       <p className="text-muted-foreground">
-        Review your lifestyle snapshot below. When you're ready, click "Generate Insights" to see your personalized analysis.
+        Review your answers below. When you're ready, click "Generate Insights" to see your personalized analysis.
       </p>
 
       <div className="grid gap-4">
