@@ -39,6 +39,8 @@ export interface FormData {
   };
   shopping: {
     clothingFrequency: string;
+    buyingHabit: string;
+    shoppingStyle: string;
     personalCare: string;
   };
   goals: {
@@ -52,7 +54,7 @@ const initialFormData: FormData = {
   transportation: { commuteMethod: "", distance: "", rideshareTripsPerWeek: "", transportationPasses: "", payForParking: "" },
   fitness: { hasMembership: "", membershipTier: "", dropInSessionsPerWeek: "", wellnessSpend: [], wellnessOther: "" },
   subscriptions: { hasSubscriptions: "", services: [], other: "" },
-  shopping: { clothingFrequency: "", personalCare: "" },
+  shopping: { clothingFrequency: "", buyingHabit: "", shoppingStyle: "", personalCare: "" },
   goals: { primaryGoal: "", values: [] },
 };
 

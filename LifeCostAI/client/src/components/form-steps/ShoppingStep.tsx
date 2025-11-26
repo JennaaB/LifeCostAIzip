@@ -10,9 +10,29 @@ interface ShoppingStepProps {
 export default function ShoppingStep({ data, onChange }: ShoppingStepProps) {
   const frequencies = ["Rarely", "Monthly", "2-3 times per month", "Weekly", "Multiple times per week"];
   const personalCare = ["Basic (drugstore)", "Moderate", "Premium (salon/spa)"];
+  const buyingHabits = ["Spontaneous (impulsive)", "Planned (intentional)", "Mix of both"];
+  const shoppingStyles = ["Wait for sales & discounts", "Balanced budget & quality", "Premium high-quality items"];
 
   return (
     <div className="space-y-8">
+      <div className="space-y-4">
+        <Label className="text-base font-semibold">Do you tend to buy things spontaneously or only when you plan to?</Label>
+        <RadioGroup
+          value={data.shopping.buyingHabit}
+          onValueChange={(value) => onChange({
+            ...data,
+            shopping: { ...data.shopping, buyingHabit: value }
+          })}
+        >
+          {buyingHabits.map((habit) => (
+            <div key={habit} className="flex items-center space-x-3 p-3 rounded-lg hover-elevate">
+              <RadioGroupItem value={habit} id={`habit-${habit}`} data-testid={`radio-habit-${habit.toLowerCase()}`} />
+              <Label htmlFor={`habit-${habit}`} className="cursor-pointer font-normal flex-1">{habit}</Label>
+            </div>
+          ))}
+        </RadioGroup>
+      </div>
+
       <div className="space-y-4">
         <Label className="text-base font-semibold">How often do you shop for clothing, accessories, or hobby gear?</Label>
         <RadioGroup
@@ -26,6 +46,24 @@ export default function ShoppingStep({ data, onChange }: ShoppingStepProps) {
             <div key={freq} className="flex items-center space-x-3 p-3 rounded-lg hover-elevate">
               <RadioGroupItem value={freq} id={`clothing-${freq}`} data-testid={`radio-clothing-${freq.toLowerCase()}`} />
               <Label htmlFor={`clothing-${freq}`} className="cursor-pointer font-normal flex-1">{freq}</Label>
+            </div>
+          ))}
+        </RadioGroup>
+      </div>
+
+      <div className="space-y-4">
+        <Label className="text-base font-semibold">When shopping, what's your approach to price and quality?</Label>
+        <RadioGroup
+          value={data.shopping.shoppingStyle}
+          onValueChange={(value) => onChange({
+            ...data,
+            shopping: { ...data.shopping, shoppingStyle: value }
+          })}
+        >
+          {shoppingStyles.map((style) => (
+            <div key={style} className="flex items-center space-x-3 p-3 rounded-lg hover-elevate">
+              <RadioGroupItem value={style} id={`style-${style}`} data-testid={`radio-style-${style.toLowerCase()}`} />
+              <Label htmlFor={`style-${style}`} className="cursor-pointer font-normal flex-1">{style}</Label>
             </div>
           ))}
         </RadioGroup>
