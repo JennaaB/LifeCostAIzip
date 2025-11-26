@@ -16,6 +16,7 @@ export default function ReviewStep({ data }: ReviewStepProps) {
         { label: "Coffee", value: data.foodDining.coffeeFrequency },
         { label: "Delivery", value: data.foodDining.deliveryFrequency },
         { label: "Dining Out", value: data.foodDining.diningOutFrequency },
+        ...(data.foodDining.diningStyle ? [{ label: "Dining Style", value: data.foodDining.diningStyle }] : []),
       ],
     },
     {
@@ -24,22 +25,29 @@ export default function ReviewStep({ data }: ReviewStepProps) {
       items: [
         { label: "Method", value: data.transportation.commuteMethod },
         { label: "Distance", value: data.transportation.distance },
+        ...(data.transportation.rideshareTripsPerWeek ? [{ label: "Rideshare Trips/Week", value: data.transportation.rideshareTripsPerWeek }] : []),
+        ...(data.transportation.parkingRateType ? [{ label: "Parking Rate", value: data.transportation.parkingRateType }] : []),
+        ...(data.transportation.transitPassType ? [{ label: "Transit Pass", value: data.transportation.transitPassType }] : []),
       ],
     },
     {
       icon: Dumbbell,
-      title: "Fitness",
+      title: "Fitness & Wellness",
       items: [
-        { label: "Gym", value: data.fitness.gymMembership ? "Yes" : "No" },
-        { label: "Classes", value: data.fitness.classesPerMonth },
+        { label: "Membership", value: data.fitness.hasMembership },
+        ...(data.fitness.membershipTier ? [{ label: "Tier", value: data.fitness.membershipTier }] : []),
+        ...(data.fitness.dropInSessionsPerWeek ? [{ label: "Drop-in Sessions/Week", value: data.fitness.dropInSessionsPerWeek }] : []),
+        ...(data.fitness.wellnessSpend.length > 0 ? [{ label: "Wellness", value: data.fitness.wellnessSpend.join(", ") }] : []),
+        ...(data.fitness.hairCutFrequency && data.fitness.hairCutFrequency !== "Never" ? [{ label: "Hair Cut", value: data.fitness.hairCutFrequency }] : []),
       ],
     },
     {
       icon: Tv,
       title: "Subscriptions",
       items: [
-        { label: "Streaming", value: data.subscriptions.streaming.join(", ") || "None" },
-        { label: "Other", value: data.subscriptions.other || "None" },
+        { label: "Has Subscriptions", value: data.subscriptions.hasSubscriptions },
+        ...(data.subscriptions.services.length > 0 ? [{ label: "Services", value: data.subscriptions.services.join(", ") }] : []),
+        ...(data.subscriptions.other ? [{ label: "Other", value: data.subscriptions.other }] : []),
       ],
     },
     {
@@ -47,6 +55,8 @@ export default function ReviewStep({ data }: ReviewStepProps) {
       title: "Shopping",
       items: [
         { label: "Clothing", value: data.shopping.clothingFrequency },
+        { label: "Buying Habit", value: data.shopping.buyingHabit },
+        { label: "Style", value: data.shopping.shoppingStyle },
         { label: "Personal Care", value: data.shopping.personalCare },
       ],
     },
@@ -55,7 +65,7 @@ export default function ReviewStep({ data }: ReviewStepProps) {
       title: "Goals & Values",
       items: [
         { label: "Primary Goal", value: data.goals.primaryGoal },
-        { label: "Values", value: data.goals.values.join(", ") || "None selected" },
+        { label: "Values", value: data.goals.values && data.goals.values.length > 0 ? data.goals.values.join(", ") : "Not selected" },
       ],
     },
   ];

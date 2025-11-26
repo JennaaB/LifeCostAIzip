@@ -82,7 +82,81 @@ export default function LifestyleForm({ onSubmit, onBack }: LifestyleFormProps) 
   ];
 
   const CurrentStepComponent = steps[currentStep].component;
-  const progress = ((currentStep + 1) / steps.length) * 100;
+
+  const calculateProgress = () => {
+    const fd = formData.foodDining;
+    const tr = formData.transportation;
+    const fi = formData.fitness;
+    const su = formData.subscriptions;
+    const sh = formData.shopping;
+    const go = formData.goals;
+
+    let completedSteps = 0;
+
+    // Check Food & Dining
+    if (fd.coffeeFrequency && fd.deliveryFrequency && fd.diningOutFrequency) {
+      if (fd.diningOutFrequency !== "Never" && !fd.diningStyle) {
+        // diningStyle is required if they dine out
+      } else {
+        completedSteps++;
+      }
+    }
+
+    // Check Transportation
+    if (tr.commuteMethod && tr.distance) {
+      if (tr.commuteMethod === "Rideshare" && !tr.rideshareTripsPerWeek) {
+        // rideshareTripsPerWeek required for rideshare
+      } else if (tr.commuteMethod === "Personal Car" && tr.payForParking === "" && !tr.parkingRateType) {
+        // check parking if applicable
+      } else if (tr.commuteMethod === "Public Transit" && !tr.transitPassType) {
+        // transitPassType required for public transit
+      } else {
+        completedSteps++;
+      }
+    }
+
+    // Check Fitness & Wellness
+    if (fi.hasMembership) {
+      let fitnessComplete = true;
+      if (fi.hasMembership === "Yes" && !fi.membershipTier) fitnessComplete = false;
+      if (fi.hasMembership === "Drop-in Sessions" && !fi.dropInSessionsPerWeek) fitnessComplete = false;
+      if (fi.wellnessSpend.length === 0 && !fi.wellnessOther) fitnessComplete = false;
+      if (fi.wellnessSpend.length > 0 && !fi.wellnessFrequency) fitnessComplete = false;
+      if (fi.hairCutFrequency && fi.hairCutFrequency !== "Never" && !fi.hairServiceType) fitnessComplete = false;
+      if (fitnessComplete) completedSteps++;
+    }
+
+    // Check Subscriptions
+    if (su.hasSubscriptions) {
+      if (su.hasSubscriptions === "Yes" && su.services.length === 0) {
+        // need to select services
+      } else {
+        completedSteps++;
+      }
+    }
+
+    // Check Shopping
+    if (sh.clothingFrequency && sh.buyingHabit && sh.shoppingStyle && sh.personalCare) {
+      completedSteps++;
+    }
+
+    // Check Goals
+    if (go.primaryGoal && go.values.length === 3) {
+      completedSteps++;
+    }
+
+    // Current step bonus for being on that step (only if user started answering)
+    const hasStartedAnswering = completedSteps > 0;
+    if (hasStartedAnswering) {
+      const baseProgress = (completedSteps / (steps.length - 1)) * 100; // -1 for review step
+      const stepBonus = ((currentStep + 1) / steps.length) * 10; // Small bonus for navigating steps
+      return Math.min(baseProgress + stepBonus, 99); // Cap at 99% until submitted
+    }
+
+    return 0; // No progress until first section is complete
+  };
+
+  const progress = calculateProgress();
 
   const handleNext = () => {
     if (currentStep < steps.length - 1) {
