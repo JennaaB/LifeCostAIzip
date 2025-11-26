@@ -18,11 +18,11 @@ export default function GoalsStep({ data, onChange }: GoalsStepProps) {
   ];
 
   const values = [
-    "Sustainability",
     "Convenience",
     "Health & wellness",
     "Experiences over things",
     "Financial freedom",
+    "Sustainability",
   ];
 
   const toggleValue = (value: string) => {
@@ -58,7 +58,7 @@ export default function GoalsStep({ data, onChange }: GoalsStepProps) {
       </div>
 
       <div className="space-y-4">
-        <Label className="text-base font-semibold">What values are important to you? (Select all that apply)</Label>
+        <Label className="text-base font-semibold">What values are important to you? (Select your top 3)</Label>
         <div className="space-y-3">
           {values.map((value) => (
             <div key={value} className="flex items-center space-x-3 p-3 rounded-lg border hover-elevate">
