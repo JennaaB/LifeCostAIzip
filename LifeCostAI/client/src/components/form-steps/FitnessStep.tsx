@@ -26,7 +26,7 @@ export default function FitnessStep({ data, onChange }: FitnessStepProps) {
   return (
     <div className="space-y-8">
       <div className="space-y-4">
-        <Label className="text-base font-semibold">Do you have a fitness membership? (Gym, Yoga, Pilates, Boxing, etc.)</Label>
+        <Label className="text-base font-semibold">Do you have a paid fitness membership? (Gym, Yoga, Pilates, Boxing, etc.)</Label>
         <RadioGroup
           value={data.fitness.hasMembership}
           onValueChange={(value) => onChange({
