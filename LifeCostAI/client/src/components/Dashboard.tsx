@@ -14,7 +14,8 @@ import {
   Edit,
   Download,
   Sparkles,
-  Loader2
+  Loader2,
+  Home
 } from "lucide-react";
 import GlobalMap from "./GlobalMap";
 import jsPDF from "jspdf";
@@ -38,10 +39,11 @@ const recommendationIcons: Record<string, any> = {
 
 interface DashboardProps {
   onEdit?: () => void;
+  onBackToHome?: () => void;
   formData?: FormData | null;
 }
 
-export default function Dashboard({ onEdit, formData }: DashboardProps) {
+export default function Dashboard({ onEdit, onBackToHome, formData }: DashboardProps) {
   const estimationData = formData ? calculateEstimates(formData) : null;
   
   const dashboardData = estimationData ? {
@@ -168,6 +170,10 @@ export default function Dashboard({ onEdit, formData }: DashboardProps) {
             <Button variant="outline" onClick={onEdit} data-testid="button-edit-responses">
               <Edit className="w-4 h-4 mr-2" />
               Edit Responses
+            </Button>
+            <Button variant="outline" onClick={onBackToHome} data-testid="button-back-home">
+              <Home className="w-4 h-4 mr-2" />
+              Home
             </Button>
             <Button 
               variant="outline" 

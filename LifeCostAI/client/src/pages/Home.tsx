@@ -45,7 +45,7 @@ export default function Home() {
   }
 
   if (view === "dashboard") {
-    return <Dashboard onEdit={handleEdit} formData={formData} />;
+    return <Dashboard onEdit={handleEdit} onBackToHome={handleBackToLanding} formData={formData} />;
   }
 
   return (
