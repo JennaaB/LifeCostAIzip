@@ -10,7 +10,7 @@ interface SubscriptionsStepProps {
 }
 
 export default function SubscriptionsStep({ data, onChange }: SubscriptionsStepProps) {
-  const subscriptionServices = ["Crave", "UberOne", "ChatGPT", "Claude"];
+  const subscriptionServices = ["Netflix", "Disney+", "Spotify", "Amazon Prime", "ChatGPT", "Claude", "Crave", "UberOne"];
 
   const toggleService = (service: string) => {
     const current = data.subscriptions.services;
