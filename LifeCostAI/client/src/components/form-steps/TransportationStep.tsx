@@ -21,7 +21,7 @@ export default function TransportationStep({ data, onChange }: TransportationSte
   
   const passesOptions = ["None", "Monthly pass/subscription", "Parking only", "Both pass and parking"];
   
-  const parkingOptions = ["Yes, paid parking", "Yes, free parking", "No"];
+  const parkingOptions = ["Yes", "No"];
 
   return (
     <div className="space-y-8">
