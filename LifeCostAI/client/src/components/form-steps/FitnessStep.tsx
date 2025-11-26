@@ -12,7 +12,7 @@ interface FitnessStepProps {
 export default function FitnessStep({ data, onChange }: FitnessStepProps) {
   const dropInFrequencies = ["Never", "1-2 per week", "3-4 per week", "5-6 per week", "Daily"];
   
-  const wellnessOptions = ["Therapy/Psychologist", "Acupuncture", "Massage", "Other", "None"];
+  const wellnessOptions = ["Therapy/Psychologist", "Acupuncture", "Massage", "Nails/Lashes/Tanning", "Other", "None"];
   
   const wellnessFrequencies = ["Weekly", "Bi-weekly", "Monthly", "Less than monthly"];
   
