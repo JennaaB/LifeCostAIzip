@@ -10,10 +10,10 @@ interface GoalsStepProps {
 
 export default function GoalsStep({ data, onChange }: GoalsStepProps) {
   const goals = [
-    "Save for a big purchase",
+    "Save for a big purchase or trip",
     "Pay off debt",
     "Build an emergency fund",
-    "Plan for relocation",
+    "Plan for a move",
     "Just curious about my spending",
   ];
 
