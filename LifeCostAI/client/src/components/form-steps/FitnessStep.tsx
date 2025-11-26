@@ -12,7 +12,9 @@ interface FitnessStepProps {
 export default function FitnessStep({ data, onChange }: FitnessStepProps) {
   const dropInFrequencies = ["Never", "1-2 per week", "3-4 per week", "5-6 per week", "Daily"];
   
-  const wellnessOptions = ["Therapy/Psychologist", "Acupuncture", "Massage", "Tanning/Red Light Therapy", "Other", "None"];
+  const wellnessOptions = ["Therapy/Psychologist", "Acupuncture", "Massage", "Other", "None"];
+  
+  const wellnessFrequencies = ["Weekly", "Bi-weekly", "Monthly"];
 
   const handleWellnessToggle = (option: string) => {
     const updated = data.fitness.wellnessSpend.includes(option)
@@ -20,9 +22,11 @@ export default function FitnessStep({ data, onChange }: FitnessStepProps) {
       : [...data.fitness.wellnessSpend, option];
     onChange({
       ...data,
-      fitness: { ...data.fitness, wellnessSpend: updated },
+      fitness: { ...data.fitness, wellnessSpend: updated, wellnessFrequency: updated.some(item => item !== "None") ? data.fitness.wellnessFrequency : "" },
     });
   };
+
+  const hasWellnessSpend = data.fitness.wellnessSpend.length > 0 && !data.fitness.wellnessSpend.every(item => item === "None");
 
   return (
     <div className="space-y-8">
@@ -109,6 +113,26 @@ export default function FitnessStep({ data, onChange }: FitnessStepProps) {
             </div>
           ))}
         </div>
+
+        {hasWellnessSpend && (
+          <div className="space-y-4">
+            <Label className="text-base font-semibold">How often do you get these services?</Label>
+            <RadioGroup
+              value={data.fitness.wellnessFrequency}
+              onValueChange={(value) => onChange({
+                ...data,
+                fitness: { ...data.fitness, wellnessFrequency: value }
+              })}
+            >
+              {wellnessFrequencies.map((freq) => (
+                <div key={freq} className="flex items-center space-x-3 p-3 rounded-lg hover-elevate">
+                  <RadioGroupItem value={freq} id={`wellness-freq-${freq}`} data-testid={`radio-wellness-freq-${freq.toLowerCase()}`} />
+                  <Label htmlFor={`wellness-freq-${freq}`} className="cursor-pointer font-normal flex-1">{freq}</Label>
+                </div>
+              ))}
+            </RadioGroup>
+          </div>
+        )}
 
         {data.fitness.wellnessSpend.includes("Other") && (
           <div className="mt-4">
