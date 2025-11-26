@@ -65,7 +65,7 @@ export default function FitnessStep({ data, onChange }: FitnessStepProps) {
             </div>
             <div className="flex items-center space-x-3 p-3 rounded-lg hover-elevate">
               <RadioGroupItem value="premium" id="tier-premium" data-testid="radio-tier-premium" />
-              <Label htmlFor="tier-premium" className="cursor-pointer font-normal flex-1">Premium (Unlimited)</Label>
+              <Label htmlFor="tier-premium" className="cursor-pointer font-normal flex-1">Premium</Label>
             </div>
           </RadioGroup>
         </div>
