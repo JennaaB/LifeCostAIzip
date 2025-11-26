@@ -31,6 +31,14 @@ const categoryIcons: Record<string, any> = {
   "Shopping": ShoppingBag,
 };
 
+const categoryColors: Record<string, string> = {
+  "Food & Dining": "text-chart-1",
+  "Transportation": "text-chart-2",
+  "Subscriptions": "text-chart-3",
+  "Fitness & Wellness": "text-chart-4",
+  "Shopping": "text-chart-5",
+};
+
 const recommendationIcons: Record<string, any> = {
   "Meal Prep Sundays": Target,
   "Make Coffee at Home": Coffee,
@@ -241,9 +249,9 @@ export default function Dashboard({ onEdit, onBackToHome, formData }: DashboardP
                   <div className="flex justify-between items-center">
                     <div className="flex items-center gap-3">
                       <div className={`w-8 h-8 rounded-lg ${category.color}/20 flex items-center justify-center`}>
-                        <category.icon className={`w-4 h-4 text-chart-${dashboardData.categories.indexOf(category) + 1}`} />
+                        <category.icon className={`w-4 h-4 ${categoryColors[category.name] || 'text-primary'}`} />
                       </div>
-                      <span className={`font-medium text-chart-${dashboardData.categories.indexOf(category) + 1}`}>{category.name}</span>
+                      <span className={`font-medium ${categoryColors[category.name] || 'text-primary'}`}>{category.name}</span>
                     </div>
                     <div className="text-right">
                       <p className="font-semibold">~${category.amount}</p>
