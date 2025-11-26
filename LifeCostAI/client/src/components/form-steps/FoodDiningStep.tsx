@@ -31,7 +31,7 @@ export default function FoodDiningStep({ data, onChange }: FoodDiningStepProps) 
       </div>
 
       <div className="space-y-4">
-        <Label className="text-base font-semibold">How often do you order food delivery?</Label>
+        <Label className="text-base font-semibold">How often do you order food delivery or takeout?</Label>
         <RadioGroup
           value={data.foodDining.deliveryFrequency}
           onValueChange={(value) => onChange({
