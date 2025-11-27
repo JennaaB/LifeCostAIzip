@@ -83,27 +83,24 @@ export default function SubscriptionsStep({ data, onChange }: SubscriptionsStepP
           <div className="space-y-4">
             <Label className="text-base sm:text-lg font-semibold block">Which services do you subscribe to?</Label>
             <p className="text-sm text-muted-foreground">Select all that apply</p>
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               {subscriptionServices.map((service) => {
                 const Icon = service.icon;
                 return (
-                  <div key={service.value} className="relative">
+                  <div key={service.value} className="flex items-center gap-3">
                     <Checkbox
                       id={`service-${service.value}`}
                       checked={data.subscriptions.services.includes(service.value)}
                       onCheckedChange={() => toggleService(service.value)}
-                      className="peer sr-only"
+                      className="h-5 w-5"
                       data-testid={`checkbox-service-${service.value.toLowerCase()}`}
                     />
                     <Label 
                       htmlFor={`service-${service.value}`} 
-                      className="flex flex-col items-center justify-center p-4 sm:p-5 rounded-xl border-2 cursor-pointer transition-all min-h-[90px]
-                        hover:border-primary/50 hover:bg-primary/5
-                        peer-data-[state=checked]:border-primary peer-data-[state=checked]:bg-primary/10
-                        peer-focus-visible:ring-2 peer-focus-visible:ring-primary peer-focus-visible:ring-offset-2"
+                      className="flex items-center gap-2 text-sm sm:text-base font-medium cursor-pointer"
                     >
-                      <Icon className="w-6 h-6 mb-2 text-muted-foreground peer-data-[state=checked]:text-primary" />
-                      <span className="text-sm font-medium text-center">{service.label}</span>
+                      <Icon className="w-5 h-5 text-muted-foreground" />
+                      {service.label}
                     </Label>
                   </div>
                 );

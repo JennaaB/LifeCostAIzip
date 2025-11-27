@@ -106,40 +106,29 @@ export default function GoalsStep({ data, onChange }: GoalsStepProps) {
           </span>
         </div>
         <p className="text-sm text-muted-foreground">Select up to 3 values that guide your spending decisions</p>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+        <div className="space-y-3">
           {values.map((value) => {
             const Icon = value.icon;
             const isSelected = data.goals.values.includes(value.value);
             const isDisabled = !isSelected && data.goals.values.length >= 3;
             
             return (
-              <div key={value.value} className="relative">
+              <div key={value.value} className={`flex items-center gap-3 ${isDisabled ? "opacity-50" : ""}`}>
                 <Checkbox
                   id={`value-${value.value}`}
                   checked={isSelected}
                   onCheckedChange={() => toggleValue(value.value)}
                   disabled={isDisabled}
-                  className="peer sr-only"
+                  className="h-5 w-5"
                   data-testid={`checkbox-value-${value.label.toLowerCase()}`}
                 />
                 <Label 
                   htmlFor={`value-${value.value}`} 
-                  className={`flex items-start gap-3 p-4 sm:p-5 rounded-xl border-2 cursor-pointer transition-all
-                    ${isDisabled 
-                      ? "opacity-50 cursor-not-allowed" 
-                      : "hover:border-primary/50 hover:bg-primary/5"}
-                    peer-data-[state=checked]:border-primary peer-data-[state=checked]:bg-primary/10
-                    peer-focus-visible:ring-2 peer-focus-visible:ring-primary peer-focus-visible:ring-offset-2`}
+                  className={`flex items-center gap-2 cursor-pointer ${isDisabled ? "cursor-not-allowed" : ""}`}
                 >
-                  <div className={`w-10 h-10 rounded-lg flex items-center justify-center shrink-0 ${
-                    isSelected ? "bg-primary/20" : "bg-muted"
-                  }`}>
-                    <Icon className={`w-5 h-5 ${isSelected ? "text-primary" : "text-muted-foreground"}`} />
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <span className={`text-sm sm:text-base font-semibold block ${isSelected ? "text-primary" : ""}`}>{value.label}</span>
-                    <span className="text-xs text-muted-foreground">{value.desc}</span>
-                  </div>
+                  <Icon className={`w-5 h-5 ${isSelected ? "text-primary" : "text-muted-foreground"}`} />
+                  <span className={`text-sm sm:text-base font-medium ${isSelected ? "text-primary" : ""}`}>{value.label}</span>
+                  <span className="text-xs text-muted-foreground hidden sm:inline">— {value.desc}</span>
                 </Label>
               </div>
             );

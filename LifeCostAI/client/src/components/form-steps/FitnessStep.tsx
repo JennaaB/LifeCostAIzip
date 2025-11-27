@@ -231,24 +231,21 @@ export default function FitnessStep({ data, onChange }: FitnessStepProps) {
           <Label className="text-base sm:text-lg font-semibold">Any other wellness spending?</Label>
         </div>
         <p className="text-sm text-muted-foreground ml-11">Select all that apply</p>
-        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+        <div className="space-y-3 ml-11">
           {wellnessOptions.map((option) => (
-            <div key={option.value} className="relative">
+            <div key={option.value} className="flex items-center gap-3">
               <Checkbox
                 id={`wellness-${option.value}`}
                 checked={data.fitness.wellnessSpend.includes(option.value)}
                 onCheckedChange={() => handleWellnessToggle(option.value)}
-                className="peer sr-only"
+                className="h-5 w-5"
                 data-testid={`checkbox-wellness-${option.value.toLowerCase()}`}
               />
               <Label 
                 htmlFor={`wellness-${option.value}`} 
-                className="flex items-center justify-center p-4 rounded-xl border-2 cursor-pointer transition-all
-                  hover:border-primary/50 hover:bg-primary/5
-                  peer-data-[state=checked]:border-primary peer-data-[state=checked]:bg-primary/10 peer-data-[state=checked]:text-primary
-                  peer-focus-visible:ring-2 peer-focus-visible:ring-primary peer-focus-visible:ring-offset-2"
+                className="text-sm sm:text-base font-medium cursor-pointer"
               >
-                <span className="text-sm sm:text-base font-medium text-center">{option.label}</span>
+                {option.label}
               </Label>
             </div>
           ))}
