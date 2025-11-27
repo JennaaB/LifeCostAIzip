@@ -295,31 +295,6 @@ export default function Dashboard({ onEdit, onBackToHome, onSimulator, formData 
           </Card>
         </div>
 
-        {/* Spending Simulator Card */}
-        <Card 
-          className="p-8 cursor-pointer hover:shadow-lg transition-all border-2 border-primary/20 hover:border-primary/40 bg-gradient-to-br from-primary/5 to-primary/10"
-          onClick={onSimulator}
-          data-testid="button-simulator"
-        >
-          <div className="flex flex-col md:flex-row items-center gap-6">
-            <div className="w-16 h-16 rounded-2xl bg-primary/20 flex items-center justify-center shrink-0">
-              <SlidersHorizontal className="w-8 h-8 text-primary" />
-            </div>
-            <div className="flex-1 text-center md:text-left space-y-2">
-              <h3 className="text-2xl font-bold">Spending Simulator</h3>
-              <p className="text-muted-foreground text-lg max-w-2xl">
-                Explore "what-if" scenarios by adjusting your lifestyle habits. See how small changes like fewer coffees or less delivery orders can impact your monthly spending in real-time.
-              </p>
-            </div>
-            <div className="shrink-0">
-              <Button size="lg" className="gap-2">
-                Try It Now
-                <SlidersHorizontal className="w-4 h-4" />
-              </Button>
-            </div>
-          </div>
-        </Card>
-
         {/* Recommendations */}
         <div className="space-y-6">
           <div className="flex items-center gap-2">
@@ -345,6 +320,31 @@ export default function Dashboard({ onEdit, onBackToHome, onSimulator, formData 
             ))}
           </div>
         </div>
+
+        {/* Spending Simulator Card */}
+        <Card 
+          className="p-8 cursor-pointer hover:shadow-lg transition-all border-2 border-primary/20 hover:border-primary/40 bg-gradient-to-br from-primary/5 to-primary/10"
+          onClick={onSimulator}
+          data-testid="button-simulator"
+        >
+          <div className="flex flex-col md:flex-row items-center gap-6">
+            <div className="w-16 h-16 rounded-2xl bg-primary/20 flex items-center justify-center shrink-0">
+              <SlidersHorizontal className="w-8 h-8 text-primary" />
+            </div>
+            <div className="flex-1 text-center md:text-left space-y-2">
+              <h3 className="text-2xl font-bold">Spending Simulator</h3>
+              <p className="text-muted-foreground text-lg max-w-2xl">
+                Explore "what-if" scenarios by adjusting your lifestyle habits. See how small changes like fewer coffees or less delivery orders can impact your monthly spending in real-time.
+              </p>
+            </div>
+            <div className="shrink-0">
+              <Button size="lg" className="gap-2">
+                Try It Now
+                <SlidersHorizontal className="w-4 h-4" />
+              </Button>
+            </div>
+          </div>
+        </Card>
 
         {/* Global Map */}
         <GlobalMap baseAmount={dashboardData.totalMonthly} baseCity={dashboardData.city} />
