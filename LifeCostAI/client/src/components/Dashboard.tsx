@@ -50,10 +50,11 @@ interface DashboardProps {
   onEdit?: () => void;
   onBackToHome?: () => void;
   onSimulator?: () => void;
+  onCityComparison?: () => void;
   formData?: FormData | null;
 }
 
-export default function Dashboard({ onEdit, onBackToHome, onSimulator, formData }: DashboardProps) {
+export default function Dashboard({ onEdit, onBackToHome, onSimulator, onCityComparison, formData }: DashboardProps) {
   const estimationData = formData ? calculateEstimates(formData) : null;
   
   const dashboardData = estimationData ? {
@@ -347,7 +348,7 @@ export default function Dashboard({ onEdit, onBackToHome, onSimulator, formData 
         </Card>
 
         {/* Global Map */}
-        <GlobalMap baseAmount={dashboardData.totalMonthly} baseCity={dashboardData.city} />
+        <GlobalMap baseAmount={dashboardData.totalMonthly} baseCity={dashboardData.city} onDeepDive={onCityComparison} />
         </div>
       </div>
     </div>

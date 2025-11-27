@@ -24,7 +24,7 @@ Preferred communication style: Simple, everyday language.
 **Component Structure:**
 - Multi-step form flow with progressive disclosure pattern (7 steps: Food & Dining, Transportation, Fitness, Subscriptions, Shopping, Goals, Review)
 - Reusable shadcn/ui component library for consistent UI primitives
-- View-based state management (landing, form, dashboard, simulator) for navigation flow
+- View-based state management (landing, form, dashboard, simulator, cityComparison) for navigation flow
 - Client-side estimation engine (`estimationEngine.ts`) for real-time calculations without server dependency
 
 **Design System:**
@@ -92,6 +92,18 @@ Preferred communication style: Simple, everyday language.
 - Quick scenario buttons (Frugal Mode, Lifestyle Upgrade, etc.)
 - Reset button to restore default values
 - Category colors and naming consistent with main Dashboard
+
+**City Lifestyle Comparison (Deep Dive):**
+- Dedicated page for detailed multi-city cost comparisons
+- Multi-city selection with checkboxes (up to 4 cities)
+- Tabbed interface: Overview, Categories, Housing, Transport
+- Overview tab: City cards with totals, radar chart for cost index comparison
+- Categories tab: Horizontal bar chart comparison, per-category breakdown cards with progress bars
+- Housing tab: Rent comparison table (studio, 1-bed, 2-bed), city-specific housing tips
+- Transport tab: Monthly pass costs, gas prices, rideshare base fares comparison
+- 15 global cities with detailed data: category multipliers, rent estimates, transport costs
+- Uses user's baseline spending data for personalized comparisons
+- Accessible from Global Cost Comparison section via "Explore" button
 
 ### External Dependencies
 

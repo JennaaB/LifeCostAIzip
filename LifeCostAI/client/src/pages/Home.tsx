@@ -7,10 +7,11 @@ import FinalCTA from "@/components/FinalCTA";
 import LifestyleForm from "@/components/LifestyleForm";
 import Dashboard from "@/components/Dashboard";
 import SpendingSimulator from "@/components/SpendingSimulator";
+import CityComparison from "@/components/CityComparison";
 import type { FormData } from "@/components/LifestyleForm";
 import { calculateEstimates } from "@/lib/estimationEngine";
 
-type ViewState = "landing" | "form" | "dashboard" | "simulator";
+type ViewState = "landing" | "form" | "dashboard" | "simulator" | "cityComparison";
 
 export default function Home() {
   const [view, setView] = useState<ViewState>("landing");
@@ -52,17 +53,29 @@ export default function Home() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
+  const handleCityComparison = () => {
+    setView("cityComparison");
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
   if (view === "form") {
     return <LifestyleForm onSubmit={handleFormSubmit} onBack={handleBackToLanding} />;
   }
 
   if (view === "dashboard") {
-    return <Dashboard onEdit={handleEdit} onBackToHome={handleBackToLanding} onSimulator={handleSimulator} formData={formData} />;
+    return <Dashboard onEdit={handleEdit} onBackToHome={handleBackToLanding} onSimulator={handleSimulator} onCityComparison={handleCityComparison} formData={formData} />;
   }
 
   if (view === "simulator") {
     const baselineTotal = formData ? calculateEstimates(formData).totalMonthly : undefined;
     return <SpendingSimulator onBack={handleBackToDashboard} baselineTotal={baselineTotal} />;
+  }
+
+  if (view === "cityComparison") {
+    const estimates = formData ? calculateEstimates(formData) : null;
+    const baselineCategories = estimates?.categories.map(c => ({ name: c.name, amount: c.amount }));
+    const baseCity = estimates?.city || "Calgary";
+    return <CityComparison onBack={handleBackToDashboard} baselineCategories={baselineCategories} baseCity={baseCity} />;
   }
 
   return (

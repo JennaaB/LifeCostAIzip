@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Globe, TrendingUp, TrendingDown, Minus } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Globe, TrendingUp, TrendingDown, Minus, ArrowRight } from "lucide-react";
 import {
   ComposableMap,
   Geographies,
@@ -33,9 +34,10 @@ const cityData = [
 interface GlobalMapProps {
   baseAmount: number;
   baseCity: string;
+  onDeepDive?: () => void;
 }
 
-export default function GlobalMap({ baseAmount, baseCity }: GlobalMapProps) {
+export default function GlobalMap({ baseAmount, baseCity, onDeepDive }: GlobalMapProps) {
   const [selectedCity, setSelectedCity] = useState<string | null>(null);
 
   const getTrendIcon = (multiplier: number) => {
@@ -204,6 +206,29 @@ export default function GlobalMap({ baseAmount, baseCity }: GlobalMapProps) {
             </span>
             {" "}based on local cost of living adjustments.
           </p>
+        </Card>
+      )}
+
+      {onDeepDive && (
+        <Card 
+          className="p-6 cursor-pointer hover:shadow-lg transition-all border-2 border-primary/20 hover:border-primary/40 bg-gradient-to-br from-chart-2/5 to-chart-4/5"
+          onClick={onDeepDive}
+        >
+          <div className="flex flex-col md:flex-row items-center gap-4">
+            <div className="w-14 h-14 rounded-xl bg-primary/20 flex items-center justify-center shrink-0">
+              <Globe className="w-7 h-7 text-primary" />
+            </div>
+            <div className="flex-1 text-center md:text-left">
+              <h4 className="text-xl font-bold">City Lifestyle Comparison (Deep Dive)</h4>
+              <p className="text-muted-foreground">
+                Compare multiple cities side-by-side with detailed category breakdowns, housing costs, and transportation analysis
+              </p>
+            </div>
+            <Button size="lg" className="gap-2 shrink-0">
+              Explore
+              <ArrowRight className="w-4 h-4" />
+            </Button>
+          </div>
         </Card>
       )}
     </Card>
