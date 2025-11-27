@@ -183,10 +183,6 @@ export default function Dashboard({ onEdit, onBackToHome, onSimulator, formData 
               <Edit className="w-4 h-4 mr-2" />
               Edit Responses
             </Button>
-            <Button onClick={onSimulator} data-testid="button-simulator" className="bg-primary text-primary-foreground hover:bg-primary/90">
-              <SlidersHorizontal className="w-4 h-4 mr-2" />
-              Spending Simulator
-            </Button>
             <Button variant="outline" onClick={onBackToHome} data-testid="button-back-home">
               <Home className="w-4 h-4 mr-2" />
               Home
@@ -276,20 +272,20 @@ export default function Dashboard({ onEdit, onBackToHome, onSimulator, formData 
           </Card>
 
           {/* Top Drivers */}
-          <Card className="lg:col-span-2 p-6 space-y-6">
-            <div className="flex items-center gap-2">
+          <Card className="lg:col-span-2 p-6 flex flex-col">
+            <div className="flex items-center gap-2 mb-6">
               <TrendingUp className="w-5 h-5 text-primary" />
               <h3 className="text-xl font-semibold">Top Spending Drivers</h3>
             </div>
-            <div className="space-y-4">
+            <div className="flex-1 flex flex-col justify-between gap-4">
               {dashboardData.topDrivers.map((driver, index) => (
-                <div key={index} className="flex items-start gap-4 p-4 rounded-lg bg-muted/50">
-                  <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
-                    <span className="text-sm font-bold text-primary">{index + 1}</span>
+                <div key={index} className="flex items-center gap-4 p-5 rounded-xl bg-muted/50 flex-1">
+                  <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
+                    <span className="text-lg font-bold text-primary">{index + 1}</span>
                   </div>
                   <div className="flex-1 space-y-1">
-                    <p className="font-medium leading-snug">{driver.habit}</p>
-                    <p className="text-sm text-muted-foreground">
+                    <p className="font-semibold text-lg leading-snug">{driver.habit}</p>
+                    <p className="text-base text-muted-foreground">
                       ~${driver.monthlyCost}/month
                     </p>
                   </div>
@@ -298,6 +294,31 @@ export default function Dashboard({ onEdit, onBackToHome, onSimulator, formData 
             </div>
           </Card>
         </div>
+
+        {/* Spending Simulator Card */}
+        <Card 
+          className="p-8 cursor-pointer hover:shadow-lg transition-all border-2 border-primary/20 hover:border-primary/40 bg-gradient-to-br from-primary/5 to-primary/10"
+          onClick={onSimulator}
+          data-testid="button-simulator"
+        >
+          <div className="flex flex-col md:flex-row items-center gap-6">
+            <div className="w-16 h-16 rounded-2xl bg-primary/20 flex items-center justify-center shrink-0">
+              <SlidersHorizontal className="w-8 h-8 text-primary" />
+            </div>
+            <div className="flex-1 text-center md:text-left space-y-2">
+              <h3 className="text-2xl font-bold">Spending Simulator</h3>
+              <p className="text-muted-foreground text-lg max-w-2xl">
+                Explore "what-if" scenarios by adjusting your lifestyle habits. See how small changes like fewer coffees or less delivery orders can impact your monthly spending in real-time.
+              </p>
+            </div>
+            <div className="shrink-0">
+              <Button size="lg" className="gap-2">
+                Try It Now
+                <SlidersHorizontal className="w-4 h-4" />
+              </Button>
+            </div>
+          </div>
+        </Card>
 
         {/* Recommendations */}
         <div className="space-y-6">
