@@ -9,6 +9,19 @@ interface SocialStepProps {
 }
 
 export default function SocialStep({ data, onChange }: SocialStepProps) {
+  const social = data.social || {
+    socializingStyle: "",
+    hostingFrequency: "",
+    hostingStyle: "",
+    casualFrequency: "",
+    casualType: "",
+    activeFrequency: "",
+    activeType: "",
+    nightlifeFrequency: "",
+    nightlifeStyle: "",
+    buyingRounds: "",
+  };
+
   const socializingStyles = [
     { value: "At-home", label: "At-home", desc: "Hosting or hanging at home", icon: Home },
     { value: "Casual outings", label: "Casual outings", desc: "Coffee, brunch, movies", icon: Coffee },
@@ -97,7 +110,7 @@ export default function SocialStep({ data, onChange }: SocialStepProps) {
     onChange({
       ...data,
       social: {
-        ...data.social,
+        ...social,
         ...(resetFields[field] || {}),
         [field]: value,
       },
@@ -115,7 +128,7 @@ export default function SocialStep({ data, onChange }: SocialStepProps) {
         </div>
         <p className="text-sm text-muted-foreground ml-11">How do you typically spend time with friends and family?</p>
         <RadioGroup
-          value={data.social.socializingStyle}
+          value={social.socializingStyle}
           onValueChange={(value) => updateSocial("socializingStyle", value)}
           className="grid grid-cols-1 sm:grid-cols-2 gap-3"
         >
@@ -145,7 +158,7 @@ export default function SocialStep({ data, onChange }: SocialStepProps) {
         </RadioGroup>
       </div>
 
-      {data.social.socializingStyle === "At-home" && (
+      {social.socializingStyle === "At-home" && (
         <>
           <div className="space-y-4 animate-in fade-in slide-in-from-top-2 duration-300">
             <div className="flex items-center gap-3">
@@ -155,10 +168,10 @@ export default function SocialStep({ data, onChange }: SocialStepProps) {
               <Label className="text-base sm:text-lg font-semibold">How often do you host friends or family?</Label>
             </div>
             <RadioGroup
-              value={data.social.hostingFrequency}
+              value={social.hostingFrequency}
               onValueChange={(value) => onChange({
                 ...data,
-                social: { ...data.social, hostingFrequency: value }
+                social: { ...social, hostingFrequency: value }
               })}
               className="grid grid-cols-2 sm:grid-cols-4 gap-3"
             >
@@ -179,14 +192,14 @@ export default function SocialStep({ data, onChange }: SocialStepProps) {
             </RadioGroup>
           </div>
 
-          {data.social.hostingFrequency && (
+          {social.hostingFrequency && (
             <div className="space-y-4 animate-in fade-in slide-in-from-top-2 duration-300">
               <Label className="text-base sm:text-lg font-semibold block">When you host, what do you typically provide?</Label>
               <RadioGroup
-                value={data.social.hostingStyle}
+                value={social.hostingStyle}
                 onValueChange={(value) => onChange({
                   ...data,
-                  social: { ...data.social, hostingStyle: value }
+                  social: { ...social, hostingStyle: value }
                 })}
                 className="grid grid-cols-1 sm:grid-cols-2 gap-3"
               >
@@ -211,7 +224,7 @@ export default function SocialStep({ data, onChange }: SocialStepProps) {
         </>
       )}
 
-      {data.social.socializingStyle === "Casual outings" && (
+      {social.socializingStyle === "Casual outings" && (
         <>
           <div className="space-y-4 animate-in fade-in slide-in-from-top-2 duration-300">
             <div className="flex items-center gap-3">
@@ -221,10 +234,10 @@ export default function SocialStep({ data, onChange }: SocialStepProps) {
               <Label className="text-base sm:text-lg font-semibold">How often do you go out for casual hangouts?</Label>
             </div>
             <RadioGroup
-              value={data.social.casualFrequency}
+              value={social.casualFrequency}
               onValueChange={(value) => onChange({
                 ...data,
-                social: { ...data.social, casualFrequency: value }
+                social: { ...social, casualFrequency: value }
               })}
               className="grid grid-cols-2 sm:grid-cols-4 gap-3"
             >
@@ -245,14 +258,14 @@ export default function SocialStep({ data, onChange }: SocialStepProps) {
             </RadioGroup>
           </div>
 
-          {data.social.casualFrequency && (
+          {social.casualFrequency && (
             <div className="space-y-4 animate-in fade-in slide-in-from-top-2 duration-300">
               <Label className="text-base sm:text-lg font-semibold block">What's your typical casual outing?</Label>
               <RadioGroup
-                value={data.social.casualType}
+                value={social.casualType}
                 onValueChange={(value) => onChange({
                   ...data,
-                  social: { ...data.social, casualType: value }
+                  social: { ...social, casualType: value }
                 })}
                 className="grid grid-cols-1 sm:grid-cols-2 gap-3"
               >
@@ -277,7 +290,7 @@ export default function SocialStep({ data, onChange }: SocialStepProps) {
         </>
       )}
 
-      {data.social.socializingStyle === "Active plans" && (
+      {social.socializingStyle === "Active plans" && (
         <>
           <div className="space-y-4 animate-in fade-in slide-in-from-top-2 duration-300">
             <div className="flex items-center gap-3">
@@ -287,10 +300,10 @@ export default function SocialStep({ data, onChange }: SocialStepProps) {
               <Label className="text-base sm:text-lg font-semibold">How often do you do active social activities?</Label>
             </div>
             <RadioGroup
-              value={data.social.activeFrequency}
+              value={social.activeFrequency}
               onValueChange={(value) => onChange({
                 ...data,
-                social: { ...data.social, activeFrequency: value }
+                social: { ...social, activeFrequency: value }
               })}
               className="grid grid-cols-2 sm:grid-cols-4 gap-3"
             >
@@ -311,14 +324,14 @@ export default function SocialStep({ data, onChange }: SocialStepProps) {
             </RadioGroup>
           </div>
 
-          {data.social.activeFrequency && (
+          {social.activeFrequency && (
             <div className="space-y-4 animate-in fade-in slide-in-from-top-2 duration-300">
               <Label className="text-base sm:text-lg font-semibold block">What kind of activities do you typically do?</Label>
               <RadioGroup
-                value={data.social.activeType}
+                value={social.activeType}
                 onValueChange={(value) => onChange({
                   ...data,
-                  social: { ...data.social, activeType: value }
+                  social: { ...social, activeType: value }
                 })}
                 className="grid grid-cols-1 sm:grid-cols-2 gap-3"
               >
@@ -343,7 +356,7 @@ export default function SocialStep({ data, onChange }: SocialStepProps) {
         </>
       )}
 
-      {data.social.socializingStyle === "Going-out/nightlife" && (
+      {social.socializingStyle === "Going-out/nightlife" && (
         <>
           <div className="space-y-4 animate-in fade-in slide-in-from-top-2 duration-300">
             <div className="flex items-center gap-3">
@@ -353,10 +366,10 @@ export default function SocialStep({ data, onChange }: SocialStepProps) {
               <Label className="text-base sm:text-lg font-semibold">How often do you go out for nightlife?</Label>
             </div>
             <RadioGroup
-              value={data.social.nightlifeFrequency}
+              value={social.nightlifeFrequency}
               onValueChange={(value) => onChange({
                 ...data,
-                social: { ...data.social, nightlifeFrequency: value }
+                social: { ...social, nightlifeFrequency: value }
               })}
               className="grid grid-cols-2 sm:grid-cols-4 gap-3"
             >
@@ -377,14 +390,14 @@ export default function SocialStep({ data, onChange }: SocialStepProps) {
             </RadioGroup>
           </div>
 
-          {data.social.nightlifeFrequency && (
+          {social.nightlifeFrequency && (
             <div className="space-y-4 animate-in fade-in slide-in-from-top-2 duration-300">
               <Label className="text-base sm:text-lg font-semibold block">What's your typical night out like?</Label>
               <RadioGroup
-                value={data.social.nightlifeStyle}
+                value={social.nightlifeStyle}
                 onValueChange={(value) => onChange({
                   ...data,
-                  social: { ...data.social, nightlifeStyle: value }
+                  social: { ...social, nightlifeStyle: value }
                 })}
                 className="grid grid-cols-1 sm:grid-cols-2 gap-3"
               >
@@ -407,14 +420,14 @@ export default function SocialStep({ data, onChange }: SocialStepProps) {
             </div>
           )}
 
-          {data.social.nightlifeStyle && (
+          {social.nightlifeStyle && (
             <div className="space-y-4 animate-in fade-in slide-in-from-top-2 duration-300">
               <Label className="text-base sm:text-lg font-semibold block">When you're out, do you typically buy rounds for friends?</Label>
               <RadioGroup
-                value={data.social.buyingRounds}
+                value={social.buyingRounds}
                 onValueChange={(value) => onChange({
                   ...data,
-                  social: { ...data.social, buyingRounds: value }
+                  social: { ...social, buyingRounds: value }
                 })}
                 className="grid grid-cols-2 sm:grid-cols-4 gap-3"
               >

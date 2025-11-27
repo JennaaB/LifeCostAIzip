@@ -145,7 +145,7 @@ export default function LifestyleForm({ onSubmit, onBack }: LifestyleFormProps) 
     const fi = formData.fitness;
     const su = formData.subscriptions;
     const sh = formData.shopping;
-    const so = formData.social;
+    const so = formData.social || initialFormData.social;
     const go = formData.goals;
 
     switch (stepIndex) {
@@ -217,7 +217,7 @@ export default function LifestyleForm({ onSubmit, onBack }: LifestyleFormProps) 
     const fi = formData.fitness;
     const su = formData.subscriptions;
     const sh = formData.shopping;
-    const so = formData.social;
+    const so = formData.social || initialFormData.social;
     const go = formData.goals;
 
     let answeredQuestions = 0;
