@@ -71,6 +71,11 @@ Preferred communication style: Simple, everyday language.
 - Each step component isolated in `form-steps/` directory
 - Centralized FormData type definition for type safety
 - Review step provides transparency before final submission
+- Visual step indicators with clickable navigation on desktop
+- Mobile-optimized compact header with progress tracking
+- Card-style selectable options with sr-only radio/checkbox pattern
+- Smooth animations for conditional questions (animate-in transitions)
+- Responsive grid layouts adapting from 1 to 5 columns based on screen size
 
 **Component Reusability:**
 - shadcn/ui components customized to match design system
