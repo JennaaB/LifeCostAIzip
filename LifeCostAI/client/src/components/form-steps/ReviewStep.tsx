@@ -1,6 +1,6 @@
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Coffee, Car, Dumbbell, Tv, ShoppingBag, Target, CheckCircle2 } from "lucide-react";
+import { Coffee, Car, Dumbbell, Tv, ShoppingBag, Users, Target, CheckCircle2 } from "lucide-react";
 import type { FormData } from "../LifestyleForm";
 
 interface ReviewStepProps {
@@ -62,6 +62,19 @@ export default function ReviewStep({ data }: ReviewStepProps) {
         { label: "Buying Habit", value: data.shopping.buyingHabit?.split("(")[0].trim() },
         { label: "Style", value: data.shopping.shoppingStyle?.split("&")[0].trim() },
         { label: "Personal Care", value: data.shopping.personalCare?.split("(")[0].trim() },
+      ],
+    },
+    {
+      icon: Users,
+      title: "Social",
+      color: "bg-orange-100 text-orange-600",
+      items: [
+        { label: "Style", value: data.social.socializingStyle },
+        ...(data.social.hostingFrequency ? [{ label: "Hosting", value: `${data.social.hostingFrequency} - ${data.social.hostingStyle}` }] : []),
+        ...(data.social.casualFrequency ? [{ label: "Outings", value: `${data.social.casualFrequency} - ${data.social.casualType}` }] : []),
+        ...(data.social.activeFrequency ? [{ label: "Activities", value: `${data.social.activeFrequency} - ${data.social.activeType}` }] : []),
+        ...(data.social.nightlifeFrequency ? [{ label: "Nightlife", value: `${data.social.nightlifeFrequency} - ${data.social.nightlifeStyle}` }] : []),
+        ...(data.social.buyingRounds ? [{ label: "Buying Rounds", value: data.social.buyingRounds }] : []),
       ],
     },
     {

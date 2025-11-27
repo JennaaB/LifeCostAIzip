@@ -2,12 +2,13 @@ import { useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
-import { ChevronLeft, ChevronRight, Coffee, Car, Dumbbell, Tv, ShoppingBag, Target, ClipboardCheck, Check } from "lucide-react";
+import { ChevronLeft, ChevronRight, Coffee, Car, Dumbbell, Tv, ShoppingBag, Users, Target, ClipboardCheck, Check } from "lucide-react";
 import FoodDiningStep from "./form-steps/FoodDiningStep";
 import TransportationStep from "./form-steps/TransportationStep";
 import FitnessStep from "./form-steps/FitnessStep";
 import SubscriptionsStep from "./form-steps/SubscriptionsStep";
 import ShoppingStep from "./form-steps/ShoppingStep";
+import SocialStep from "./form-steps/SocialStep";
 import GoalsStep from "./form-steps/GoalsStep";
 import ReviewStep from "./form-steps/ReviewStep";
 
@@ -47,6 +48,18 @@ export interface FormData {
     shoppingStyle: string;
     personalCare: string;
   };
+  social: {
+    socializingStyle: string;
+    hostingFrequency: string;
+    hostingStyle: string;
+    casualFrequency: string;
+    casualType: string;
+    activeFrequency: string;
+    activeType: string;
+    nightlifeFrequency: string;
+    nightlifeStyle: string;
+    buyingRounds: string;
+  };
   goals: {
     primaryGoal: string;
     values: string[];
@@ -59,6 +72,7 @@ const initialFormData: FormData = {
   fitness: { hasMembership: "", membershipTier: "", dropInSessionsPerWeek: "", wellnessSpend: [], wellnessOther: "", wellnessFrequency: "", hairCutFrequency: "", hairServiceType: "" },
   subscriptions: { hasSubscriptions: "", services: [], other: "" },
   shopping: { clothingFrequency: "", buyingHabit: "", shoppingStyle: "", personalCare: "" },
+  social: { socializingStyle: "", hostingFrequency: "", hostingStyle: "", casualFrequency: "", casualType: "", activeFrequency: "", activeType: "", nightlifeFrequency: "", nightlifeStyle: "", buyingRounds: "" },
   goals: { primaryGoal: "", values: [] },
 };
 
@@ -103,6 +117,12 @@ export default function LifestyleForm({ onSubmit, onBack }: LifestyleFormProps) 
       component: ShoppingStep 
     },
     { 
+      title: "Social", 
+      icon: Users, 
+      description: "How you spend time with others",
+      component: SocialStep 
+    },
+    { 
       title: "Goals & Values", 
       icon: Target, 
       description: "What matters most to you",
@@ -125,6 +145,7 @@ export default function LifestyleForm({ onSubmit, onBack }: LifestyleFormProps) 
     const fi = formData.fitness;
     const su = formData.subscriptions;
     const sh = formData.shopping;
+    const so = formData.social;
     const go = formData.goals;
 
     switch (stepIndex) {
@@ -160,9 +181,30 @@ export default function LifestyleForm({ onSubmit, onBack }: LifestyleFormProps) 
       }
       case 4:
         return !!(sh.clothingFrequency && sh.buyingHabit && sh.shoppingStyle && sh.personalCare);
-      case 5:
-        return !!(go.primaryGoal && go.values.length >= 1);
+      case 5: {
+        if (!so.socializingStyle) return false;
+        if (so.socializingStyle === "At-home") {
+          if (!so.hostingFrequency) return false;
+          if (so.hostingFrequency && !so.hostingStyle) return false;
+        }
+        if (so.socializingStyle === "Casual outings") {
+          if (!so.casualFrequency) return false;
+          if (so.casualFrequency && !so.casualType) return false;
+        }
+        if (so.socializingStyle === "Active plans") {
+          if (!so.activeFrequency) return false;
+          if (so.activeFrequency && !so.activeType) return false;
+        }
+        if (so.socializingStyle === "Going-out/nightlife") {
+          if (!so.nightlifeFrequency) return false;
+          if (so.nightlifeFrequency && !so.nightlifeStyle) return false;
+          if (so.nightlifeStyle && !so.buyingRounds) return false;
+        }
+        return true;
+      }
       case 6:
+        return !!(go.primaryGoal && go.values.length >= 1);
+      case 7:
         return true;
       default:
         return false;
@@ -175,6 +217,7 @@ export default function LifestyleForm({ onSubmit, onBack }: LifestyleFormProps) 
     const fi = formData.fitness;
     const su = formData.subscriptions;
     const sh = formData.shopping;
+    const so = formData.social;
     const go = formData.goals;
 
     let answeredQuestions = 0;
@@ -244,6 +287,28 @@ export default function LifestyleForm({ onSubmit, onBack }: LifestyleFormProps) 
     if (sh.buyingHabit) answeredQuestions++;
     if (sh.shoppingStyle) answeredQuestions++;
     if (sh.personalCare) answeredQuestions++;
+
+    totalQuestions += 1;
+    if (so.socializingStyle) answeredQuestions++;
+
+    if (so.socializingStyle === "At-home") {
+      totalQuestions += 2;
+      if (so.hostingFrequency) answeredQuestions++;
+      if (so.hostingStyle) answeredQuestions++;
+    } else if (so.socializingStyle === "Casual outings") {
+      totalQuestions += 2;
+      if (so.casualFrequency) answeredQuestions++;
+      if (so.casualType) answeredQuestions++;
+    } else if (so.socializingStyle === "Active plans") {
+      totalQuestions += 2;
+      if (so.activeFrequency) answeredQuestions++;
+      if (so.activeType) answeredQuestions++;
+    } else if (so.socializingStyle === "Going-out/nightlife") {
+      totalQuestions += 3;
+      if (so.nightlifeFrequency) answeredQuestions++;
+      if (so.nightlifeStyle) answeredQuestions++;
+      if (so.buyingRounds) answeredQuestions++;
+    }
 
     totalQuestions += 2;
     if (go.primaryGoal) answeredQuestions++;
