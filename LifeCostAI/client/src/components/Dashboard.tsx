@@ -15,7 +15,8 @@ import {
   Download,
   Sparkles,
   Loader2,
-  Home
+  Home,
+  SlidersHorizontal
 } from "lucide-react";
 import GlobalMap from "./GlobalMap";
 import jsPDF from "jspdf";
@@ -48,10 +49,11 @@ const recommendationIcons: Record<string, any> = {
 interface DashboardProps {
   onEdit?: () => void;
   onBackToHome?: () => void;
+  onSimulator?: () => void;
   formData?: FormData | null;
 }
 
-export default function Dashboard({ onEdit, onBackToHome, formData }: DashboardProps) {
+export default function Dashboard({ onEdit, onBackToHome, onSimulator, formData }: DashboardProps) {
   const estimationData = formData ? calculateEstimates(formData) : null;
   
   const dashboardData = estimationData ? {
@@ -176,10 +178,14 @@ export default function Dashboard({ onEdit, onBackToHome, formData }: DashboardP
             <h1 className="text-4xl font-bold">Your Lifestyle Snapshot</h1>
             <p className="text-muted-foreground mt-2">Based on typical costs in {dashboardData.city}</p>
           </div>
-          <div className="flex gap-3">
+          <div className="flex flex-wrap gap-3">
             <Button variant="outline" onClick={onEdit} data-testid="button-edit-responses">
               <Edit className="w-4 h-4 mr-2" />
               Edit Responses
+            </Button>
+            <Button onClick={onSimulator} data-testid="button-simulator" className="bg-primary text-primary-foreground hover:bg-primary/90">
+              <SlidersHorizontal className="w-4 h-4 mr-2" />
+              Spending Simulator
             </Button>
             <Button variant="outline" onClick={onBackToHome} data-testid="button-back-home">
               <Home className="w-4 h-4 mr-2" />
