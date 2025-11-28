@@ -134,7 +134,7 @@ export default function Hero({ onGetStarted, onSeeExample }: HeroProps) {
                       <Target className="w-4 h-4 text-chart-5" />
                     </div>
                     <p className="text-xs font-semibold">Smart Tips</p>
-                    <p className="text-xs text-muted-foreground">Save up to $500/month</p>
+                    <p className="text-xs text-muted-foreground">Personalized recommendations</p>
                   </div>
 
                   <div className="bg-background/80 backdrop-blur-sm border border-border rounded-lg p-4 space-y-2 hover-elevate transition-all">
