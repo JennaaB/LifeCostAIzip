@@ -125,7 +125,7 @@ export default function GlobalMap({ baseAmount, baseCity, onDeepDive }: GlobalMa
                     <>
                       <text
                         textAnchor="middle"
-                        y={-24}
+                        y={-18}
                         style={{
                           fontFamily: "Inter, sans-serif",
                           fontSize: 10,
@@ -138,7 +138,7 @@ export default function GlobalMap({ baseAmount, baseCity, onDeepDive }: GlobalMa
                       {isSelected && (
                         <text
                           textAnchor="middle"
-                          y={-10}
+                          y={-8}
                           style={{
                             fontFamily: "Inter, sans-serif",
                             fontSize: 9,
