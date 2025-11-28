@@ -369,6 +369,40 @@ const cityData: CityData[] = [
     transportCosts: { monthlyPass: 25, gasPerLiter: 1.25, rideshareBase: 1.50 },
     highlights: ["Street food paradise", "Affordable housing", "BTS Skytrain", "Digital nomad hub"],
   },
+  {
+    name: "Cairo",
+    country: "Egypt",
+    multiplier: 0.45,
+    lat: 30.0444,
+    lng: 31.2357,
+    categoryMultipliers: {
+      foodDining: 0.30,
+      transportation: 0.40,
+      fitness: 0.50,
+      subscriptions: 0.75,
+      shopping: 0.55,
+    },
+    rentEstimate: { studio: 300, oneBed: 450, twoBed: 700 },
+    transportCosts: { monthlyPass: 8, gasPerLiter: 0.85, rideshareBase: 1 },
+    highlights: ["Ancient history", "Extremely affordable", "Street food culture", "Growing digital scene"],
+  },
+  {
+    name: "Johannesburg",
+    country: "South Africa",
+    multiplier: 0.65,
+    lat: -26.2023,
+    lng: 28.0436,
+    categoryMultipliers: {
+      foodDining: 0.55,
+      transportation: 0.60,
+      fitness: 0.65,
+      subscriptions: 0.80,
+      shopping: 0.68,
+    },
+    rentEstimate: { studio: 500, oneBed: 750, twoBed: 1100 },
+    transportCosts: { monthlyPass: 40, gasPerLiter: 1.15, rideshareBase: 3 },
+    highlights: ["Vibrant culture", "Affordable housing", "Great restaurants", "Growing tech scene"],
+  },
 ];
 
 const categoryInfo = [

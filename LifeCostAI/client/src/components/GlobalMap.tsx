@@ -32,6 +32,8 @@ const cityData = [
   { name: "Bogota", country: "Colombia", multiplier: 0.68, lat: 4.7110, lng: -74.0721 },
   { name: "Amsterdam", country: "Netherlands", multiplier: 1.48, lat: 52.3676, lng: 4.9041 },
   { name: "Bangkok", country: "Thailand", multiplier: 0.52, lat: 13.7563, lng: 100.5018 },
+  { name: "Cairo", country: "Egypt", multiplier: 0.45, lat: 30.0444, lng: 31.2357 },
+  { name: "Johannesburg", country: "South Africa", multiplier: 0.65, lat: -26.2023, lng: 28.0436 },
 ];
 
 interface GlobalMapProps {
