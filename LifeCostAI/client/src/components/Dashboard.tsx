@@ -11,6 +11,7 @@ import {
   Dumbbell, 
   Tv, 
   ShoppingBag,
+  Users,
   Edit,
   Download,
   Sparkles,
@@ -29,16 +30,18 @@ const categoryIcons: Record<string, any> = {
   "Food & Dining": Coffee,
   "Transportation": Car,
   "Subscriptions": Tv,
-  "Health & Wellness": Dumbbell,
+  "Fitness & Wellness": Dumbbell,
   "Shopping": ShoppingBag,
+  "Social": Users,
 };
 
 const categoryColors: Record<string, string> = {
   "Food & Dining": "text-chart-1",
   "Transportation": "text-chart-2",
   "Subscriptions": "text-chart-3",
-  "Health & Wellness": "text-chart-4",
+  "Fitness & Wellness": "text-chart-4",
   "Shopping": "text-chart-5",
+  "Social": "text-orange-600",
 };
 
 const recommendationIcons: Record<string, any> = {
@@ -319,6 +322,7 @@ export default function Dashboard({ onEdit, onBackToHome, onSimulator, onCityCom
                         "hsl(var(--chart-3))",
                         "hsl(var(--chart-4))",
                         "hsl(var(--chart-5))",
+                        "#ea580c",
                       ];
                       return <Cell key={`cell-${index}`} fill={colors[index % colors.length]} />;
                     })}
@@ -329,7 +333,7 @@ export default function Dashboard({ onEdit, onBackToHome, onSimulator, onCityCom
                 {dashboardData.categories.map((cat, idx) => (
                   <div key={cat.name} className="flex items-center gap-2">
                     <div className="w-3 h-3 rounded-full" style={{
-                      backgroundColor: ["hsl(var(--chart-1))", "hsl(var(--chart-2))", "hsl(var(--chart-3))", "hsl(var(--chart-4))", "hsl(var(--chart-5))"][idx % 5]
+                      backgroundColor: ["hsl(var(--chart-1))", "hsl(var(--chart-2))", "hsl(var(--chart-3))", "hsl(var(--chart-4))", "hsl(var(--chart-5))", "#ea580c"][idx % 6]
                     }} />
                     <span className="text-muted-foreground">{cat.name}: {cat.percentage}%</span>
                   </div>
