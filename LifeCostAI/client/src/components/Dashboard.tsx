@@ -229,8 +229,8 @@ export default function Dashboard({ onEdit, onBackToHome, onSimulator, onCityCom
                 AI-Generated Estimate
               </div>
               <div className="space-y-1">
+                <p className="text-sm text-muted-foreground">Estimated Monthly Cost:</p>
                 <div className="flex items-baseline justify-center lg:justify-start gap-1 flex-nowrap">
-                  <span className="text-xs text-muted-foreground whitespace-nowrap">Estimated Monthly Cost:</span>
                   <span className="text-lg font-bold whitespace-nowrap" data-testid="text-monthly-total">${dashboardData.totalMonthlyMin.toLocaleString()} - ${dashboardData.totalMonthlyMax.toLocaleString()}</span>
                   <span className="text-xs text-muted-foreground whitespace-nowrap">/month</span>
                 </div>
