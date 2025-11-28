@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { Sparkles, Shield, TrendingUp } from "lucide-react";
+import { Sparkles, Shield, TrendingUp, Coffee, Car, Dumbbell, Tv, ShoppingBag, Target } from "lucide-react";
 
 interface HeroProps {
   onGetStarted: () => void;
@@ -56,49 +56,68 @@ export default function Hero({ onGetStarted, onSeeExample }: HeroProps) {
             </div>
           </div>
           
-          {/* Right: Visual */}
+          {/* Right: Dashboard Preview */}
           <div className="relative">
-            <div className="relative rounded-lg bg-gradient-to-br from-primary/10 to-chart-2/10 p-12 border border-primary/20">
-              <div className="space-y-6">
-                {/* Lifestyle Icons */}
-                <div className="grid grid-cols-3 gap-4">
-                  {["☕", "🚇", "💪", "📱", "🛍️", "✈️"].map((icon, i) => (
-                    <div
-                      key={i}
-                      className="aspect-square rounded-lg bg-background/80 backdrop-blur-sm border border-border flex items-center justify-center text-4xl hover-elevate"
-                    >
-                      {icon}
-                    </div>
-                  ))}
+            <div className="relative rounded-lg bg-gradient-to-br from-primary/10 to-chart-2/10 p-8 border border-primary/20 space-y-5">
+              {/* Main Metric Card */}
+              <div className="bg-background/80 backdrop-blur-sm border border-border rounded-lg p-5 space-y-2">
+                <p className="text-xs font-semibold text-muted-foreground">ESTIMATED MONTHLY COST</p>
+                <div className="flex items-baseline gap-2">
+                  <span className="text-3xl font-bold">$2,400 - $3,200</span>
+                  <span className="text-sm text-muted-foreground">/month</span>
                 </div>
-                
-                {/* Arrow/Transform Indicator */}
-                <div className="flex items-center justify-center">
-                  <div className="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center">
-                    <TrendingUp className="w-6 h-6 text-primary" />
-                  </div>
+              </div>
+
+              {/* Key Insights Row */}
+              <div className="grid grid-cols-2 gap-3">
+                <div className="bg-background/80 backdrop-blur-sm border border-border rounded-lg p-3 text-center space-y-1">
+                  <p className="text-xs text-muted-foreground">Top Category</p>
+                  <p className="text-sm font-semibold">Food & Dining</p>
                 </div>
-                
-                {/* Data Visualization Preview */}
-                <div className="space-y-3 bg-background/80 backdrop-blur-sm border border-border rounded-lg p-4">
+                <div className="bg-background/80 backdrop-blur-sm border border-border rounded-lg p-3 text-center space-y-1">
+                  <p className="text-xs text-muted-foreground">Goal Alignment</p>
+                  <p className="text-sm font-semibold text-primary">72%</p>
+                </div>
+              </div>
+
+              {/* Category Breakdown */}
+              <div className="bg-background/80 backdrop-blur-sm border border-border rounded-lg p-4 space-y-3">
+                <p className="text-xs font-semibold text-muted-foreground">CATEGORY BREAKDOWN</p>
+                <div className="space-y-2.5">
                   {[
-                    { label: "Food & Dining", value: 65, color: "bg-chart-1" },
-                    { label: "Transportation", value: 45, color: "bg-chart-2" },
-                    { label: "Fitness", value: 30, color: "bg-chart-3" },
+                    { icon: Coffee, label: "Food & Dining", color: "bg-chart-1", width: 65 },
+                    { icon: Car, label: "Transportation", color: "bg-chart-2", width: 45 },
+                    { icon: Dumbbell, label: "Health & Wellness", color: "bg-chart-4", width: 38 },
                   ].map((item, i) => (
                     <div key={i} className="space-y-1.5">
-                      <div className="flex justify-between text-sm">
-                        <span className="font-medium">{item.label}</span>
-                        <span className="text-muted-foreground">{item.value}%</span>
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-2 min-w-0">
+                          <div className={`${item.color}/20 rounded p-1 shrink-0`}>
+                            <item.icon className={`w-3 h-3 ${item.color}`} />
+                          </div>
+                          <span className="text-xs font-medium truncate">{item.label}</span>
+                        </div>
+                        <span className="text-xs text-muted-foreground ml-2">{item.width}%</span>
                       </div>
-                      <div className="h-2 bg-muted rounded-full overflow-hidden">
+                      <div className="h-1.5 bg-muted rounded-full overflow-hidden">
                         <div
                           className={`h-full ${item.color} rounded-full transition-all`}
-                          style={{ width: `${item.value}%` }}
+                          style={{ width: `${item.width}%` }}
                         />
                       </div>
                     </div>
                   ))}
+                </div>
+              </div>
+
+              {/* Recommendation Card */}
+              <div className="bg-background/80 backdrop-blur-sm border border-border rounded-lg p-4 space-y-2">
+                <div className="flex items-start gap-2">
+                  <Target className="w-4 h-4 text-primary shrink-0 mt-0.5" />
+                  <div className="min-w-0">
+                    <p className="text-xs font-semibold">Meal Prep Sundays</p>
+                    <p className="text-xs text-muted-foreground">Save ~$180/month</p>
+                  </div>
                 </div>
               </div>
             </div>
