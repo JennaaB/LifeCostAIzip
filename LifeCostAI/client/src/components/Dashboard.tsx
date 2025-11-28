@@ -296,13 +296,13 @@ export default function Dashboard({ onEdit, onBackToHome, onSimulator, onCityCom
               </div>
               <div className="flex-1 flex flex-col justify-between gap-4">
                 {dashboardData.topDrivers.map((driver, index) => (
-                  <div key={index} className="flex items-center gap-4 p-5 rounded-xl bg-muted/50 flex-1">
-                    <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
-                      <span className="text-lg font-bold text-primary">{index + 1}</span>
+                  <div key={index} className="flex items-center gap-4 p-4 rounded-xl bg-muted/50 flex-1">
+                    <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
+                      <span className="text-sm font-bold text-primary">{index + 1}</span>
                     </div>
                     <div className="flex-1 space-y-1">
-                      <p className="font-semibold text-lg leading-snug">{driver.habit}</p>
-                      <p className="text-base text-muted-foreground">
+                      <p className="font-semibold text-base leading-snug">{driver.habit}</p>
+                      <p className="text-sm text-muted-foreground">
                         ~${driver.monthlyCost}/month
                       </p>
                     </div>
