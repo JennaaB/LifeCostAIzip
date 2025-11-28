@@ -209,23 +209,47 @@ export default function GlobalMap({ baseAmount, baseCity, onDeepDive }: GlobalMa
       </div>
 
       <div className="space-y-2">
-        <div className="text-xs font-semibold text-muted-foreground px-2">Most Expensive</div>
-        {cityData
-          .sort((a, b) => {
-            // Base city first
-            if (a.name === baseCity) return -1;
-            if (b.name === baseCity) return 1;
-            // Then by multiplier descending (most expensive first)
-            return b.multiplier - a.multiplier;
-          })
-          .map((city, index, arr) => {
+        {(() => {
+          // Get base city multiplier
+          const baseCityData = cityData.find(c => c.name === baseCity);
+          const baseMultiplier = baseCityData?.multiplier || 1;
+          
+          // Get most expensive city (excluding base)
+          const mostExpensive = cityData.reduce((max, city) => 
+            city.name !== baseCity && city.multiplier > max.multiplier ? city : max,
+            { multiplier: -Infinity }
+          );
+          
+          // Get most similar price city (closest to base multiplier, excluding base)
+          const mostSimilar = cityData.reduce((closest, city) => {
+            if (city.name === baseCity) return closest;
+            const diff = Math.abs(city.multiplier - baseMultiplier);
+            const closestDiff = Math.abs(closest.multiplier - baseMultiplier);
+            return diff < closestDiff ? city : closest;
+          }, { multiplier: Infinity });
+          
+          // Get least expensive city
+          const leastExpensive = cityData.reduce((min, city) =>
+            city.multiplier < min.multiplier ? city : min,
+            { multiplier: Infinity }
+          );
+          
+          // Build the cities to display in order
+          const citiesToDisplay = [
+            baseCityData,
+            mostExpensive.multiplier !== -Infinity ? mostExpensive : null,
+            mostSimilar.multiplier !== Infinity ? mostSimilar : null,
+            leastExpensive.multiplier !== Infinity ? leastExpensive : null,
+          ].filter(Boolean) as typeof cityData;
+          
+          return citiesToDisplay.map((city, index, arr) => {
             const adjustedCost = Math.round(baseAmount * city.multiplier);
             const isBase = city.name === baseCity;
             const isSelected = selectedCity === city.name;
-            const isLast = index === arr.length - 1;
 
             return (
               <div key={city.name}>
+                {index === 0 && <div className="text-xs font-semibold text-muted-foreground px-2">Most Expensive</div>}
                 <div
                   onClick={() => setSelectedCity(city.name)}
                   className={`p-3 rounded-lg border cursor-pointer hover-elevate transition-all ${
@@ -253,10 +277,11 @@ export default function GlobalMap({ baseAmount, baseCity, onDeepDive }: GlobalMa
                     </div>
                   </div>
                 </div>
-                {isLast && <div className="text-xs font-semibold text-muted-foreground px-2 pt-2">Least Expensive</div>}
+                {"name" in leastExpensive && city.name === leastExpensive.name && <div className="text-xs font-semibold text-muted-foreground px-2 pt-2">Least Expensive</div>}
               </div>
             );
-          })}
+          });
+        })()}
       </div>
 
       {selectedCity && (
