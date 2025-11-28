@@ -8,6 +8,12 @@ interface HeroProps {
 }
 
 export default function Hero({ onGetStarted, onSeeExample }: HeroProps) {
+  const handleSeeExample = () => {
+    if (onSeeExample) {
+      onSeeExample();
+    }
+  };
+
   return (
     <section className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background via-background to-muted/20 px-6 py-20">
       <div className="max-w-7xl mx-auto w-full">
@@ -36,7 +42,7 @@ export default function Hero({ onGetStarted, onSeeExample }: HeroProps) {
                 Start Your Snapshot
                 <Sparkles className="ml-2 w-5 h-5" />
               </Button>
-              <Button size="lg" variant="outline" className="text-lg px-8 py-6" onClick={onSeeExample} data-testid="button-see-example">
+              <Button size="lg" variant="outline" className="text-lg px-8 py-6" onClick={handleSeeExample} data-testid="button-see-example">
                 See Example Dashboard
               </Button>
             </div>
