@@ -230,10 +230,9 @@ export default function Dashboard({ onEdit, onBackToHome, onSimulator, onCityCom
               </div>
               <div className="space-y-1">
                 <p className="text-muted-foreground text-lg">Estimated Monthly Lifestyle Cost</p>
-                <div className="flex items-baseline justify-center lg:justify-start gap-2">
-                  <DollarSign className="w-6 h-6 text-muted-foreground" />
-                  <span className="text-2xl font-bold" data-testid="text-monthly-total">${dashboardData.totalMonthlyMin.toLocaleString()} - ${dashboardData.totalMonthlyMax.toLocaleString()}</span>
-                  <span className="text-lg text-muted-foreground">/month</span>
+                <div className="flex items-baseline justify-center lg:justify-start gap-1 flex-wrap">
+                  <span className="text-xl font-bold" data-testid="text-monthly-total">${dashboardData.totalMonthlyMin.toLocaleString()} - ${dashboardData.totalMonthlyMax.toLocaleString()}</span>
+                  <span className="text-sm text-muted-foreground">/month</span>
                 </div>
               </div>
             </div>
