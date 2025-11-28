@@ -166,7 +166,7 @@ export default function FitnessStep({ data, onChange }: FitnessStepProps) {
           <div className="w-8 h-8 rounded-lg bg-purple-100 flex items-center justify-center">
             <Scissors className="w-4 h-4 text-purple-600" />
           </div>
-          <Label className="text-base sm:text-lg font-semibold">How often do you get your hair cut?</Label>
+          <Label className="text-base sm:text-lg font-semibold">How often do you get your hair done at a salon or barber?</Label>
         </div>
         <RadioGroup
           value={data.fitness.hairCutFrequency}
