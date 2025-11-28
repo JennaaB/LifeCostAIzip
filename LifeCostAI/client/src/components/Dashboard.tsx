@@ -89,7 +89,7 @@ export default function Dashboard({ onEdit, onBackToHome, onSimulator, onCityCom
       { name: "Subscriptions", amount: 385, percentage: 12.3, icon: Tv, color: "bg-chart-3" },
       { name: "Fitness & Wellness", amount: 340, percentage: 10.9, icon: Dumbbell, color: "bg-chart-4" },
       { name: "Shopping", amount: 817, percentage: 26.2, icon: ShoppingBag, color: "bg-chart-5" },
-      { name: "Social", amount: 273, percentage: 8.7, icon: Users, color: "bg-yellow-100" },
+      { name: "Social", amount: 273, percentage: 8.7, icon: Users, color: "bg-amber-400" },
     ],
     topDrivers: [
       { habit: "Food delivery 2-3x/week", monthlyCost: 320, icon: Coffee },

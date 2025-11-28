@@ -270,7 +270,7 @@ export function calculateEstimates(formData: FormData): Omit<EstimationResult, '
     { name: "Subscriptions", amount: Math.round(subscriptions), color: "bg-chart-3" },
     { name: "Fitness & Wellness", amount: Math.round(fitness), color: "bg-chart-4" },
     { name: "Shopping", amount: Math.round(shopping), color: "bg-chart-5" },
-    { name: "Social", amount: Math.round(social), color: "bg-yellow-100" },
+    { name: "Social", amount: Math.round(social), color: "bg-amber-400" },
   ].filter(c => c.amount > 0);
 
   const totalForPercentage = categories.reduce((sum, c) => sum + c.amount, 0);
