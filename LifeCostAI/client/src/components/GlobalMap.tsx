@@ -237,8 +237,8 @@ export default function GlobalMap({ baseAmount, baseCity, onDeepDive }: GlobalMa
           // Build the cities to display in order
           const citiesToDisplay = [
             baseCityData,
-            mostExpensive.multiplier !== -Infinity ? mostExpensive : null,
             mostSimilar.multiplier !== Infinity ? mostSimilar : null,
+            mostExpensive.multiplier !== -Infinity ? mostExpensive : null,
             leastExpensive.multiplier !== Infinity ? leastExpensive : null,
           ].filter(Boolean) as typeof cityData;
           
