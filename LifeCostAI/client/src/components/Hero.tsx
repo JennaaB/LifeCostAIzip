@@ -15,8 +15,8 @@ export default function Hero({ onGetStarted, onSeeExample }: HeroProps) {
           {/* Left: Content */}
           <div className="space-y-8">
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20">
-              <Shield className="w-4 h-4 text-primary" />
-              <span className="text-sm font-medium text-primary">Privacy-First Financial Insights</span>
+              <Sparkles className="w-4 h-4 text-primary" />
+              <span className="text-sm font-medium text-primary">Your Lifestyle Snapshot in 2 Minutes</span>
             </div>
             
             <h1 className="text-5xl lg:text-6xl font-bold leading-tight">
