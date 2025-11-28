@@ -66,10 +66,12 @@ export default function Hero({ onGetStarted, onSeeExample }: HeroProps) {
                         <PieChart>
                           <Pie
                             data={[
-                              { name: "Food", value: 28, color: "hsl(var(--chart-1))" },
-                              { name: "Transport", value: 18, color: "hsl(var(--chart-2))" },
-                              { name: "Wellness", value: 12, color: "hsl(var(--chart-4))" },
-                              { name: "Other", value: 42, color: "hsl(var(--chart-5))" },
+                              { name: "Food & Dining", value: 25, color: "hsl(var(--chart-1))" },
+                              { name: "Transportation", value: 17, color: "hsl(var(--chart-2))" },
+                              { name: "Subscriptions", value: 12, color: "hsl(var(--chart-3))" },
+                              { name: "Fitness & Wellness", value: 11, color: "hsl(var(--chart-4))" },
+                              { name: "Shopping", value: 26, color: "hsl(var(--chart-5))" },
+                              { name: "Social", value: 9, color: "#fbbf24" },
                             ]}
                             cx="50%"
                             cy="50%"
@@ -81,8 +83,10 @@ export default function Hero({ onGetStarted, onSeeExample }: HeroProps) {
                             {[
                               { color: "hsl(var(--chart-1))" },
                               { color: "hsl(var(--chart-2))" },
+                              { color: "hsl(var(--chart-3))" },
                               { color: "hsl(var(--chart-4))" },
                               { color: "hsl(var(--chart-5))" },
+                              { color: "#fbbf24" },
                             ].map((entry, index) => (
                               <Cell key={`cell-${index}`} fill={entry.color} />
                             ))}
