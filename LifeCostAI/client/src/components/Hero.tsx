@@ -20,7 +20,7 @@ export default function Hero({ onGetStarted, onSeeExample }: HeroProps) {
             </div>
             
             <h1 className="text-5xl lg:text-6xl font-bold leading-tight">
-              AI that reads your{" "}
+              Financial insights that read your{" "}
               <span className="text-primary">lifestyle</span>
               <br />
               — not your bank account
