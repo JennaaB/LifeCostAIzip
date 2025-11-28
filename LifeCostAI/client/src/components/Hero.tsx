@@ -40,21 +40,6 @@ export default function Hero({ onGetStarted, onSeeExample }: HeroProps) {
                 See Example Dashboard
               </Button>
             </div>
-            
-            <div className="flex flex-wrap gap-6 text-sm text-muted-foreground">
-              <div className="flex items-center gap-2">
-                <div className="w-1.5 h-1.5 rounded-full bg-primary" />
-                Lifestyle focused
-              </div>
-              <div className="flex items-center gap-2">
-                <div className="w-1.5 h-1.5 rounded-full bg-primary" />
-                No numbers
-              </div>
-              <div className="flex items-center gap-2">
-                <div className="w-1.5 h-1.5 rounded-full bg-primary" />
-                Quick insights
-              </div>
-            </div>
           </div>
           
           {/* Right: Feature Highlights */}
