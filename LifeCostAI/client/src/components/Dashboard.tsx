@@ -18,6 +18,7 @@ import {
   Home,
   SlidersHorizontal
 } from "lucide-react";
+import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
 import GlobalMap from "./GlobalMap";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
@@ -272,28 +273,70 @@ export default function Dashboard({ onEdit, onBackToHome, onSimulator, onCityCom
             </div>
           </Card>
 
-          {/* Top Drivers */}
-          <Card className="lg:col-span-2 p-6 flex flex-col">
-            <div className="flex items-center gap-2 mb-6">
-              <TrendingUp className="w-5 h-5 text-primary" />
-              <h3 className="text-xl font-semibold">Top Spending Drivers</h3>
-            </div>
-            <div className="flex-1 flex flex-col justify-between gap-4">
-              {dashboardData.topDrivers.map((driver, index) => (
-                <div key={index} className="flex items-center gap-4 p-5 rounded-xl bg-muted/50 flex-1">
-                  <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
-                    <span className="text-lg font-bold text-primary">{index + 1}</span>
+          {/* Top Drivers & Chart */}
+          <div className="lg:col-span-2 flex flex-col gap-6">
+            {/* Top Drivers */}
+            <Card className="p-6 flex flex-col flex-1">
+              <div className="flex items-center gap-2 mb-6">
+                <TrendingUp className="w-5 h-5 text-primary" />
+                <h3 className="text-xl font-semibold">Top Spending Drivers</h3>
+              </div>
+              <div className="flex-1 flex flex-col justify-between gap-4">
+                {dashboardData.topDrivers.map((driver, index) => (
+                  <div key={index} className="flex items-center gap-4 p-5 rounded-xl bg-muted/50 flex-1">
+                    <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
+                      <span className="text-lg font-bold text-primary">{index + 1}</span>
+                    </div>
+                    <div className="flex-1 space-y-1">
+                      <p className="font-semibold text-lg leading-snug">{driver.habit}</p>
+                      <p className="text-base text-muted-foreground">
+                        ~${driver.monthlyCost}/month
+                      </p>
+                    </div>
                   </div>
-                  <div className="flex-1 space-y-1">
-                    <p className="font-semibold text-lg leading-snug">{driver.habit}</p>
-                    <p className="text-base text-muted-foreground">
-                      ~${driver.monthlyCost}/month
-                    </p>
+                ))}
+              </div>
+            </Card>
+
+            {/* Category Donut Chart */}
+            <Card className="p-6">
+              <h3 className="text-xl font-semibold mb-4">Spending by Category</h3>
+              <ResponsiveContainer width="100%" height={250}>
+                <PieChart>
+                  <Pie
+                    data={dashboardData.categories}
+                    cx="50%"
+                    cy="50%"
+                    innerRadius={60}
+                    outerRadius={90}
+                    paddingAngle={2}
+                    dataKey="amount"
+                  >
+                    {dashboardData.categories.map((category, index) => {
+                      const colors = [
+                        "hsl(var(--chart-1))",
+                        "hsl(var(--chart-2))",
+                        "hsl(var(--chart-3))",
+                        "hsl(var(--chart-4))",
+                        "hsl(var(--chart-5))",
+                      ];
+                      return <Cell key={`cell-${index}`} fill={colors[index % colors.length]} />;
+                    })}
+                  </Pie>
+                </PieChart>
+              </ResponsiveContainer>
+              <div className="mt-4 grid grid-cols-2 gap-2 text-sm">
+                {dashboardData.categories.map((cat, idx) => (
+                  <div key={cat.name} className="flex items-center gap-2">
+                    <div className="w-3 h-3 rounded-full" style={{
+                      backgroundColor: ["hsl(var(--chart-1))", "hsl(var(--chart-2))", "hsl(var(--chart-3))", "hsl(var(--chart-4))", "hsl(var(--chart-5))"][idx % 5]
+                    }} />
+                    <span className="text-muted-foreground">{cat.name}: {cat.percentage}%</span>
                   </div>
-                </div>
-              ))}
-            </div>
-          </Card>
+                ))}
+              </div>
+            </Card>
+          </div>
         </div>
 
         {/* Recommendations */}
