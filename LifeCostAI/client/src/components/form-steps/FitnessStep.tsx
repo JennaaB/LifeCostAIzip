@@ -228,6 +228,43 @@ export default function FitnessStep({ data, onChange }: FitnessStepProps) {
           <div className="w-8 h-8 rounded-lg bg-pink-100 flex items-center justify-center">
             <Sparkles className="w-4 h-4 text-pink-600" />
           </div>
+          <Label className="text-base sm:text-lg font-semibold">What's your approach to personal care products?</Label>
+        </div>
+        <RadioGroup
+          value={data.fitness.personalCare}
+          onValueChange={(value) => onChange({
+            ...data,
+            fitness: { ...data.fitness, personalCare: value }
+          })}
+          className="grid grid-cols-1 sm:grid-cols-3 gap-3"
+        >
+          {[
+            { value: "Basic (drugstore)", label: "Basic", desc: "Drugstore products" },
+            { value: "Moderate", label: "Moderate", desc: "Mix of basic & premium" },
+            { value: "Premium (salon/spa)", label: "Premium", desc: "Salon/spa quality" },
+          ].map((level) => (
+            <div key={level.value} className="relative">
+              <RadioGroupItem value={level.value} id={`personalcare-${level.value}`} className="peer sr-only" data-testid={`radio-personalcare-${level.label.toLowerCase()}`} />
+              <Label 
+                htmlFor={`personalcare-${level.value}`} 
+                className="flex flex-col items-center justify-center p-4 sm:p-5 rounded-xl border-2 cursor-pointer transition-all min-h-[80px]
+                  hover:border-primary/50 hover:bg-primary/5
+                  peer-data-[state=checked]:border-primary peer-data-[state=checked]:bg-primary/10
+                  peer-focus-visible:ring-2 peer-focus-visible:ring-primary peer-focus-visible:ring-offset-2"
+              >
+                <span className="text-sm sm:text-base font-semibold">{level.label}</span>
+                <span className="text-xs text-muted-foreground mt-1">{level.desc}</span>
+              </Label>
+            </div>
+          ))}
+        </RadioGroup>
+      </div>
+
+      <div className="space-y-4">
+        <div className="flex items-center gap-3">
+          <div className="w-8 h-8 rounded-lg bg-pink-100 flex items-center justify-center">
+            <Sparkles className="w-4 h-4 text-pink-600" />
+          </div>
           <Label className="text-base sm:text-lg font-semibold">Any other wellness spending?</Label>
         </div>
         <p className="text-sm text-muted-foreground ml-11">Select all that apply</p>
@@ -294,43 +331,6 @@ export default function FitnessStep({ data, onChange }: FitnessStepProps) {
             />
           </div>
         )}
-      </div>
-
-      <div className="space-y-4">
-        <div className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-lg bg-pink-100 flex items-center justify-center">
-            <Sparkles className="w-4 h-4 text-pink-600" />
-          </div>
-          <Label className="text-base sm:text-lg font-semibold">What's your approach to personal care products?</Label>
-        </div>
-        <RadioGroup
-          value={data.fitness.personalCare}
-          onValueChange={(value) => onChange({
-            ...data,
-            fitness: { ...data.fitness, personalCare: value }
-          })}
-          className="grid grid-cols-1 sm:grid-cols-3 gap-3"
-        >
-          {[
-            { value: "Basic (drugstore)", label: "Basic", desc: "Drugstore products" },
-            { value: "Moderate", label: "Moderate", desc: "Mix of basic & premium" },
-            { value: "Premium (salon/spa)", label: "Premium", desc: "Salon/spa quality" },
-          ].map((level) => (
-            <div key={level.value} className="relative">
-              <RadioGroupItem value={level.value} id={`personalcare-${level.value}`} className="peer sr-only" data-testid={`radio-personalcare-${level.label.toLowerCase()}`} />
-              <Label 
-                htmlFor={`personalcare-${level.value}`} 
-                className="flex flex-col items-center justify-center p-4 sm:p-5 rounded-xl border-2 cursor-pointer transition-all min-h-[80px]
-                  hover:border-primary/50 hover:bg-primary/5
-                  peer-data-[state=checked]:border-primary peer-data-[state=checked]:bg-primary/10
-                  peer-focus-visible:ring-2 peer-focus-visible:ring-primary peer-focus-visible:ring-offset-2"
-              >
-                <span className="text-sm sm:text-base font-semibold">{level.label}</span>
-                <span className="text-xs text-muted-foreground mt-1">{level.desc}</span>
-              </Label>
-            </div>
-          ))}
-        </RadioGroup>
       </div>
     </div>
   );
