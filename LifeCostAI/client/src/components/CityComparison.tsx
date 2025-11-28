@@ -454,6 +454,40 @@ const cityData: CityData[] = [
     transportCosts: { monthlyPass: 30, gasPerLiter: 1.20, rideshareBase: 2.50 },
     highlights: ["Culinary capital", "Low cost of living", "Coastal city", "Rich history"],
   },
+  {
+    name: "Casablanca",
+    country: "Morocco",
+    multiplier: 0.58,
+    lat: 33.5731,
+    lng: -7.5898,
+    categoryMultipliers: {
+      foodDining: 0.45,
+      transportation: 0.50,
+      fitness: 0.58,
+      subscriptions: 0.78,
+      shopping: 0.65,
+    },
+    rentEstimate: { studio: 400, oneBed: 600, twoBed: 900 },
+    transportCosts: { monthlyPass: 20, gasPerLiter: 1.10, rideshareBase: 2 },
+    highlights: ["Coastal charm", "Very affordable", "Old medina culture", "Growing expat community"],
+  },
+  {
+    name: "Monaco",
+    country: "Monaco",
+    multiplier: 2.15,
+    lat: 43.7384,
+    lng: 7.4246,
+    categoryMultipliers: {
+      foodDining: 2.05,
+      transportation: 1.90,
+      fitness: 2.25,
+      subscriptions: 1.10,
+      shopping: 2.30,
+    },
+    rentEstimate: { studio: 3500, oneBed: 5000, twoBed: 7000 },
+    transportCosts: { monthlyPass: 150, gasPerLiter: 2.00, rideshareBase: 20 },
+    highlights: ["Ultra-luxury lifestyle", "Mediterranean coast", "Tax haven", "Casino & fine dining"],
+  },
 ];
 
 const categoryInfo = [
