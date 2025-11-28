@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { Sparkles, Shield, TrendingUp, Coffee, Car, Dumbbell, Tv, ShoppingBag, Target } from "lucide-react";
+import { Sparkles, Shield, TrendingUp, Coffee, Car, Dumbbell, Tv, ShoppingBag, Target, SlidersHorizontal } from "lucide-react";
 
 interface HeroProps {
   onGetStarted: () => void;
@@ -56,67 +56,70 @@ export default function Hero({ onGetStarted, onSeeExample }: HeroProps) {
             </div>
           </div>
           
-          {/* Right: Dashboard Preview */}
+          {/* Right: Feature Highlights */}
           <div className="relative">
-            <div className="relative rounded-lg bg-gradient-to-br from-primary/10 to-chart-2/10 p-8 border border-primary/20 space-y-5">
-              {/* Main Metric Card */}
-              <div className="bg-background/80 backdrop-blur-sm border border-border rounded-lg p-5 space-y-2">
-                <p className="text-xs font-semibold text-muted-foreground">ESTIMATED MONTHLY COST</p>
-                <div className="flex items-baseline gap-2">
-                  <span className="text-3xl font-bold">$2,400 - $3,200</span>
-                  <span className="text-sm text-muted-foreground">/month</span>
-                </div>
-              </div>
-
-              {/* Key Insights Row */}
-              <div className="grid grid-cols-2 gap-3">
-                <div className="bg-background/80 backdrop-blur-sm border border-border rounded-lg p-3 text-center space-y-1">
-                  <p className="text-xs text-muted-foreground">Top Category</p>
-                  <p className="text-sm font-semibold">Food & Dining</p>
-                </div>
-                <div className="bg-background/80 backdrop-blur-sm border border-border rounded-lg p-3 text-center space-y-1">
-                  <p className="text-xs text-muted-foreground">Goal Alignment</p>
-                  <p className="text-sm font-semibold text-primary">72%</p>
-                </div>
-              </div>
-
-              {/* Category Breakdown */}
-              <div className="bg-background/80 backdrop-blur-sm border border-border rounded-lg p-4 space-y-3">
-                <p className="text-xs font-semibold text-muted-foreground">CATEGORY BREAKDOWN</p>
-                <div className="space-y-2.5">
-                  {[
-                    { icon: Coffee, label: "Food & Dining", color: "bg-chart-1", width: 65 },
-                    { icon: Car, label: "Transportation", color: "bg-chart-2", width: 45 },
-                    { icon: Dumbbell, label: "Health & Wellness", color: "bg-chart-4", width: 38 },
-                  ].map((item, i) => (
-                    <div key={i} className="space-y-1.5">
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-2 min-w-0">
-                          <div className={`${item.color}/20 rounded p-1 shrink-0`}>
-                            <item.icon className={`w-3 h-3 ${item.color}`} />
-                          </div>
-                          <span className="text-xs font-medium truncate">{item.label}</span>
-                        </div>
-                        <span className="text-xs text-muted-foreground ml-2">{item.width}%</span>
+            <div className="relative rounded-lg bg-gradient-to-br from-primary/10 to-chart-2/10 p-8 border border-primary/20 space-y-6">
+              {/* Spending Estimate */}
+              <div className="space-y-2">
+                <p className="text-xs font-semibold text-muted-foreground uppercase">See your spending in real time</p>
+                <div className="bg-background/80 backdrop-blur-sm border border-border rounded-lg p-5">
+                  <div className="space-y-3">
+                    <div>
+                      <p className="text-xs text-muted-foreground mb-2">Your estimated monthly cost</p>
+                      <p className="text-2xl font-bold">$2,400 - $3,200</p>
+                    </div>
+                    <div className="flex gap-2">
+                      <div className="flex-1 px-3 py-2 bg-chart-1/10 rounded text-center">
+                        <p className="text-xs font-medium text-chart-1">Food</p>
+                        <p className="text-sm font-bold">$815</p>
                       </div>
-                      <div className="h-1.5 bg-muted rounded-full overflow-hidden">
-                        <div
-                          className={`h-full ${item.color} rounded-full transition-all`}
-                          style={{ width: `${item.width}%` }}
-                        />
+                      <div className="flex-1 px-3 py-2 bg-chart-2/10 rounded text-center">
+                        <p className="text-xs font-medium text-chart-2">Transport</p>
+                        <p className="text-sm font-bold">$520</p>
+                      </div>
+                      <div className="flex-1 px-3 py-2 bg-chart-4/10 rounded text-center">
+                        <p className="text-xs font-medium text-chart-4">Wellness</p>
+                        <p className="text-sm font-bold">$340</p>
                       </div>
                     </div>
-                  ))}
+                  </div>
                 </div>
               </div>
 
-              {/* Recommendation Card */}
-              <div className="bg-background/80 backdrop-blur-sm border border-border rounded-lg p-4 space-y-2">
-                <div className="flex items-start gap-2">
-                  <Target className="w-4 h-4 text-primary shrink-0 mt-0.5" />
-                  <div className="min-w-0">
-                    <p className="text-xs font-semibold">Meal Prep Sundays</p>
-                    <p className="text-xs text-muted-foreground">Save ~$180/month</p>
+              {/* Unlock Features */}
+              <div className="space-y-2">
+                <p className="text-xs font-semibold text-muted-foreground uppercase">Unlock powerful insights</p>
+                <div className="grid grid-cols-2 gap-3">
+                  <div className="bg-background/80 backdrop-blur-sm border border-border rounded-lg p-4 space-y-2 hover-elevate transition-all">
+                    <div className="w-8 h-8 rounded-lg bg-chart-2/20 flex items-center justify-center">
+                      <SlidersHorizontal className="w-4 h-4 text-chart-2" />
+                    </div>
+                    <p className="text-xs font-semibold">Spending Simulator</p>
+                    <p className="text-xs text-muted-foreground">Test "what-if" scenarios</p>
+                  </div>
+                  
+                  <div className="bg-background/80 backdrop-blur-sm border border-border rounded-lg p-4 space-y-2 hover-elevate transition-all">
+                    <div className="w-8 h-8 rounded-lg bg-chart-4/20 flex items-center justify-center">
+                      <TrendingUp className="w-4 h-4 text-chart-4" />
+                    </div>
+                    <p className="text-xs font-semibold">City Comparison</p>
+                    <p className="text-xs text-muted-foreground">Compare 25 global cities</p>
+                  </div>
+
+                  <div className="bg-background/80 backdrop-blur-sm border border-border rounded-lg p-4 space-y-2 hover-elevate transition-all">
+                    <div className="w-8 h-8 rounded-lg bg-chart-5/20 flex items-center justify-center">
+                      <Target className="w-4 h-4 text-chart-5" />
+                    </div>
+                    <p className="text-xs font-semibold">Smart Tips</p>
+                    <p className="text-xs text-muted-foreground">Save up to $500/month</p>
+                  </div>
+
+                  <div className="bg-background/80 backdrop-blur-sm border border-border rounded-lg p-4 space-y-2 hover-elevate transition-all">
+                    <div className="w-8 h-8 rounded-lg bg-chart-1/20 flex items-center justify-center">
+                      <Sparkles className="w-4 h-4 text-chart-1" />
+                    </div>
+                    <p className="text-xs font-semibold">AI-Powered</p>
+                    <p className="text-xs text-muted-foreground">No bank access needed</p>
                   </div>
                 </div>
               </div>
