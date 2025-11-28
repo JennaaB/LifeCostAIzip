@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Globe, TrendingUp, TrendingDown, Minus, ArrowRight } from "lucide-react";
+import { Globe, TrendingUp, TrendingDown, Minus, Plus, ArrowRight } from "lucide-react";
 import {
   ComposableMap,
   Geographies,
@@ -42,6 +42,15 @@ interface GlobalMapProps {
 
 export default function GlobalMap({ baseAmount, baseCity, onDeepDive }: GlobalMapProps) {
   const [selectedCity, setSelectedCity] = useState<string | null>(null);
+  const [zoom, setZoom] = useState(1);
+
+  const handleZoomIn = () => {
+    setZoom((prev) => Math.min(prev + 0.5, 4));
+  };
+
+  const handleZoomOut = () => {
+    setZoom((prev) => Math.max(prev - 0.5, 1));
+  };
 
   const getTrendIcon = (multiplier: number) => {
     if (multiplier > 1.05) return <TrendingUp className="w-4 h-4 text-destructive" />;
@@ -85,7 +94,7 @@ export default function GlobalMap({ baseAmount, baseCity, onDeepDive }: GlobalMa
             height: "100%",
           }}
         >
-          <ZoomableGroup>
+          <ZoomableGroup zoom={zoom}>
             <Geographies geography={geoUrl}>
               {({ geographies }) =>
                 geographies.map((geo) => (
@@ -157,6 +166,27 @@ export default function GlobalMap({ baseAmount, baseCity, onDeepDive }: GlobalMa
             })}
           </ZoomableGroup>
         </ComposableMap>
+        
+        <div className="absolute top-3 right-3 flex flex-col gap-2">
+          <Button
+            size="sm"
+            variant="outline"
+            className="h-10 w-10 p-0 bg-white/90 backdrop-blur-sm hover:bg-white shadow-sm"
+            onClick={handleZoomIn}
+            title="Zoom in"
+          >
+            <Plus className="w-5 h-5" />
+          </Button>
+          <Button
+            size="sm"
+            variant="outline"
+            className="h-10 w-10 p-0 bg-white/90 backdrop-blur-sm hover:bg-white shadow-sm"
+            onClick={handleZoomOut}
+            title="Zoom out"
+          >
+            <Minus className="w-5 h-5" />
+          </Button>
+        </div>
         
         <div className="absolute bottom-3 left-3 bg-white/90 backdrop-blur-sm rounded-md p-2 text-xs space-y-1 shadow-sm">
           <div className="flex items-center gap-2">
