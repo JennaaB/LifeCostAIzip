@@ -65,7 +65,7 @@ const sliderConfigs = [
   { key: "shoppingTripsPerMonth", label: "Shopping trips per month", icon: ShoppingBag, max: 10, category: "Shopping", color: "text-chart-5" },
   { key: "subscriptionCount", label: "Active subscriptions", icon: Tv, max: 12, category: "Subscriptions", color: "text-chart-3" },
   { key: "nightsOutPerMonth", label: "Nights out per month", icon: Sparkles, max: 12, category: "Food & Dining", color: "text-chart-1" },
-  { key: "wellnessVisitsPerMonth", label: "Wellness visits per month", icon: Dumbbell, max: 8, category: "Fitness & Wellness", color: "text-chart-4" },
+  { key: "wellnessVisitsPerMonth", label: "Wellness visits per month", icon: Dumbbell, max: 8, category: "Health & Wellness", color: "text-chart-4" },
 ];
 
 interface SpendingSimulatorProps {
@@ -107,7 +107,7 @@ export default function SpendingSimulator({ onBack, baselineTotal }: SpendingSim
       { name: "Food & Dining", amount: foodDining, fill: "hsl(var(--chart-1))" },
       { name: "Transportation", amount: transportation, fill: "hsl(var(--chart-2))" },
       { name: "Subscriptions", amount: subscriptions, fill: "hsl(var(--chart-3))" },
-      { name: "Fitness & Wellness", amount: fitness, fill: "hsl(var(--chart-4))" },
+      { name: "Health & Wellness", amount: fitness, fill: "hsl(var(--chart-4))" },
       { name: "Shopping", amount: shopping, fill: "hsl(var(--chart-5))" },
     ].filter(c => c.amount > 0);
   }

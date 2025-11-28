@@ -100,7 +100,7 @@ export function calculateEstimates(formData: FormData): Omit<EstimationResult, '
     transportation += rideshareFreqMap[formData.transportation.rideshareTripsPerWeek] || 0;
   }
 
-  // Fitness & Wellness estimation
+  // Health & Wellness estimation
   if (formData.fitness.hasMembership === "Yes") {
     const tierMap: Record<string, number> = {
       "Budget ($10-20/month)": 15,

@@ -28,7 +28,7 @@ const categoryIcons: Record<string, any> = {
   "Food & Dining": Coffee,
   "Transportation": Car,
   "Subscriptions": Tv,
-  "Fitness & Wellness": Dumbbell,
+  "Health & Wellness": Dumbbell,
   "Shopping": ShoppingBag,
 };
 
@@ -36,7 +36,7 @@ const categoryColors: Record<string, string> = {
   "Food & Dining": "text-chart-1",
   "Transportation": "text-chart-2",
   "Subscriptions": "text-chart-3",
-  "Fitness & Wellness": "text-chart-4",
+  "Health & Wellness": "text-chart-4",
   "Shopping": "text-chart-5",
 };
 
@@ -83,7 +83,7 @@ export default function Dashboard({ onEdit, onBackToHome, onSimulator, onCityCom
       { name: "Food & Dining", amount: 785, percentage: 27.6, icon: Coffee, color: "bg-chart-1" },
       { name: "Transportation", amount: 520, percentage: 18.3, icon: Car, color: "bg-chart-2" },
       { name: "Subscriptions", amount: 385, percentage: 13.5, icon: Tv, color: "bg-chart-3" },
-      { name: "Fitness & Wellness", amount: 340, percentage: 11.9, icon: Dumbbell, color: "bg-chart-4" },
+      { name: "Health & Wellness", amount: 340, percentage: 11.9, icon: Dumbbell, color: "bg-chart-4" },
       { name: "Shopping", amount: 817, percentage: 28.7, icon: ShoppingBag, color: "bg-chart-5" },
     ],
     topDrivers: [

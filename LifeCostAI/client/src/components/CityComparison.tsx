@@ -324,7 +324,7 @@ const categoryInfo = [
   { key: "foodDining", name: "Food & Dining", icon: Utensils, color: "hsl(var(--chart-1))" },
   { key: "transportation", name: "Transportation", icon: Car, color: "hsl(var(--chart-2))" },
   { key: "subscriptions", name: "Subscriptions", icon: Tv, color: "hsl(var(--chart-3))" },
-  { key: "fitness", name: "Fitness & Wellness", icon: Dumbbell, color: "hsl(var(--chart-4))" },
+  { key: "fitness", name: "Health & Wellness", icon: Dumbbell, color: "hsl(var(--chart-4))" },
   { key: "shopping", name: "Shopping", icon: ShoppingBag, color: "hsl(var(--chart-5))" },
 ];
 
@@ -342,7 +342,7 @@ export default function CityComparison({ onBack, baselineCategories, baseCity = 
     { name: "Food & Dining", amount: 350 },
     { name: "Transportation", amount: 200 },
     { name: "Subscriptions", amount: 75 },
-    { name: "Fitness & Wellness", amount: 120 },
+    { name: "Health & Wellness", amount: 120 },
     { name: "Shopping", amount: 150 },
   ];
 
@@ -371,7 +371,7 @@ export default function CityComparison({ onBack, baselineCategories, baseCity = 
       "Food & Dining": "foodDining",
       "Transportation": "transportation",
       "Subscriptions": "subscriptions",
-      "Fitness & Wellness": "fitness",
+      "Health & Wellness": "fitness",
       "Shopping": "shopping",
     };
     const multiplier = cityMultipliers[keyMap[categoryName]] || 1;
@@ -400,7 +400,7 @@ export default function CityComparison({ onBack, baselineCategories, baseCity = 
           "Food & Dining": "foodDining",
           "Transportation": "transportation",
           "Subscriptions": "subscriptions",
-          "Fitness & Wellness": "fitness",
+          "Health & Wellness": "fitness",
           "Shopping": "shopping",
         };
         result[city.name] = Math.round(city.categoryMultipliers[keyMap[cat.name]] * 100);

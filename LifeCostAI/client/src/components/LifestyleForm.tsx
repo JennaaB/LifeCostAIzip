@@ -99,7 +99,7 @@ export default function LifestyleForm({ onSubmit, onBack }: LifestyleFormProps) 
       component: TransportationStep 
     },
     { 
-      title: "Fitness & Wellness", 
+      title: "Health & Wellness", 
       icon: Dumbbell, 
       description: "Your health and self-care routines",
       component: FitnessStep 

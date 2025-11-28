@@ -89,7 +89,7 @@
 - One category per screen for focus:
   - Food & Dining
   - Transportation
-  - Fitness & Wellness
+  - Health & Wellness
   - Subscriptions & Entertainment
   - Shopping & Personal
   - Goals & Values

@@ -33,7 +33,7 @@ export default function ReviewStep({ data }: ReviewStepProps) {
     },
     {
       icon: Dumbbell,
-      title: "Fitness & Wellness",
+      title: "Health & Wellness",
       color: "bg-green-100 text-green-600",
       items: [
         { label: "Membership", value: data.fitness.hasMembership === "yes" ? "Yes" : data.fitness.hasMembership === "no" ? "No" : data.fitness.hasMembership },
