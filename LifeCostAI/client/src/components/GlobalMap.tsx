@@ -208,7 +208,8 @@ export default function GlobalMap({ baseAmount, baseCity, onDeepDive }: GlobalMa
         </div>
       </div>
 
-      <div className="space-y-3">
+      <div className="space-y-2">
+        <div className="text-xs font-semibold text-muted-foreground px-2">Most Expensive</div>
         {cityData
           .sort((a, b) => {
             // Base city first
@@ -217,41 +218,44 @@ export default function GlobalMap({ baseAmount, baseCity, onDeepDive }: GlobalMa
             // Then by multiplier descending (most expensive first)
             return b.multiplier - a.multiplier;
           })
-          .map((city) => {
+          .map((city, index, arr) => {
             const adjustedCost = Math.round(baseAmount * city.multiplier);
             const isBase = city.name === baseCity;
             const isSelected = selectedCity === city.name;
+            const isLast = index === arr.length - 1;
 
-          return (
-            <div
-              key={city.name}
-              onClick={() => setSelectedCity(city.name)}
-              className={`p-4 rounded-lg border cursor-pointer hover-elevate transition-all ${
-                isSelected ? "ring-2 ring-primary bg-primary/5" : ""
-              } ${isBase ? "border-primary bg-primary/5" : ""}`}
-              data-testid={`city-card-${city.name.toLowerCase()}`}
-            >
-              <div className="flex justify-between items-start gap-3">
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2 flex-wrap">
-                    <h4 className="font-semibold truncate">{city.name}</h4>
-                    {isBase && <Badge variant="secondary" className="text-xs">Base</Badge>}
+            return (
+              <div key={city.name}>
+                <div
+                  onClick={() => setSelectedCity(city.name)}
+                  className={`p-3 rounded-lg border cursor-pointer hover-elevate transition-all ${
+                    isSelected ? "ring-2 ring-primary bg-primary/5" : ""
+                  } ${isBase ? "border-primary bg-primary/5" : ""}`}
+                  data-testid={`city-card-${city.name.toLowerCase()}`}
+                >
+                  <div className="flex justify-between items-center gap-3">
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2 flex-wrap">
+                        <h4 className="font-semibold text-sm truncate">{city.name}</h4>
+                        {isBase && <Badge variant="secondary" className="text-xs">Base</Badge>}
+                      </div>
+                      <p className="text-xs text-muted-foreground">{city.country}</p>
+                    </div>
+                    
+                    <div className="text-right shrink-0">
+                      <p className="font-bold text-base">${adjustedCost.toLocaleString()}</p>
+                      <div className="flex items-center gap-1 justify-end text-xs">
+                        {getTrendIcon(city.multiplier)}
+                        <span className={city.multiplier > 1 ? "text-destructive" : city.multiplier < 1 ? "text-chart-2" : "text-muted-foreground"}>
+                          {getDifference(city.multiplier)}
+                        </span>
+                      </div>
+                    </div>
                   </div>
-                  <p className="text-xs text-muted-foreground">{city.country}</p>
                 </div>
-                
-                <div className="text-right shrink-0">
-                  <p className="font-bold text-lg">${adjustedCost.toLocaleString()}</p>
-                  <div className="flex items-center gap-1 justify-end text-xs">
-                    {getTrendIcon(city.multiplier)}
-                    <span className={city.multiplier > 1 ? "text-destructive" : city.multiplier < 1 ? "text-chart-2" : "text-muted-foreground"}>
-                      {getDifference(city.multiplier)}
-                    </span>
-                  </div>
-                </div>
+                {isLast && <div className="text-xs font-semibold text-muted-foreground px-2 pt-2">Least Expensive</div>}
               </div>
-            </div>
-          );
+            );
           })}
       </div>
 
