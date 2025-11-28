@@ -134,7 +134,7 @@ export default function GlobalMap({ baseAmount, baseCity, onDeepDive }: GlobalMa
                     <>
                       <text
                         textAnchor="middle"
-                        y={-18}
+                        y={-22}
                         style={{
                           fontFamily: "Inter, sans-serif",
                           fontSize: 10,
@@ -147,7 +147,7 @@ export default function GlobalMap({ baseAmount, baseCity, onDeepDive }: GlobalMa
                       {isSelected && (
                         <text
                           textAnchor="middle"
-                          y={-8}
+                          y={-6}
                           style={{
                             fontFamily: "Inter, sans-serif",
                             fontSize: 9,
@@ -156,7 +156,7 @@ export default function GlobalMap({ baseAmount, baseCity, onDeepDive }: GlobalMa
                             pointerEvents: "none",
                           }}
                         >
-                          ~${Math.round(baseAmount * city.multiplier)}
+                          (~${Math.round(baseAmount * city.multiplier)})
                         </text>
                       )}
                     </>
