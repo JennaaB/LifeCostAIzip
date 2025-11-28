@@ -82,8 +82,8 @@ export default function Home() {
     <div>
       <Hero onGetStarted={handleGetStarted} onSeeExample={handleSeeExample} />
       <HowItWorks />
-      <PrivacyPromise />
       <UseCases />
+      <PrivacyPromise />
       <FinalCTA onGetStarted={handleGetStarted} onSeeExample={handleSeeExample} />
     </div>
   );
