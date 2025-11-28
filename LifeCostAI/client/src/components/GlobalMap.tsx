@@ -29,6 +29,9 @@ const cityData = [
   { name: "Mexico City", country: "Mexico", multiplier: 0.72, lat: 19.4326, lng: -99.1332 },
   { name: "São Paulo", country: "Brazil", multiplier: 0.68, lat: -23.5505, lng: -46.6333 },
   { name: "Dubai", country: "UAE", multiplier: 1.35, lat: 25.2048, lng: 55.2708 },
+  { name: "Bogota", country: "Colombia", multiplier: 0.68, lat: 4.7110, lng: -74.0721 },
+  { name: "Amsterdam", country: "Netherlands", multiplier: 1.48, lat: 52.3676, lng: 4.9041 },
+  { name: "Bangkok", country: "Thailand", multiplier: 0.52, lat: 13.7563, lng: 100.5018 },
 ];
 
 interface GlobalMapProps {
@@ -119,18 +122,34 @@ export default function GlobalMap({ baseAmount, baseCity, onDeepDive }: GlobalMa
                     className="transition-all duration-200 hover:opacity-80"
                   />
                   {(isSelected || isBase) && (
-                    <text
-                      textAnchor="middle"
-                      y={-14}
-                      style={{
-                        fontFamily: "Inter, sans-serif",
-                        fontSize: 10,
-                        fontWeight: 600,
-                        fill: "#1e293b",
-                      }}
-                    >
-                      {city.name}
-                    </text>
+                    <>
+                      <text
+                        textAnchor="middle"
+                        y={-14}
+                        style={{
+                          fontFamily: "Inter, sans-serif",
+                          fontSize: 10,
+                          fontWeight: 600,
+                          fill: "#1e293b",
+                        }}
+                      >
+                        {city.name}
+                      </text>
+                      {isSelected && (
+                        <text
+                          textAnchor="middle"
+                          y={0}
+                          style={{
+                            fontFamily: "Inter, sans-serif",
+                            fontSize: 9,
+                            fontWeight: 500,
+                            fill: "#475569",
+                          }}
+                        >
+                          ~${Math.round(baseAmount * city.multiplier)}
+                        </text>
+                      )}
+                    </>
                   )}
                 </Marker>
               );
