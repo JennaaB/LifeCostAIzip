@@ -208,11 +208,19 @@ export default function GlobalMap({ baseAmount, baseCity, onDeepDive }: GlobalMa
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-        {cityData.map((city) => {
-          const adjustedCost = Math.round(baseAmount * city.multiplier);
-          const isBase = city.name === baseCity;
-          const isSelected = selectedCity === city.name;
+      <div className="space-y-3">
+        {cityData
+          .sort((a, b) => {
+            // Base city first
+            if (a.name === baseCity) return -1;
+            if (b.name === baseCity) return 1;
+            // Then by multiplier descending (most expensive first)
+            return b.multiplier - a.multiplier;
+          })
+          .map((city) => {
+            const adjustedCost = Math.round(baseAmount * city.multiplier);
+            const isBase = city.name === baseCity;
+            const isSelected = selectedCity === city.name;
 
           return (
             <div
@@ -244,7 +252,7 @@ export default function GlobalMap({ baseAmount, baseCity, onDeepDive }: GlobalMa
               </div>
             </div>
           );
-        })}
+          })}
       </div>
 
       {selectedCity && (
