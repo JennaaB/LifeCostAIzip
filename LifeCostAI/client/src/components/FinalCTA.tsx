@@ -3,9 +3,10 @@ import { Sparkles, ArrowRight } from "lucide-react";
 
 interface FinalCTAProps {
   onGetStarted: () => void;
+  onSeeExample: () => void;
 }
 
-export default function FinalCTA({ onGetStarted }: FinalCTAProps) {
+export default function FinalCTA({ onGetStarted, onSeeExample }: FinalCTAProps) {
   return (
     <section className="py-20 px-6 bg-gradient-to-br from-primary/5 to-chart-2/5">
       <div className="max-w-4xl mx-auto text-center space-y-8">
@@ -23,7 +24,7 @@ export default function FinalCTA({ onGetStarted }: FinalCTAProps) {
             Start Your Snapshot
             <Sparkles className="ml-2 w-5 h-5" />
           </Button>
-          <Button size="lg" variant="outline" className="text-lg px-8 py-6" data-testid="button-cta-example">
+          <Button size="lg" variant="outline" className="text-lg px-8 py-6" onClick={onSeeExample} data-testid="button-cta-example">
             See Example Dashboard
             <ArrowRight className="ml-2 w-5 h-5" />
           </Button>

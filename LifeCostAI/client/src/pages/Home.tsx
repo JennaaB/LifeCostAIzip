@@ -84,7 +84,7 @@ export default function Home() {
       <HowItWorks />
       <PrivacyPromise />
       <UseCases />
-      <FinalCTA onGetStarted={handleGetStarted} />
+      <FinalCTA onGetStarted={handleGetStarted} onSeeExample={handleSeeExample} />
     </div>
   );
 }
