@@ -52,7 +52,7 @@ export default function Hero({ onGetStarted, onSeeExample }: HeroProps) {
               </div>
               <div className="flex items-center gap-2">
                 <div className="w-1.5 h-1.5 rounded-full bg-primary" />
-                Fast start
+                Quick insights
               </div>
             </div>
           </div>
