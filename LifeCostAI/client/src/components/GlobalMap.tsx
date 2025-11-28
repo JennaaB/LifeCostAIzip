@@ -125,7 +125,7 @@ export default function GlobalMap({ baseAmount, baseCity, onDeepDive }: GlobalMa
                     <>
                       <text
                         textAnchor="middle"
-                        y={-14}
+                        y={-24}
                         style={{
                           fontFamily: "Inter, sans-serif",
                           fontSize: 10,
@@ -136,32 +136,19 @@ export default function GlobalMap({ baseAmount, baseCity, onDeepDive }: GlobalMa
                         {city.name}
                       </text>
                       {isSelected && (
-                        <>
-                          <rect
-                            x={-28}
-                            y={16}
-                            width={56}
-                            height={14}
-                            rx={2}
-                            fill="#fff"
-                            stroke="#cbd5e1"
-                            strokeWidth={0.5}
-                            opacity={0.95}
-                          />
-                          <text
-                            textAnchor="middle"
-                            y={26}
-                            style={{
-                              fontFamily: "Inter, sans-serif",
-                              fontSize: 10,
-                              fontWeight: 600,
-                              fill: "#1e293b",
-                              pointerEvents: "none",
-                            }}
-                          >
-                            ~${Math.round(baseAmount * city.multiplier)}
-                          </text>
-                        </>
+                        <text
+                          textAnchor="middle"
+                          y={-10}
+                          style={{
+                            fontFamily: "Inter, sans-serif",
+                            fontSize: 9,
+                            fontWeight: 500,
+                            fill: "#64748b",
+                            pointerEvents: "none",
+                          }}
+                        >
+                          ~${Math.round(baseAmount * city.multiplier)}
+                        </text>
                       )}
                     </>
                   )}
