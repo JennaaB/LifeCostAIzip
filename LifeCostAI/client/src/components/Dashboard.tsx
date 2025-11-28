@@ -44,6 +44,15 @@ const categoryColors: Record<string, string> = {
   "Social": "text-yellow-600",
 };
 
+const categoryBgColors: Record<string, string> = {
+  "Food & Dining": "bg-chart-1/20",
+  "Transportation": "bg-chart-2/20",
+  "Subscriptions": "bg-chart-3/20",
+  "Fitness & Wellness": "bg-chart-4/20",
+  "Shopping": "bg-chart-5/20",
+  "Social": "bg-amber-400/20",
+};
+
 const recommendationIcons: Record<string, any> = {
   "Meal Prep Sundays": Target,
   "Make Coffee at Home": Coffee,
@@ -256,7 +265,7 @@ export default function Dashboard({ onEdit, onBackToHome, onSimulator, onCityCom
                 <div key={category.name} className="space-y-2">
                   <div className="flex justify-between items-center">
                     <div className="flex items-center gap-3">
-                      <div className={`w-8 h-8 rounded-lg ${category.color}/20 flex items-center justify-center`}>
+                      <div className={`w-8 h-8 rounded-lg ${categoryBgColors[category.name] || 'bg-muted'} flex items-center justify-center`}>
                         <category.icon className={`w-4 h-4 ${categoryColors[category.name] || 'text-primary'}`} />
                       </div>
                       <span className={`font-medium ${categoryColors[category.name] || 'text-primary'}`}>{category.name}</span>
