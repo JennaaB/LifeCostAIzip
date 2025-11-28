@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { Sparkles, Shield, TrendingUp, Coffee, Car, Dumbbell, Tv, ShoppingBag, Target, SlidersHorizontal, CheckCircle2 } from "lucide-react";
+import { Sparkles, Shield, TrendingUp, Coffee, Car, Dumbbell, Tv, ShoppingBag, Target, SlidersHorizontal, CheckCircle2, ArrowRight } from "lucide-react";
 import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
 
 interface HeroProps {
@@ -39,6 +39,7 @@ export default function Hero({ onGetStarted, onSeeExample }: HeroProps) {
               {onSeeExample && (
                 <Button size="lg" variant="outline" className="text-lg px-8 py-6" onClick={onSeeExample} data-testid="button-see-example">
                   See Example Dashboard
+                  <ArrowRight className="ml-2 w-5 h-5" />
                 </Button>
               )}
             </div>
