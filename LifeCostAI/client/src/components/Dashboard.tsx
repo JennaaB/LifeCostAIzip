@@ -41,7 +41,7 @@ const categoryColors: Record<string, string> = {
   "Subscriptions": "text-chart-3",
   "Fitness & Wellness": "text-chart-4",
   "Shopping": "text-chart-5",
-  "Social": "text-orange-600",
+  "Social": "text-yellow-600",
 };
 
 const recommendationIcons: Record<string, any> = {
@@ -89,7 +89,7 @@ export default function Dashboard({ onEdit, onBackToHome, onSimulator, onCityCom
       { name: "Subscriptions", amount: 385, percentage: 12.3, icon: Tv, color: "bg-chart-3" },
       { name: "Fitness & Wellness", amount: 340, percentage: 10.9, icon: Dumbbell, color: "bg-chart-4" },
       { name: "Shopping", amount: 817, percentage: 26.2, icon: ShoppingBag, color: "bg-chart-5" },
-      { name: "Social", amount: 273, percentage: 8.7, icon: Users, color: "bg-orange-100" },
+      { name: "Social", amount: 273, percentage: 8.7, icon: Users, color: "bg-yellow-100" },
     ],
     topDrivers: [
       { habit: "Food delivery 2-3x/week", monthlyCost: 320, icon: Coffee },
@@ -323,7 +323,7 @@ export default function Dashboard({ onEdit, onBackToHome, onSimulator, onCityCom
                         "hsl(var(--chart-3))",
                         "hsl(var(--chart-4))",
                         "hsl(var(--chart-5))",
-                        "#ea580c",
+                        "#fbbf24",
                       ];
                       return <Cell key={`cell-${index}`} fill={colors[index % colors.length]} />;
                     })}
@@ -334,7 +334,7 @@ export default function Dashboard({ onEdit, onBackToHome, onSimulator, onCityCom
                 {dashboardData.categories.map((cat, idx) => (
                   <div key={cat.name} className="flex items-center gap-2">
                     <div className="w-3 h-3 rounded-full" style={{
-                      backgroundColor: ["hsl(var(--chart-1))", "hsl(var(--chart-2))", "hsl(var(--chart-3))", "hsl(var(--chart-4))", "hsl(var(--chart-5))", "#ea580c"][idx % 6]
+                      backgroundColor: ["hsl(var(--chart-1))", "hsl(var(--chart-2))", "hsl(var(--chart-3))", "hsl(var(--chart-4))", "hsl(var(--chart-5))", "#fbbf24"][idx % 6]
                     }} />
                     <span className="text-muted-foreground">{cat.name}: {cat.percentage}%</span>
                   </div>
