@@ -41,6 +41,7 @@ export default function ReviewStep({ data }: ReviewStepProps) {
         ...(data.fitness.dropInSessionsPerWeek ? [{ label: "Drop-in Sessions", value: data.fitness.dropInSessionsPerWeek }] : []),
         ...(data.fitness.wellnessSpend.length > 0 && !data.fitness.wellnessSpend.every(w => w === "None") ? [{ label: "Wellness", value: data.fitness.wellnessSpend.filter(w => w !== "None").join(", ") }] : []),
         ...(data.fitness.hairCutFrequency && data.fitness.hairCutFrequency !== "Never" ? [{ label: "Hair Cut", value: data.fitness.hairCutFrequency }] : []),
+        ...(data.fitness.personalCare ? [{ label: "Personal Care", value: data.fitness.personalCare.split("(")[0].trim() }] : []),
       ],
     },
     {
@@ -61,7 +62,6 @@ export default function ReviewStep({ data }: ReviewStepProps) {
         { label: "Frequency", value: data.shopping.clothingFrequency },
         { label: "Buying Habit", value: data.shopping.buyingHabit?.split("(")[0].trim() },
         { label: "Style", value: data.shopping.shoppingStyle?.split("&")[0].trim() },
-        { label: "Personal Care", value: data.shopping.personalCare?.split("(")[0].trim() },
       ],
     },
     {

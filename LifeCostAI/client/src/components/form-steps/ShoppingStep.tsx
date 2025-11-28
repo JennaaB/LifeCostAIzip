@@ -1,7 +1,7 @@
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import type { FormData } from "../LifestyleForm";
-import { ShoppingBag, Sparkles, Tag, Zap } from "lucide-react";
+import { ShoppingBag, Tag, Zap } from "lucide-react";
 
 interface ShoppingStepProps {
   data: FormData;
@@ -15,12 +15,6 @@ export default function ShoppingStep({ data, onChange }: ShoppingStepProps) {
     { value: "2-3 times per month", label: "2-3x/month", desc: "Regular shopper" },
     { value: "Weekly", label: "Weekly", desc: "Every week" },
     { value: "Multiple times per week", label: "Multiple/week", desc: "Frequent shopper" },
-  ];
-  
-  const personalCare = [
-    { value: "Basic (drugstore)", label: "Basic", desc: "Drugstore products" },
-    { value: "Moderate", label: "Moderate", desc: "Mix of basic & premium" },
-    { value: "Premium (salon/spa)", label: "Premium", desc: "Salon/spa quality" },
   ];
   
   const buyingHabits = [
@@ -129,39 +123,6 @@ export default function ShoppingStep({ data, onChange }: ShoppingStepProps) {
               >
                 <span className="text-sm sm:text-base font-semibold">{style.label}</span>
                 <span className="text-xs text-muted-foreground mt-1 text-center">{style.desc}</span>
-              </Label>
-            </div>
-          ))}
-        </RadioGroup>
-      </div>
-
-      <div className="space-y-4">
-        <div className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-lg bg-pink-100 flex items-center justify-center">
-            <Sparkles className="w-4 h-4 text-pink-600" />
-          </div>
-          <Label className="text-base sm:text-lg font-semibold">What's your approach to personal care products?</Label>
-        </div>
-        <RadioGroup
-          value={data.shopping.personalCare}
-          onValueChange={(value) => onChange({
-            ...data,
-            shopping: { ...data.shopping, personalCare: value }
-          })}
-          className="grid grid-cols-1 sm:grid-cols-3 gap-3"
-        >
-          {personalCare.map((level) => (
-            <div key={level.value} className="relative">
-              <RadioGroupItem value={level.value} id={`care-${level.value}`} className="peer sr-only" data-testid={`radio-personalcare-${level.label.toLowerCase()}`} />
-              <Label 
-                htmlFor={`care-${level.value}`} 
-                className="flex flex-col items-center justify-center p-4 sm:p-5 rounded-xl border-2 cursor-pointer transition-all min-h-[80px]
-                  hover:border-primary/50 hover:bg-primary/5
-                  peer-data-[state=checked]:border-primary peer-data-[state=checked]:bg-primary/10
-                  peer-focus-visible:ring-2 peer-focus-visible:ring-primary peer-focus-visible:ring-offset-2"
-              >
-                <span className="text-sm sm:text-base font-semibold">{level.label}</span>
-                <span className="text-xs text-muted-foreground mt-1">{level.desc}</span>
               </Label>
             </div>
           ))}

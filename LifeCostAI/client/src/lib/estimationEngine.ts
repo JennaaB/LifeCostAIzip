@@ -170,12 +170,11 @@ export function calculateEstimates(formData: FormData): Omit<EstimationResult, '
   shopping += baseClothing * (qualityMultiplier[formData.shopping.shoppingStyle] || 1);
 
   const personalCareMap: Record<string, number> = {
-    "Monthly": 60,
-    "Every 2-3 months": 30,
-    "Few times/year": 15,
-    "Rarely": 5,
+    "Basic (drugstore)": 15,
+    "Moderate": 35,
+    "Premium (salon/spa)": 60,
   };
-  shopping += personalCareMap[formData.shopping.personalCare] || 0;
+  fitness += personalCareMap[formData.fitness.personalCare] || 0;
 
   const buyingHabitMultiplier: Record<string, number> = {
     "I buy items I need plus some extras": 1,

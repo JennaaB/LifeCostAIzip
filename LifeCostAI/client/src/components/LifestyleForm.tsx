@@ -36,6 +36,7 @@ export interface FormData {
     wellnessFrequency: string;
     hairCutFrequency: string;
     hairServiceType: string;
+    personalCare: string;
   };
   subscriptions: {
     hasSubscriptions: string;
@@ -46,7 +47,6 @@ export interface FormData {
     clothingFrequency: string;
     buyingHabit: string;
     shoppingStyle: string;
-    personalCare: string;
   };
   social: {
     socializingStyle: string;
@@ -69,9 +69,9 @@ export interface FormData {
 const initialFormData: FormData = {
   foodDining: { coffeeFrequency: "", deliveryFrequency: "", diningOutFrequency: "", diningStyle: "" },
   transportation: { commuteMethod: "", distance: "", rideshareTripsPerWeek: "", payForParking: "", parkingRateType: "", transitPassType: "" },
-  fitness: { hasMembership: "", membershipTier: "", dropInSessionsPerWeek: "", wellnessSpend: [], wellnessOther: "", wellnessFrequency: "", hairCutFrequency: "", hairServiceType: "" },
+  fitness: { hasMembership: "", membershipTier: "", dropInSessionsPerWeek: "", wellnessSpend: [], wellnessOther: "", wellnessFrequency: "", hairCutFrequency: "", hairServiceType: "", personalCare: "" },
   subscriptions: { hasSubscriptions: "", services: [], other: "" },
-  shopping: { clothingFrequency: "", buyingHabit: "", shoppingStyle: "", personalCare: "" },
+  shopping: { clothingFrequency: "", buyingHabit: "", shoppingStyle: "" },
   social: { socializingStyle: "", hostingFrequency: "", hostingStyle: "", casualFrequency: "", casualType: "", activeFrequency: "", activeType: "", nightlifeFrequency: "", nightlifeStyle: "", buyingRounds: "" },
   goals: { primaryGoal: "", values: [] },
 };
@@ -172,6 +172,7 @@ export default function LifestyleForm({ onSubmit, onBack }: LifestyleFormProps) 
         if (fi.hairCutFrequency !== "Never" && !fi.hairServiceType) return false;
         const hasActiveWellness = fi.wellnessSpend.length > 0 && fi.wellnessSpend.some(w => w !== "None");
         if (hasActiveWellness && !fi.wellnessFrequency) return false;
+        if (!fi.personalCare) return false;
         return true;
       }
       case 3: {
@@ -180,7 +181,7 @@ export default function LifestyleForm({ onSubmit, onBack }: LifestyleFormProps) 
         return true;
       }
       case 4:
-        return !!(sh.clothingFrequency && sh.buyingHabit && sh.shoppingStyle && sh.personalCare);
+        return !!(sh.clothingFrequency && sh.buyingHabit && sh.shoppingStyle);
       case 5: {
         if (!so.socializingStyle) return false;
         if (so.socializingStyle === "At-home") {
@@ -275,6 +276,9 @@ export default function LifestyleForm({ onSubmit, onBack }: LifestyleFormProps) 
     }
 
     totalQuestions += 1;
+    if (fi.personalCare) answeredQuestions++;
+
+    totalQuestions += 1;
     if (su.hasSubscriptions) answeredQuestions++;
 
     if (su.hasSubscriptions === "yes") {
@@ -282,11 +286,10 @@ export default function LifestyleForm({ onSubmit, onBack }: LifestyleFormProps) 
       if (su.services.length > 0) answeredQuestions++;
     }
 
-    totalQuestions += 4;
+    totalQuestions += 3;
     if (sh.clothingFrequency) answeredQuestions++;
     if (sh.buyingHabit) answeredQuestions++;
     if (sh.shoppingStyle) answeredQuestions++;
-    if (sh.personalCare) answeredQuestions++;
 
     totalQuestions += 1;
     if (so.socializingStyle) answeredQuestions++;
