@@ -242,14 +242,22 @@ export default function GlobalMap({ baseAmount, baseCity, onDeepDive }: GlobalMa
             leastExpensive.multiplier !== Infinity ? leastExpensive : null,
           ].filter(Boolean) as typeof cityData;
           
-          return citiesToDisplay.map((city, index, arr) => {
+          return citiesToDisplay.map((city) => {
             const adjustedCost = Math.round(baseAmount * city.multiplier);
             const isBase = city.name === baseCity;
             const isSelected = selectedCity === city.name;
+            
+            let label = "";
+            if ("name" in mostExpensive && city.name === mostExpensive.name) {
+              label = "[Most Expensive]";
+            } else if ("name" in mostSimilar && city.name === mostSimilar.name) {
+              label = "[Most Similar]";
+            } else if ("name" in leastExpensive && city.name === leastExpensive.name) {
+              label = "[Least Expensive]";
+            }
 
             return (
               <div key={city.name}>
-                {index === 0 && <div className="text-xs font-semibold text-muted-foreground px-2">Most Expensive</div>}
                 <div
                   onClick={() => setSelectedCity(city.name)}
                   className={`p-3 rounded-lg border cursor-pointer hover-elevate transition-all ${
@@ -260,7 +268,9 @@ export default function GlobalMap({ baseAmount, baseCity, onDeepDive }: GlobalMa
                   <div className="flex justify-between items-center gap-3">
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2 flex-wrap">
-                        <h4 className="font-semibold text-sm truncate">{city.name}</h4>
+                        <h4 className="font-semibold text-sm truncate">
+                          {city.name} {label && <span className="text-xs font-normal text-muted-foreground">{label}</span>}
+                        </h4>
                         {isBase && <Badge variant="secondary" className="text-xs">Base</Badge>}
                       </div>
                       <p className="text-xs text-muted-foreground">{city.country}</p>
@@ -277,7 +287,6 @@ export default function GlobalMap({ baseAmount, baseCity, onDeepDive }: GlobalMa
                     </div>
                   </div>
                 </div>
-                {"name" in leastExpensive && city.name === leastExpensive.name && <div className="text-xs font-semibold text-muted-foreground px-2 pt-2">Least Expensive</div>}
               </div>
             );
           });
