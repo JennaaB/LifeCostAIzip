@@ -44,15 +44,15 @@ export default function Hero({ onGetStarted, onSeeExample }: HeroProps) {
             <div className="flex flex-wrap gap-6 text-sm text-muted-foreground">
               <div className="flex items-center gap-2">
                 <div className="w-1.5 h-1.5 rounded-full bg-primary" />
-                No bank connections
+                Understand your lifestyle
               </div>
               <div className="flex items-center gap-2">
                 <div className="w-1.5 h-1.5 rounded-full bg-primary" />
-                No personal data
+                Align with your values
               </div>
               <div className="flex items-center gap-2">
                 <div className="w-1.5 h-1.5 rounded-full bg-primary" />
-                Free forever
+                Goals come first
               </div>
             </div>
           </div>
