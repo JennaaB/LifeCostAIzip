@@ -19,8 +19,8 @@ export default function ShoppingStep({ data, onChange }: ShoppingStepProps) {
   
   const buyingHabits = [
     { value: "Spontaneous (impulsive)", label: "Spontaneous", desc: "Buy on impulse", icon: Zap },
-    { value: "Planned (intentional)", label: "Planned", desc: "Research first", icon: Tag },
     { value: "Mix of both", label: "Balanced", desc: "Depends on the item", icon: ShoppingBag },
+    { value: "Planned (intentional)", label: "Planned", desc: "Research first", icon: Tag },
   ];
   
   const shoppingStyles = [
