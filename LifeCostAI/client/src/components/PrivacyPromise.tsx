@@ -37,7 +37,7 @@ export default function PrivacyPromise() {
               <div className="w-10 h-10 rounded-lg bg-destructive/10 flex items-center justify-center">
                 <X className="w-5 h-5 text-destructive" />
               </div>
-              <h3 className="text-2xl font-semibold">We Never Collect</h3>
+              <h3 className="text-2xl font-semibold">We Never...</h3>
             </div>
             
             <ul className="space-y-4">
