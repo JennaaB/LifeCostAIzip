@@ -274,8 +274,8 @@ export default function Dashboard({ onEdit, onBackToHome, onSimulator, onCityCom
               <div className="space-y-1">
                 <p className="text-sm text-muted-foreground">Estimated Monthly Cost:</p>
                 <div className="flex items-baseline justify-center lg:justify-start gap-1 flex-nowrap">
-                  <span className="text-lg font-bold whitespace-nowrap" data-testid="text-monthly-total">${dashboardData.totalMonthlyMin.toLocaleString()} - ${dashboardData.totalMonthlyMax.toLocaleString()}</span>
-                  <span className="text-xs text-muted-foreground whitespace-nowrap">/month</span>
+                  <span className="text-2xl font-bold whitespace-nowrap" data-testid="text-monthly-total">${dashboardData.totalMonthlyMin.toLocaleString()} - ${dashboardData.totalMonthlyMax.toLocaleString()}</span>
+                  <span className="text-sm text-muted-foreground whitespace-nowrap">/month</span>
                 </div>
               </div>
             </div>
@@ -310,7 +310,7 @@ export default function Dashboard({ onEdit, onBackToHome, onSimulator, onCityCom
                       <div className={`w-6 h-6 rounded-md ${categoryBgColors[category.name] || 'bg-muted'} flex items-center justify-center`}>
                         <category.icon className={`w-3 h-3 ${categoryColors[category.name] || 'text-primary'}`} />
                       </div>
-                      <span className={`text-sm font-medium ${categoryColors[category.name] || 'text-primary'}`}>{category.name}</span>
+                      <span className={`text-base font-medium ${categoryColors[category.name] || 'text-primary'}`}>{category.name}</span>
                     </div>
                     <div className="flex items-center gap-3">
                       <span className="text-xs text-muted-foreground">{category.percentage}%</span>
