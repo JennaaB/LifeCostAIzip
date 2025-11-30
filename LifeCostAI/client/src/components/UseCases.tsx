@@ -4,9 +4,9 @@ import { MapPin, Target, Lightbulb } from "lucide-react";
 export default function UseCases() {
   const useCases = [
     {
-      icon: MapPin,
-      title: "Planning a Move?",
-      description: "Compare your current lifestyle costs with cities you're considering. Make informed decisions about relocation based on real spending patterns.",
+      icon: Lightbulb,
+      title: "Curious About Habits?",
+      description: "Get instant clarity on where your money goes each month. No spreadsheets, no bank connections—just honest insights about your lifestyle.",
       color: "bg-chart-1",
     },
     {
@@ -16,9 +16,9 @@ export default function UseCases() {
       color: "bg-chart-2",
     },
     {
-      icon: Lightbulb,
-      title: "Curious About Habits?",
-      description: "Get instant clarity on where your money goes each month. No spreadsheets, no bank connections—just honest insights about your lifestyle.",
+      icon: MapPin,
+      title: "Planning a Move?",
+      description: "Compare your current lifestyle costs with cities you're considering. Make informed decisions about relocation based on real spending patterns.",
       color: "bg-chart-3",
     },
   ];
