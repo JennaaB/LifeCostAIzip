@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Sparkles, Shield, TrendingUp, Coffee, Car, Dumbbell, Tv, ShoppingBag, Target, SlidersHorizontal, CheckCircle2, ArrowRight } from "lucide-react";
-import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
+import { PieChart, Pie, Cell } from "recharts";
 
 interface HeroProps {
   onGetStarted: () => void;
@@ -65,37 +65,35 @@ export default function Hero({ onGetStarted, onSeeExample }: HeroProps) {
 
                     {/* Pie Chart */}
                     <div className="flex justify-center">
-                      <ResponsiveContainer width={140} height={140}>
-                        <PieChart>
-                          <Pie
-                            data={[
-                              { name: "Food & Dining", value: 25, color: "hsl(var(--chart-1))" },
-                              { name: "Transportation", value: 17, color: "hsl(var(--chart-2))" },
-                              { name: "Subscriptions", value: 12, color: "hsl(var(--chart-3))" },
-                              { name: "Fitness & Wellness", value: 11, color: "hsl(var(--chart-4))" },
-                              { name: "Shopping", value: 26, color: "hsl(var(--chart-5))" },
-                              { name: "Social", value: 9, color: "#fbbf24" },
-                            ]}
-                            cx="50%"
-                            cy="50%"
-                            innerRadius={35}
-                            outerRadius={60}
-                            paddingAngle={2}
-                            dataKey="value"
-                          >
-                            {[
-                              { color: "hsl(var(--chart-1))" },
-                              { color: "hsl(var(--chart-2))" },
-                              { color: "hsl(var(--chart-3))" },
-                              { color: "hsl(var(--chart-4))" },
-                              { color: "hsl(var(--chart-5))" },
-                              { color: "#fbbf24" },
-                            ].map((entry, index) => (
-                              <Cell key={`cell-${index}`} fill={entry.color} />
-                            ))}
-                          </Pie>
-                        </PieChart>
-                      </ResponsiveContainer>
+                      <PieChart width={140} height={140}>
+                        <Pie
+                          data={[
+                            { name: "Food & Dining", value: 25, color: "hsl(var(--chart-1))" },
+                            { name: "Transportation", value: 17, color: "hsl(var(--chart-2))" },
+                            { name: "Subscriptions", value: 12, color: "hsl(var(--chart-3))" },
+                            { name: "Fitness & Wellness", value: 11, color: "hsl(var(--chart-4))" },
+                            { name: "Shopping", value: 26, color: "hsl(var(--chart-5))" },
+                            { name: "Social", value: 9, color: "#fbbf24" },
+                          ]}
+                          cx="50%"
+                          cy="50%"
+                          innerRadius={35}
+                          outerRadius={60}
+                          paddingAngle={2}
+                          dataKey="value"
+                        >
+                          {[
+                            { color: "hsl(var(--chart-1))" },
+                            { color: "hsl(var(--chart-2))" },
+                            { color: "hsl(var(--chart-3))" },
+                            { color: "hsl(var(--chart-4))" },
+                            { color: "hsl(var(--chart-5))" },
+                            { color: "#fbbf24" },
+                          ].map((entry, index) => (
+                            <Cell key={`cell-${index}`} fill={entry.color} />
+                          ))}
+                        </Pie>
+                      </PieChart>
                     </div>
                   </div>
                 </div>

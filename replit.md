@@ -88,6 +88,13 @@ Preferred communication style: Simple, everyday language.
 - React Query prepared for future API integration
 - No global state management needed due to single-page flow
 
+**Dashboard Lifestyle Balance:**
+- Lifestyle Balance chart groups spending into three categories: Essentials, Convenience, and Enjoyment
+- Category mapping: Essentials (Food & Dining, Transportation), Convenience (Subscriptions, Fitness & Wellness), Enjoyment (Shopping, Social)
+- Donut chart visualization with percentage breakdown for each lifestyle group
+- Subtitle explains the purpose: "See how your spending balances between essentials, convenience, and enjoyment"
+- Replaces the detailed category pie chart for a higher-level lifestyle perspective
+
 **Spending Simulator:**
 - Interactive page for exploring "what-if" spending scenarios
 - Sliders for 8 lifestyle habits: coffees, food delivery, restaurant meals, rideshare trips, shopping, subscriptions, nights out, wellness visits

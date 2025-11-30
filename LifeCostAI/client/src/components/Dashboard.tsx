@@ -310,44 +310,68 @@ export default function Dashboard({ onEdit, onBackToHome, onSimulator, onCityCom
               </div>
             </Card>
 
-            {/* Category Donut Chart */}
-            <Card className="p-6">
-              <h3 className="text-xl font-semibold mb-4">Spending by Category</h3>
-              <ResponsiveContainer width="100%" height={250}>
-                <PieChart>
-                  <Pie
-                    data={dashboardData.categories}
-                    cx="50%"
-                    cy="50%"
-                    innerRadius={60}
-                    outerRadius={90}
-                    paddingAngle={2}
-                    dataKey="amount"
-                  >
-                    {dashboardData.categories.map((category, index) => {
-                      const colors = [
-                        "hsl(var(--chart-1))",
-                        "hsl(var(--chart-2))",
-                        "hsl(var(--chart-3))",
-                        "hsl(var(--chart-4))",
-                        "hsl(var(--chart-5))",
-                        "#fbbf24",
-                      ];
-                      return <Cell key={`cell-${index}`} fill={colors[index % colors.length]} />;
-                    })}
-                  </Pie>
-                </PieChart>
-              </ResponsiveContainer>
-              <div className="mt-4 grid grid-cols-2 gap-2 text-sm">
-                {dashboardData.categories.map((cat, idx) => (
-                  <div key={cat.name} className="flex items-center gap-2">
-                    <div className="w-3 h-3 rounded-full" style={{
-                      backgroundColor: ["hsl(var(--chart-1))", "hsl(var(--chart-2))", "hsl(var(--chart-3))", "hsl(var(--chart-4))", "hsl(var(--chart-5))", "#fbbf24"][idx % 6]
-                    }} />
-                    <span className="text-muted-foreground">{cat.name}: {cat.percentage}%</span>
-                  </div>
-                ))}
+            {/* Lifestyle Balance Chart */}
+            <Card className="p-6 flex flex-col flex-1">
+              <div className="space-y-1 mb-4">
+                <h3 className="text-xl font-semibold">Lifestyle Balance</h3>
+                <p className="text-sm text-muted-foreground">See how your spending balances between essentials, convenience, and enjoyment.</p>
               </div>
+              {(() => {
+                const essentialsAmount = dashboardData.categories
+                  .filter(c => ["Food & Dining", "Transportation"].includes(c.name))
+                  .reduce((sum, c) => sum + c.amount, 0);
+                const convenienceAmount = dashboardData.categories
+                  .filter(c => ["Subscriptions", "Fitness & Wellness"].includes(c.name))
+                  .reduce((sum, c) => sum + c.amount, 0);
+                const enjoymentAmount = dashboardData.categories
+                  .filter(c => ["Shopping", "Social"].includes(c.name))
+                  .reduce((sum, c) => sum + c.amount, 0);
+                const total = essentialsAmount + convenienceAmount + enjoymentAmount;
+                
+                const lifestyleGroups = [
+                  { name: "Essentials", amount: essentialsAmount, percentage: Math.round((essentialsAmount / total) * 100), color: "#3b82f6", description: "Food & Transport" },
+                  { name: "Convenience", amount: convenienceAmount, percentage: Math.round((convenienceAmount / total) * 100), color: "#8b5cf6", description: "Subscriptions & Wellness" },
+                  { name: "Enjoyment", amount: enjoymentAmount, percentage: Math.round((enjoymentAmount / total) * 100), color: "#f59e0b", description: "Shopping & Social" },
+                ];
+                
+                return (
+                  <div className="flex-1 flex flex-col justify-between">
+                    <div className="h-[140px]">
+                    <ResponsiveContainer width="100%" height="100%">
+                      <PieChart>
+                        <Pie
+                          data={lifestyleGroups}
+                          cx="50%"
+                          cy="50%"
+                          innerRadius={40}
+                          outerRadius={60}
+                          paddingAngle={3}
+                          dataKey="amount"
+                        >
+                          {lifestyleGroups.map((group, index) => (
+                            <Cell key={`cell-${index}`} fill={group.color} />
+                          ))}
+                        </Pie>
+                      </PieChart>
+                    </ResponsiveContainer>
+                    </div>
+                    <div className="space-y-3 mt-2">
+                      {lifestyleGroups.map((group) => (
+                        <div key={group.name} className="flex items-center gap-3">
+                          <div className="w-3 h-3 rounded-full shrink-0" style={{ backgroundColor: group.color }} />
+                          <div className="flex-1 min-w-0">
+                            <div className="flex justify-between items-center">
+                              <span className="font-medium text-sm">{group.name}</span>
+                              <span className="font-semibold text-sm">{group.percentage}%</span>
+                            </div>
+                            <p className="text-xs text-muted-foreground truncate">{group.description}</p>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                );
+              })()}
             </Card>
           </div>
         </div>
