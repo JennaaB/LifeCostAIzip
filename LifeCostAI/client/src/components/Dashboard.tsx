@@ -17,7 +17,11 @@ import {
   Sparkles,
   Loader2,
   Home,
-  SlidersHorizontal
+  SlidersHorizontal,
+  UtensilsCrossed,
+  Smartphone,
+  Heart,
+  PartyPopper
 } from "lucide-react";
 import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
 import GlobalMap from "./GlobalMap";
@@ -33,6 +37,17 @@ const categoryIcons: Record<string, any> = {
   "Fitness & Wellness": Dumbbell,
   "Shopping": ShoppingBag,
   "Social": Users,
+  "Coffee & Drinks": Coffee,
+  "Dining Out": UtensilsCrossed,
+  "Delivery & Takeout": Smartphone,
+  "Streaming": Tv,
+  "Apps & Services": Smartphone,
+  "Gym & Fitness": Dumbbell,
+  "Wellness & Self-Care": Heart,
+  "Wardrobe & Style": ShoppingBag,
+  "Hobbies & Extras": ShoppingBag,
+  "Nights Out": PartyPopper,
+  "Casual Hangouts": Users,
 };
 
 const categoryColors: Record<string, string> = {
@@ -42,6 +57,17 @@ const categoryColors: Record<string, string> = {
   "Fitness & Wellness": "text-chart-4",
   "Shopping": "text-chart-5",
   "Social": "text-yellow-600",
+  "Coffee & Drinks": "text-chart-1",
+  "Dining Out": "text-chart-1",
+  "Delivery & Takeout": "text-chart-1",
+  "Streaming": "text-chart-3",
+  "Apps & Services": "text-chart-3",
+  "Gym & Fitness": "text-chart-4",
+  "Wellness & Self-Care": "text-chart-4",
+  "Wardrobe & Style": "text-chart-5",
+  "Hobbies & Extras": "text-chart-5",
+  "Nights Out": "text-yellow-600",
+  "Casual Hangouts": "text-yellow-600",
 };
 
 const categoryBgColors: Record<string, string> = {
@@ -51,6 +77,17 @@ const categoryBgColors: Record<string, string> = {
   "Fitness & Wellness": "bg-chart-4/20",
   "Shopping": "bg-chart-5/20",
   "Social": "bg-amber-400/20",
+  "Coffee & Drinks": "bg-chart-1/20",
+  "Dining Out": "bg-chart-1/20",
+  "Delivery & Takeout": "bg-chart-1/20",
+  "Streaming": "bg-chart-3/20",
+  "Apps & Services": "bg-chart-3/20",
+  "Gym & Fitness": "bg-chart-4/20",
+  "Wellness & Self-Care": "bg-chart-4/20",
+  "Wardrobe & Style": "bg-chart-5/20",
+  "Hobbies & Extras": "bg-chart-5/20",
+  "Nights Out": "bg-amber-400/20",
+  "Casual Hangouts": "bg-amber-400/20",
 };
 
 const recommendationIcons: Record<string, any> = {
@@ -93,12 +130,18 @@ export default function Dashboard({ onEdit, onBackToHome, onSimulator, onCityCom
     biggestOpportunity: "Review your spending patterns",
     goalAlignment: 70,
     categories: [
-      { name: "Food & Dining", amount: 785, percentage: 25.2, icon: Coffee, color: "bg-chart-1" },
+      { name: "Coffee & Drinks", amount: 165, percentage: 5.3, icon: Coffee, color: "bg-chart-1" },
+      { name: "Dining Out", amount: 320, percentage: 10.3, icon: UtensilsCrossed, color: "bg-chart-1" },
+      { name: "Delivery & Takeout", amount: 300, percentage: 9.6, icon: Smartphone, color: "bg-chart-1" },
       { name: "Transportation", amount: 520, percentage: 16.7, icon: Car, color: "bg-chart-2" },
-      { name: "Subscriptions", amount: 385, percentage: 12.3, icon: Tv, color: "bg-chart-3" },
-      { name: "Fitness & Wellness", amount: 340, percentage: 10.9, icon: Dumbbell, color: "bg-chart-4" },
-      { name: "Shopping", amount: 817, percentage: 26.2, icon: ShoppingBag, color: "bg-chart-5" },
-      { name: "Social", amount: 273, percentage: 8.7, icon: Users, color: "bg-amber-400" },
+      { name: "Streaming", amount: 85, percentage: 2.7, icon: Tv, color: "bg-chart-3" },
+      { name: "Apps & Services", amount: 300, percentage: 9.6, icon: Smartphone, color: "bg-chart-3" },
+      { name: "Gym & Fitness", amount: 180, percentage: 5.8, icon: Dumbbell, color: "bg-chart-4" },
+      { name: "Wellness & Self-Care", amount: 160, percentage: 5.1, icon: Heart, color: "bg-chart-4" },
+      { name: "Wardrobe & Style", amount: 450, percentage: 14.4, icon: ShoppingBag, color: "bg-chart-5" },
+      { name: "Hobbies & Extras", amount: 367, percentage: 11.8, icon: ShoppingBag, color: "bg-chart-5" },
+      { name: "Nights Out", amount: 180, percentage: 5.8, icon: PartyPopper, color: "bg-amber-400" },
+      { name: "Casual Hangouts", amount: 93, percentage: 3.0, icon: Users, color: "bg-amber-400" },
     ],
     topDrivers: [
       { habit: "Food delivery 2-3x/week", monthlyCost: 320, icon: Coffee },
@@ -257,24 +300,24 @@ export default function Dashboard({ onEdit, onBackToHome, onSimulator, onCityCom
         {/* Categories & Drivers Row */}
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
           {/* Category Breakdown */}
-          <Card className="lg:col-span-3 p-6 space-y-6">
-            <h3 className="text-xl font-semibold">Category Breakdown</h3>
-            <div className="space-y-4">
+          <Card className="lg:col-span-3 p-6">
+            <h3 className="text-xl font-semibold mb-4">Category Breakdown</h3>
+            <div className="space-y-3">
               {dashboardData.categories.map((category) => (
-                <div key={category.name} className="space-y-2">
+                <div key={category.name} className="space-y-1">
                   <div className="flex justify-between items-center">
-                    <div className="flex items-center gap-3">
-                      <div className={`w-8 h-8 rounded-lg ${categoryBgColors[category.name] || 'bg-muted'} flex items-center justify-center`}>
-                        <category.icon className={`w-4 h-4 ${categoryColors[category.name] || 'text-primary'}`} />
+                    <div className="flex items-center gap-2">
+                      <div className={`w-6 h-6 rounded-md ${categoryBgColors[category.name] || 'bg-muted'} flex items-center justify-center`}>
+                        <category.icon className={`w-3 h-3 ${categoryColors[category.name] || 'text-primary'}`} />
                       </div>
-                      <span className={`font-medium ${categoryColors[category.name] || 'text-primary'}`}>{category.name}</span>
+                      <span className={`text-sm font-medium ${categoryColors[category.name] || 'text-primary'}`}>{category.name}</span>
                     </div>
-                    <div className="text-right">
-                      <p className="font-semibold">~${category.amount}</p>
-                      <p className="text-sm text-muted-foreground">{category.percentage}%</p>
+                    <div className="flex items-center gap-3">
+                      <span className="text-xs text-muted-foreground">{category.percentage}%</span>
+                      <span className="text-sm font-semibold w-16 text-right">~${category.amount}</span>
                     </div>
                   </div>
-                  <div className="h-3 bg-muted rounded-full overflow-hidden">
+                  <div className="h-2 bg-muted rounded-full overflow-hidden">
                     <div
                       className={`h-full ${category.color} transition-all`}
                       style={{ width: `${(category.amount / maxCategory) * 100}%` }}
@@ -317,14 +360,18 @@ export default function Dashboard({ onEdit, onBackToHome, onSimulator, onCityCom
                 <p className="text-sm text-muted-foreground">See how your spending balances between essentials, convenience, and enjoyment.</p>
               </div>
               {(() => {
+                const essentialsCategories = ["Food & Dining", "Transportation", "Coffee & Drinks", "Dining Out", "Delivery & Takeout"];
+                const convenienceCategories = ["Subscriptions", "Fitness & Wellness", "Streaming", "Apps & Services", "Gym & Fitness", "Wellness & Self-Care"];
+                const enjoymentCategories = ["Shopping", "Social", "Wardrobe & Style", "Hobbies & Extras", "Nights Out", "Casual Hangouts"];
+                
                 const essentialsAmount = dashboardData.categories
-                  .filter(c => ["Food & Dining", "Transportation"].includes(c.name))
+                  .filter(c => essentialsCategories.includes(c.name))
                   .reduce((sum, c) => sum + c.amount, 0);
                 const convenienceAmount = dashboardData.categories
-                  .filter(c => ["Subscriptions", "Fitness & Wellness"].includes(c.name))
+                  .filter(c => convenienceCategories.includes(c.name))
                   .reduce((sum, c) => sum + c.amount, 0);
                 const enjoymentAmount = dashboardData.categories
-                  .filter(c => ["Shopping", "Social"].includes(c.name))
+                  .filter(c => enjoymentCategories.includes(c.name))
                   .reduce((sum, c) => sum + c.amount, 0);
                 const total = essentialsAmount + convenienceAmount + enjoymentAmount;
                 
