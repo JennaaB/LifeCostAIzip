@@ -271,27 +271,27 @@ export default function Dashboard({ onEdit, onBackToHome, onSimulator, onCityCom
                 <Sparkles className="w-4 h-4" />
                 AI-Generated Estimate
               </div>
-              <div className="space-y-1">
-                <p className="text-sm text-muted-foreground">Estimated Monthly Cost:</p>
-                <div className="flex items-baseline justify-center lg:justify-start gap-1 flex-nowrap">
-                  <span className="text-2xl font-bold whitespace-nowrap" data-testid="text-monthly-total">${dashboardData.totalMonthlyMin.toLocaleString()} - ${dashboardData.totalMonthlyMax.toLocaleString()}</span>
-                  <span className="text-sm text-muted-foreground whitespace-nowrap">/month</span>
+              <div className="space-y-2">
+                <p className="text-lg text-muted-foreground">Estimated Monthly Cost:</p>
+                <div className="flex items-baseline justify-center lg:justify-start gap-2 flex-nowrap">
+                  <span className="text-4xl font-bold whitespace-nowrap" data-testid="text-monthly-total">${dashboardData.totalMonthlyMin.toLocaleString()} - ${dashboardData.totalMonthlyMax.toLocaleString()}</span>
+                  <span className="text-lg text-muted-foreground whitespace-nowrap">/month</span>
                 </div>
               </div>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 w-full lg:w-auto">
-              <Card className="p-4 text-center space-y-1 bg-muted/50">
-                <p className="text-sm text-muted-foreground">Top Category</p>
-                <p className="font-semibold" data-testid="text-top-category">{dashboardData.topCategory}</p>
+              <Card className="p-5 text-center space-y-2 bg-muted/50">
+                <p className="text-base text-muted-foreground">Top Category</p>
+                <p className="text-lg font-semibold" data-testid="text-top-category">{dashboardData.topCategory}</p>
               </Card>
-              <Card className="p-4 text-center space-y-1 bg-muted/50">
-                <p className="text-sm text-muted-foreground">Biggest Opportunity</p>
-                <p className="font-semibold" data-testid="text-opportunity">{dashboardData.biggestOpportunity}</p>
+              <Card className="p-5 text-center space-y-2 bg-muted/50">
+                <p className="text-base text-muted-foreground">Biggest Opportunity</p>
+                <p className="text-lg font-semibold" data-testid="text-opportunity">{dashboardData.biggestOpportunity}</p>
               </Card>
-              <Card className="p-4 text-center space-y-1 bg-muted/50">
-                <p className="text-sm text-muted-foreground">Goal Alignment</p>
-                <p className="font-semibold text-primary" data-testid="text-goal-alignment">{dashboardData.goalAlignment}%</p>
+              <Card className="p-5 text-center space-y-2 bg-muted/50">
+                <p className="text-base text-muted-foreground">Goal Alignment</p>
+                <p className="text-lg font-semibold text-primary" data-testid="text-goal-alignment">{dashboardData.goalAlignment}%</p>
               </Card>
             </div>
           </div>
