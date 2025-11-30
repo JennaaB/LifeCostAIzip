@@ -300,9 +300,9 @@ export default function Dashboard({ onEdit, onBackToHome, onSimulator, onCityCom
         {/* Categories & Drivers Row */}
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
           {/* Category Breakdown */}
-          <Card className="lg:col-span-3 p-6">
+          <Card className="lg:col-span-3 p-6 flex flex-col">
             <h3 className="text-xl font-semibold mb-4">Category Breakdown</h3>
-            <div className="space-y-3">
+            <div className="flex-1 flex flex-col justify-between">
               {dashboardData.categories.map((category) => (
                 <div key={category.name} className="space-y-1">
                   <div className="flex justify-between items-center">
