@@ -8,7 +8,6 @@ import {
   Target, 
   Coffee, 
   Car, 
-  Dumbbell, 
   Tv, 
   ShoppingBag,
   Users,
@@ -18,10 +17,7 @@ import {
   Loader2,
   Home,
   SlidersHorizontal,
-  UtensilsCrossed,
-  Smartphone,
-  Heart,
-  PartyPopper
+  Heart
 } from "lucide-react";
 import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
 import GlobalMap from "./GlobalMap";
@@ -33,61 +29,28 @@ import { calculateEstimates } from "@/lib/estimationEngine";
 const categoryIcons: Record<string, any> = {
   "Food & Dining": Coffee,
   "Transportation": Car,
+  "Health & Wellness": Heart,
   "Subscriptions": Tv,
-  "Fitness & Wellness": Dumbbell,
   "Shopping": ShoppingBag,
   "Social": Users,
-  "Coffee & Drinks": Coffee,
-  "Dining Out": UtensilsCrossed,
-  "Delivery & Takeout": Smartphone,
-  "Streaming": Tv,
-  "Apps & Services": Smartphone,
-  "Gym & Fitness": Dumbbell,
-  "Wellness & Self-Care": Heart,
-  "Wardrobe & Style": ShoppingBag,
-  "Hobbies & Extras": ShoppingBag,
-  "Nights Out": PartyPopper,
-  "Casual Hangouts": Users,
 };
 
 const categoryColors: Record<string, string> = {
   "Food & Dining": "text-chart-1",
   "Transportation": "text-chart-2",
+  "Health & Wellness": "text-chart-4",
   "Subscriptions": "text-chart-3",
-  "Fitness & Wellness": "text-chart-4",
   "Shopping": "text-chart-5",
-  "Social": "text-yellow-600",
-  "Coffee & Drinks": "text-chart-1",
-  "Dining Out": "text-chart-1",
-  "Delivery & Takeout": "text-chart-1",
-  "Streaming": "text-chart-3",
-  "Apps & Services": "text-chart-3",
-  "Gym & Fitness": "text-chart-4",
-  "Wellness & Self-Care": "text-chart-4",
-  "Wardrobe & Style": "text-chart-5",
-  "Hobbies & Extras": "text-chart-5",
-  "Nights Out": "text-yellow-600",
-  "Casual Hangouts": "text-yellow-600",
+  "Social": "text-amber-500",
 };
 
 const categoryBgColors: Record<string, string> = {
   "Food & Dining": "bg-chart-1/20",
   "Transportation": "bg-chart-2/20",
+  "Health & Wellness": "bg-chart-4/20",
   "Subscriptions": "bg-chart-3/20",
-  "Fitness & Wellness": "bg-chart-4/20",
   "Shopping": "bg-chart-5/20",
   "Social": "bg-amber-400/20",
-  "Coffee & Drinks": "bg-chart-1/20",
-  "Dining Out": "bg-chart-1/20",
-  "Delivery & Takeout": "bg-chart-1/20",
-  "Streaming": "bg-chart-3/20",
-  "Apps & Services": "bg-chart-3/20",
-  "Gym & Fitness": "bg-chart-4/20",
-  "Wellness & Self-Care": "bg-chart-4/20",
-  "Wardrobe & Style": "bg-chart-5/20",
-  "Hobbies & Extras": "bg-chart-5/20",
-  "Nights Out": "bg-amber-400/20",
-  "Casual Hangouts": "bg-amber-400/20",
 };
 
 const recommendationIcons: Record<string, any> = {

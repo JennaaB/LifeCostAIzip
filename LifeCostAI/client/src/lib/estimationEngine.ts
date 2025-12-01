@@ -303,20 +303,14 @@ export function calculateEstimates(formData: FormData): Omit<EstimationResult, '
   const totalMonthlyMin = Math.round(totalMonthly * 0.85);
   const totalMonthlyMax = Math.round(totalMonthly * 1.15);
 
-  // Build detailed category breakdown with 12 subcategories (always show all)
+  // Build 6 main category breakdown matching questionnaire sections
   const categories = [
-    { name: "Coffee & Drinks", amount: Math.round(coffeeDrinks), color: "bg-chart-1" },
-    { name: "Dining Out", amount: Math.round(diningOut), color: "bg-chart-1" },
-    { name: "Delivery & Takeout", amount: Math.round(deliveryTakeout), color: "bg-chart-1" },
+    { name: "Food & Dining", amount: Math.round(foodDining), color: "bg-chart-1" },
     { name: "Transportation", amount: Math.round(transportation), color: "bg-chart-2" },
-    { name: "Streaming", amount: Math.round(streamingAmount), color: "bg-chart-3" },
-    { name: "Apps & Services", amount: Math.round(appsServicesAmount), color: "bg-chart-3" },
-    { name: "Gym & Fitness", amount: Math.round(gymFitnessAmount), color: "bg-chart-4" },
-    { name: "Wellness & Self-Care", amount: Math.round(wellnessSelfCareAmount), color: "bg-chart-4" },
-    { name: "Wardrobe & Style", amount: Math.round(wardrobeStyleAmount), color: "bg-chart-5" },
-    { name: "Hobbies & Extras", amount: 0, color: "bg-chart-5" },
-    { name: "Nights Out", amount: Math.round(nightsOutAmount), color: "bg-amber-400" },
-    { name: "Casual Hangouts", amount: Math.round(casualHangoutsAmount), color: "bg-amber-400" },
+    { name: "Health & Wellness", amount: Math.round(fitness), color: "bg-chart-4" },
+    { name: "Subscriptions", amount: Math.round(subscriptions), color: "bg-chart-3" },
+    { name: "Shopping", amount: Math.round(shopping), color: "bg-chart-5" },
+    { name: "Social", amount: Math.round(social), color: "bg-amber-400" },
   ];
 
   const totalForPercentage = categories.reduce((sum, c) => sum + c.amount, 0);
@@ -325,14 +319,9 @@ export function calculateEstimates(formData: FormData): Omit<EstimationResult, '
     percentage: totalForPercentage > 0 ? parseFloat(((c.amount / totalForPercentage) * 100).toFixed(1)) : 0,
   }));
   
-  const mainCategories = [
-    { name: "Food & Dining", amount: Math.round(foodDining) },
-    { name: "Transportation", amount: Math.round(transportation) },
-    { name: "Subscriptions", amount: Math.round(subscriptions) },
-    { name: "Fitness & Wellness", amount: Math.round(fitness) },
-    { name: "Shopping", amount: Math.round(shopping) },
-    { name: "Social", amount: Math.round(social) },
-  ].filter(c => c.amount > 0).sort((a, b) => b.amount - a.amount);
+  const mainCategories = categoriesWithPercentage
+    .filter(c => c.amount > 0)
+    .sort((a, b) => b.amount - a.amount);
 
   const topCategory = mainCategories.length > 0 ? mainCategories[0].name : "N/A";
   const topCategoryAmount = mainCategories.length > 0 ? mainCategories[0].amount : 0;
