@@ -29,6 +29,7 @@ import { calculateEstimates } from "@/lib/estimationEngine";
 const categoryIcons: Record<string, any> = {
   "Food & Dining": Coffee,
   "Transportation": Car,
+  "Housing": Home,
   "Health & Wellness": Heart,
   "Subscriptions": Tv,
   "Shopping": ShoppingBag,
@@ -38,6 +39,7 @@ const categoryIcons: Record<string, any> = {
 const categoryColors: Record<string, string> = {
   "Food & Dining": "text-chart-1",
   "Transportation": "text-chart-2",
+  "Housing": "text-violet-500",
   "Health & Wellness": "text-chart-4",
   "Subscriptions": "text-chart-3",
   "Shopping": "text-chart-5",
@@ -47,6 +49,7 @@ const categoryColors: Record<string, string> = {
 const categoryBgColors: Record<string, string> = {
   "Food & Dining": "bg-chart-1/20",
   "Transportation": "bg-chart-2/20",
+  "Housing": "bg-violet-100",
   "Health & Wellness": "bg-chart-4/20",
   "Subscriptions": "bg-chart-3/20",
   "Shopping": "bg-chart-5/20",
@@ -129,12 +132,13 @@ export default function Dashboard({ onEdit, onBackToHome, onSimulator, onCityCom
     biggestOpportunity: "Review your spending patterns",
     goalAlignment: 70,
     categories: [
-      { name: "Food & Dining", amount: 785, percentage: 25.2, icon: Coffee, color: "bg-chart-1" },
-      { name: "Transportation", amount: 520, percentage: 16.7, icon: Car, color: "bg-chart-2" },
-      { name: "Health & Wellness", amount: 340, percentage: 10.9, icon: Heart, color: "bg-chart-4" },
-      { name: "Subscriptions", amount: 385, percentage: 12.3, icon: Tv, color: "bg-chart-3" },
-      { name: "Shopping", amount: 817, percentage: 26.2, icon: ShoppingBag, color: "bg-chart-5" },
-      { name: "Social", amount: 273, percentage: 8.8, icon: Users, color: "bg-amber-400" },
+      { name: "Food & Dining", amount: 785, percentage: 20.1, icon: Coffee, color: "bg-chart-1" },
+      { name: "Transportation", amount: 520, percentage: 13.3, icon: Car, color: "bg-chart-2" },
+      { name: "Housing", amount: 1200, percentage: 30.7, icon: Home, color: "bg-violet-500" },
+      { name: "Health & Wellness", amount: 340, percentage: 8.7, icon: Heart, color: "bg-chart-4" },
+      { name: "Subscriptions", amount: 385, percentage: 9.8, icon: Tv, color: "bg-chart-3" },
+      { name: "Shopping", amount: 817, percentage: 20.9, icon: ShoppingBag, color: "bg-chart-5" },
+      { name: "Social", amount: 273, percentage: 7.0, icon: Users, color: "bg-amber-400" },
     ],
     topDrivers: [
       { habit: "Food & Dining: $785/month", monthlyCost: 785, icon: Coffee },
@@ -388,7 +392,7 @@ export default function Dashboard({ onEdit, onBackToHome, onSimulator, onCityCom
                 <p className="text-sm text-muted-foreground">See how your spending balances between essentials, convenience, and enjoyment.</p>
               </div>
               {(() => {
-                const essentialsCategories = ["Food & Dining", "Transportation", "Coffee & Drinks", "Dining Out", "Delivery & Takeout"];
+                const essentialsCategories = ["Food & Dining", "Transportation", "Housing", "Coffee & Drinks", "Dining Out", "Delivery & Takeout"];
                 const convenienceCategories = ["Subscriptions", "Fitness & Wellness", "Streaming", "Apps & Services", "Gym & Fitness", "Wellness & Self-Care"];
                 const enjoymentCategories = ["Shopping", "Social", "Wardrobe & Style", "Hobbies & Extras", "Nights Out", "Casual Hangouts"];
                 
@@ -404,7 +408,7 @@ export default function Dashboard({ onEdit, onBackToHome, onSimulator, onCityCom
                 const total = essentialsAmount + convenienceAmount + enjoymentAmount;
                 
                 const lifestyleGroups = [
-                  { name: "Essentials", amount: essentialsAmount, percentage: Math.round((essentialsAmount / total) * 100), color: "#3b82f6", description: "Food & Transport" },
+                  { name: "Essentials", amount: essentialsAmount, percentage: Math.round((essentialsAmount / total) * 100), color: "#3b82f6", description: "Housing, Food & Transport" },
                   { name: "Convenience", amount: convenienceAmount, percentage: Math.round((convenienceAmount / total) * 100), color: "#8b5cf6", description: "Subscriptions & Wellness" },
                   { name: "Enjoyment", amount: enjoymentAmount, percentage: Math.round((enjoymentAmount / total) * 100), color: "#f59e0b", description: "Shopping & Social" },
                 ];
