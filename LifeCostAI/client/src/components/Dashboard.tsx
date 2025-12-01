@@ -223,16 +223,7 @@ export default function Dashboard({ onEdit, onBackToHome, onSimulator, onCityCom
       const canvas = await html2canvas(element, {
         scale: 1.5,
         useCORS: true,
-        allowTaint: true,
         backgroundColor: "#ffffff",
-        logging: true,
-        imageTimeout: 15000,
-        onclone: (clonedDoc) => {
-          const clonedElement = clonedDoc.querySelector('[data-dashboard-content]');
-          if (clonedElement) {
-            (clonedElement as HTMLElement).style.transform = 'none';
-          }
-        }
       });
       
       const imgData = canvas.toDataURL("image/jpeg", 0.8);
@@ -272,7 +263,6 @@ export default function Dashboard({ onEdit, onBackToHome, onSimulator, onCityCom
       const link = document.createElement('a');
       link.href = blobUrl;
       link.download = `LifeCostAI-Snapshot-${new Date().toISOString().split("T")[0]}.pdf`;
-      link.target = '_blank';
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
