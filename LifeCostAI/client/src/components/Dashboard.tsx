@@ -217,18 +217,21 @@ export default function Dashboard({ onEdit, onBackToHome, onSimulator, onCityCom
     try {
       const element = dashboardRef.current;
       const canvas = await html2canvas(element, {
-        scale: 2,
+        scale: 1.5,
         useCORS: true,
         allowTaint: true,
         backgroundColor: "#ffffff",
         logging: false,
+        imageTimeout: 15000,
+        removeContainer: true,
       });
       
-      const imgData = canvas.toDataURL("image/png");
+      const imgData = canvas.toDataURL("image/jpeg", 0.85);
       const pdf = new jsPDF({
         orientation: "portrait",
         unit: "mm",
         format: "a4",
+        compress: true,
       });
       
       const pdfWidth = pdf.internal.pageSize.getWidth();
@@ -244,13 +247,13 @@ export default function Dashboard({ onEdit, onBackToHome, onSimulator, onCityCom
       let heightLeft = scaledHeight;
       let position = imgY;
       
-      pdf.addImage(imgData, "PNG", imgX, position, imgWidth * ratio, scaledHeight);
+      pdf.addImage(imgData, "JPEG", imgX, position, imgWidth * ratio, scaledHeight);
       heightLeft -= pageHeight;
       
       while (heightLeft > 0) {
         position = heightLeft - scaledHeight + imgY;
         pdf.addPage();
-        pdf.addImage(imgData, "PNG", imgX, position, imgWidth * ratio, scaledHeight);
+        pdf.addImage(imgData, "JPEG", imgX, position, imgWidth * ratio, scaledHeight);
         heightLeft -= pageHeight;
       }
       
@@ -531,10 +534,10 @@ export default function Dashboard({ onEdit, onBackToHome, onSimulator, onCityCom
             </div>
           </div>
         </Card>
-
-        {/* Global Map */}
-        <GlobalMap baseAmount={dashboardData.totalMonthly} baseCity={dashboardData.city} onDeepDive={onCityComparison} />
         </div>
+
+        {/* Global Map - Outside PDF export area */}
+        <GlobalMap baseAmount={dashboardData.totalMonthly} baseCity={dashboardData.city} onDeepDive={onCityComparison} />
       </div>
     </div>
   );
