@@ -18,6 +18,8 @@ export interface FormData {
     deliveryFrequency: string;
     diningOutFrequency: string;
     diningStyle: string;
+    groceryShopping: string;
+    groceryStyle: string;
   };
   transportation: {
     commuteMethod: string;
@@ -67,7 +69,7 @@ export interface FormData {
 }
 
 const initialFormData: FormData = {
-  foodDining: { coffeeFrequency: "", deliveryFrequency: "", diningOutFrequency: "", diningStyle: "" },
+  foodDining: { coffeeFrequency: "", deliveryFrequency: "", diningOutFrequency: "", diningStyle: "", groceryShopping: "", groceryStyle: "" },
   transportation: { commuteMethod: "", distance: "", rideshareTripsPerWeek: "", payForParking: "", parkingRateType: "", transitPassType: "" },
   fitness: { hasMembership: "", membershipTier: "", dropInSessionsPerWeek: "", wellnessSpend: [], wellnessOther: "", wellnessFrequency: "", hairCutFrequency: "", hairServiceType: "", personalCare: "" },
   subscriptions: { hasSubscriptions: "", services: [], other: "" },

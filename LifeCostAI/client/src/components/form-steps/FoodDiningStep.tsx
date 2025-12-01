@@ -1,7 +1,7 @@
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import type { FormData } from "../LifestyleForm";
-import { Coffee, UtensilsCrossed, Truck } from "lucide-react";
+import { Coffee, UtensilsCrossed, Truck, ShoppingCart } from "lucide-react";
 
 interface FoodDiningStepProps {
   data: FormData;
@@ -15,6 +15,12 @@ export default function FoodDiningStep({ data, onChange }: FoodDiningStepProps) 
     { value: "Happy hour & daily specials (budget-friendly)", label: "Budget-friendly", desc: "Happy hour & daily specials" },
     { value: "Mix of casual and upscale (balanced)", label: "Balanced", desc: "Mix of casual and upscale" },
     { value: "Full-course meals & premium drinks (fine dining)", label: "Fine dining", desc: "Full-course meals & premium drinks" },
+  ];
+
+  const groceryStyles = [
+    { value: "Budget-conscious", label: "Budget-conscious", desc: "Store brands, sales & coupons" },
+    { value: "Mixed approach", label: "Mixed approach", desc: "Balance of value and quality" },
+    { value: "Premium & organic", label: "Premium & organic", desc: "Whole Foods, specialty stores" },
   ];
 
   return (
@@ -131,6 +137,68 @@ export default function FoodDiningStep({ data, onChange }: FoodDiningStepProps) 
                 <RadioGroupItem value={style.value} id={`style-${style.value}`} className="peer sr-only" data-testid={`radio-style-${style.label.toLowerCase()}`} />
                 <Label 
                   htmlFor={`style-${style.value}`} 
+                  className="flex flex-col items-center justify-center p-4 sm:p-5 rounded-xl border-2 cursor-pointer transition-all min-h-[80px] sm:min-h-[100px]
+                    hover:border-primary/50 hover:bg-primary/5
+                    peer-data-[state=checked]:border-primary peer-data-[state=checked]:bg-primary/10
+                    peer-focus-visible:ring-2 peer-focus-visible:ring-primary peer-focus-visible:ring-offset-2"
+                >
+                  <span className="text-sm sm:text-base font-semibold text-center peer-data-[state=checked]:text-primary">{style.label}</span>
+                  <span className="text-xs sm:text-sm text-muted-foreground text-center mt-1">{style.desc}</span>
+                </Label>
+              </div>
+            ))}
+          </RadioGroup>
+        </div>
+      )}
+
+      <div className="space-y-4">
+        <div className="flex items-center gap-3">
+          <div className="w-8 h-8 rounded-lg bg-green-100 flex items-center justify-center">
+            <ShoppingCart className="w-4 h-4 text-green-600" />
+          </div>
+          <Label className="text-base sm:text-lg font-semibold">Do you grocery shop?</Label>
+        </div>
+        <RadioGroup
+          value={data.foodDining.groceryShopping}
+          onValueChange={(value) => onChange({
+            ...data,
+            foodDining: { ...data.foodDining, groceryShopping: value, groceryStyle: "" }
+          })}
+          className="grid grid-cols-2 gap-3"
+        >
+          {["Yes", "No"].map((option) => (
+            <div key={option} className="relative">
+              <RadioGroupItem value={option} id={`grocery-${option}`} className="peer sr-only" data-testid={`radio-grocery-${option.toLowerCase()}`} />
+              <Label 
+                htmlFor={`grocery-${option}`} 
+                className="flex items-center justify-center p-4 rounded-xl border-2 cursor-pointer transition-all
+                  hover:border-primary/50 hover:bg-primary/5
+                  peer-data-[state=checked]:border-primary peer-data-[state=checked]:bg-primary/10 peer-data-[state=checked]:text-primary
+                  peer-focus-visible:ring-2 peer-focus-visible:ring-primary peer-focus-visible:ring-offset-2"
+              >
+                <span className="text-sm sm:text-base font-medium text-center">{option}</span>
+              </Label>
+            </div>
+          ))}
+        </RadioGroup>
+      </div>
+
+      {data.foodDining.groceryShopping === "Yes" && (
+        <div className="space-y-4 animate-in fade-in slide-in-from-top-2 duration-300">
+          <Label className="text-base sm:text-lg font-semibold block">How do you approach grocery shopping?</Label>
+          <RadioGroup
+            value={data.foodDining.groceryStyle}
+            onValueChange={(value) => onChange({
+              ...data,
+              foodDining: { ...data.foodDining, groceryStyle: value }
+            })}
+            className="grid grid-cols-1 sm:grid-cols-3 gap-3"
+          >
+            {groceryStyles.map((style) => (
+              <div key={style.value} className="relative">
+                <RadioGroupItem value={style.value} id={`grocery-style-${style.value}`} className="peer sr-only" data-testid={`radio-grocery-style-${style.label.toLowerCase()}`} />
+                <Label 
+                  htmlFor={`grocery-style-${style.value}`} 
                   className="flex flex-col items-center justify-center p-4 sm:p-5 rounded-xl border-2 cursor-pointer transition-all min-h-[80px] sm:min-h-[100px]
                     hover:border-primary/50 hover:bg-primary/5
                     peer-data-[state=checked]:border-primary peer-data-[state=checked]:bg-primary/10

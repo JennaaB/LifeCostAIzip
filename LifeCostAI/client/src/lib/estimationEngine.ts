@@ -81,6 +81,17 @@ export function calculateEstimates(formData: FormData): Omit<EstimationResult, '
   diningOut = isUpscale ? diningAmount * 1.5 : diningAmount;
   foodDining += diningOut;
 
+  // Grocery shopping estimation
+  if (formData.foodDining.groceryShopping === "Yes") {
+    const groceryStyleMap: Record<string, number> = {
+      "Budget-conscious": 300,
+      "Mixed approach": 450,
+      "Premium & organic": 650,
+    };
+    const groceryAmount = groceryStyleMap[formData.foodDining.groceryStyle] || 400;
+    foodDining += groceryAmount;
+  }
+
   // Transportation estimation - values match form options
   if (formData.transportation.commuteMethod === "Personal Car") {
     // Base cost for driving - assume average commute costs
