@@ -273,24 +273,26 @@ export default function Dashboard({ onEdit, onBackToHome, onSimulator, onCityCom
             <p className="text-muted-foreground mt-2">Based on typical costs in {dashboardData.city}</p>
           </div>
           <div className="flex flex-wrap gap-3">
-            <Button variant="outline" onClick={onEdit} data-testid="button-edit-responses">
-              <Edit className="w-4 h-4 mr-2" />
+            <Button variant="outline" size="lg" onClick={onEdit} data-testid="button-edit-responses" className="text-base">
+              <Edit className="w-5 h-5 mr-2" />
               Edit Responses
             </Button>
-            <Button variant="outline" onClick={onBackToHome} data-testid="button-back-home">
-              <Home className="w-4 h-4 mr-2" />
+            <Button variant="outline" size="lg" onClick={onBackToHome} data-testid="button-back-home" className="text-base">
+              <Home className="w-5 h-5 mr-2" />
               Home
             </Button>
             <Button 
               variant="outline" 
+              size="lg"
               onClick={handleExportPDF} 
               disabled={isExporting}
               data-testid="button-export"
+              className="text-base"
             >
               {isExporting ? (
-                <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                <Loader2 className="w-5 h-5 mr-2 animate-spin" />
               ) : (
-                <Download className="w-4 h-4 mr-2" />
+                <Download className="w-5 h-5 mr-2" />
               )}
               {isExporting ? "Generating..." : "Export Report"}
             </Button>
@@ -522,9 +524,9 @@ export default function Dashboard({ onEdit, onBackToHome, onSimulator, onCityCom
               </p>
             </div>
             <div className="shrink-0">
-              <Button size="lg" className="gap-2">
+              <Button size="lg" className="gap-2 text-base px-6">
                 Try It Now
-                <SlidersHorizontal className="w-4 h-4" />
+                <SlidersHorizontal className="w-5 h-5" />
               </Button>
             </div>
           </div>
