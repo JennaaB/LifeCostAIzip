@@ -31,6 +31,7 @@ export interface EstimationResult {
 export function calculateEstimates(formData: FormData): Omit<EstimationResult, 'icon'> {
   let foodDining = 0;
   let transportation = 0;
+  let housing = 0;
   let fitness = 0;
   let subscriptions = 0;
   let shopping = 0;
@@ -133,6 +134,47 @@ export function calculateEstimates(formData: FormData): Omit<EstimationResult, '
     "Never": 0,
   };
   transportation += rideshareFreqMap[formData.transportation.rideshareTripsPerWeek] || 0;
+
+  // Housing estimation
+  const locationMultiplier: Record<string, number> = {
+    "Rural": 0.6,
+    "Suburban": 0.85,
+    "Urban": 1.1,
+    "Inner city": 1.4,
+  };
+
+  const tierBaseRent: Record<string, number> = {
+    "Budget": 1000,
+    "Mid-range": 1800,
+    "Luxury": 3200,
+  };
+
+  const tierBaseMortgage: Record<string, number> = {
+    "Budget": 1200,
+    "Mid-range": 2200,
+    "Luxury": 4000,
+  };
+
+  if (formData.housing.livingSituation === "Renting") {
+    const baseRent = tierBaseRent[formData.housing.housingTier] || 1500;
+    const multiplier = locationMultiplier[formData.housing.locationType] || 1;
+    housing = Math.round(baseRent * multiplier);
+  } else if (formData.housing.livingSituation === "Own a home") {
+    if (formData.housing.paysMortgage === "Yes") {
+      const baseMortgage = tierBaseMortgage[formData.housing.housingTier] || 1800;
+      const multiplier = locationMultiplier[formData.housing.locationType] || 1;
+      housing = Math.round(baseMortgage * multiplier);
+    } else {
+      // No mortgage - just property taxes, insurance, maintenance estimate
+      const tierMaintenanceMap: Record<string, number> = {
+        "Budget": 300,
+        "Mid-range": 500,
+        "Luxury": 900,
+      };
+      housing = tierMaintenanceMap[formData.housing.housingTier] || 400;
+    }
+  }
+  // Live at home for free = $0
 
   // Health & Wellness estimation - form uses "yes"/"no" lowercase
   if (formData.fitness.hasMembership === "yes") {
@@ -317,7 +359,7 @@ export function calculateEstimates(formData: FormData): Omit<EstimationResult, '
     social += nightsOutAmount;
   }
 
-  const totalMonthly = Math.round(foodDining + transportation + fitness + subscriptions + shopping + social);
+  const totalMonthly = Math.round(foodDining + transportation + housing + fitness + subscriptions + shopping + social);
   const totalMonthlyMin = Math.round(totalMonthly * 0.85);
   const totalMonthlyMax = Math.round(totalMonthly * 1.15);
 
@@ -325,6 +367,7 @@ export function calculateEstimates(formData: FormData): Omit<EstimationResult, '
   const categories = [
     { name: "Food & Dining", amount: Math.round(foodDining), color: "bg-chart-1" },
     { name: "Transportation", amount: Math.round(transportation), color: "bg-chart-2" },
+    { name: "Housing", amount: Math.round(housing), color: "bg-violet-500" },
     { name: "Health & Wellness", amount: Math.round(fitness), color: "bg-chart-4" },
     { name: "Subscriptions", amount: Math.round(subscriptions), color: "bg-chart-3" },
     { name: "Shopping", amount: Math.round(shopping), color: "bg-chart-5" },

@@ -2,9 +2,10 @@ import { useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
-import { ChevronLeft, ChevronRight, Coffee, Car, Dumbbell, Tv, ShoppingBag, Users, Target, ClipboardCheck, Check } from "lucide-react";
+import { ChevronLeft, ChevronRight, Coffee, Car, Home, Dumbbell, Tv, ShoppingBag, Users, Target, ClipboardCheck, Check } from "lucide-react";
 import FoodDiningStep from "./form-steps/FoodDiningStep";
 import TransportationStep from "./form-steps/TransportationStep";
+import HousingStep from "./form-steps/HousingStep";
 import FitnessStep from "./form-steps/FitnessStep";
 import SubscriptionsStep from "./form-steps/SubscriptionsStep";
 import ShoppingStep from "./form-steps/ShoppingStep";
@@ -29,6 +30,12 @@ export interface FormData {
     parkingRateType: string;
     transitPassType: string;
     carType: string;
+  };
+  housing: {
+    livingSituation: string;
+    housingTier: string;
+    locationType: string;
+    paysMortgage: string;
   };
   fitness: {
     hasMembership: string;
@@ -72,6 +79,7 @@ export interface FormData {
 const initialFormData: FormData = {
   foodDining: { coffeeFrequency: "", deliveryFrequency: "", diningOutFrequency: "", diningStyle: "", groceryShopping: "", groceryStyle: "" },
   transportation: { commuteMethod: "", distance: "", rideshareTripsPerWeek: "", payForParking: "", parkingRateType: "", transitPassType: "", carType: "" },
+  housing: { livingSituation: "", housingTier: "", locationType: "", paysMortgage: "" },
   fitness: { hasMembership: "", membershipTier: "", dropInSessionsPerWeek: "", wellnessSpend: [], wellnessOther: "", wellnessFrequency: "", hairCutFrequency: "", hairServiceType: "", personalCare: "" },
   subscriptions: { hasSubscriptions: "", services: [], other: "" },
   shopping: { clothingFrequency: "", buyingHabit: "", shoppingStyle: "" },
@@ -100,6 +108,12 @@ export default function LifestyleForm({ onSubmit, onBack }: LifestyleFormProps) 
       icon: Car, 
       description: "How do you get around?",
       component: TransportationStep 
+    },
+    { 
+      title: "Housing", 
+      icon: Home, 
+      description: "Your living situation and costs",
+      component: HousingStep 
     },
     { 
       title: "Health & Wellness", 
