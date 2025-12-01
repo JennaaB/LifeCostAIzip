@@ -35,6 +35,18 @@ export function calculateEstimates(formData: FormData): Omit<EstimationResult, '
   let subscriptions = 0;
   let shopping = 0;
   let social = 0;
+  
+  // Track subcategory amounts
+  let coffeeDrinks = 0;
+  let diningOut = 0;
+  let deliveryTakeout = 0;
+  let streamingAmount = 0;
+  let appsServicesAmount = 0;
+  let gymFitnessAmount = 0;
+  let wellnessSelfCareAmount = 0;
+  let wardrobeStyleAmount = 0;
+  let nightsOutAmount = 0;
+  let casualHangoutsAmount = 0;
 
   // Food & Dining estimation
   const coffeeFreqMap: Record<string, number> = {
@@ -44,7 +56,8 @@ export function calculateEstimates(formData: FormData): Omit<EstimationResult, '
     "1-2x/week": 30,
     "Less than weekly": 10,
   };
-  foodDining += coffeeFreqMap[formData.foodDining.coffeeFrequency] || 0;
+  coffeeDrinks = coffeeFreqMap[formData.foodDining.coffeeFrequency] || 0;
+  foodDining += coffeeDrinks;
 
   const deliveryFreqMap: Record<string, number> = {
     "2-3x/week": 300,
@@ -53,7 +66,8 @@ export function calculateEstimates(formData: FormData): Omit<EstimationResult, '
     "Less than 2x/month": 20,
     "Never": 0,
   };
-  foodDining += deliveryFreqMap[formData.foodDining.deliveryFrequency] || 0;
+  deliveryTakeout = deliveryFreqMap[formData.foodDining.deliveryFrequency] || 0;
+  foodDining += deliveryTakeout;
 
   const diningFreqMap: Record<string, number> = {
     "2-3x/week": 200,
@@ -63,7 +77,8 @@ export function calculateEstimates(formData: FormData): Omit<EstimationResult, '
     "Never": 0,
   };
   const diningAmount = diningFreqMap[formData.foodDining.diningOutFrequency] || 0;
-  foodDining += formData.foodDining.diningStyle === "Upscale" ? diningAmount * 1.5 : diningAmount;
+  diningOut = formData.foodDining.diningStyle === "Upscale" ? diningAmount * 1.5 : diningAmount;
+  foodDining += diningOut;
 
   // Transportation estimation
   if (formData.transportation.commuteMethod === "Personal Car") {
@@ -108,7 +123,8 @@ export function calculateEstimates(formData: FormData): Omit<EstimationResult, '
       "Standard ($25-50/month)": 35,
       "Premium ($50+/month)": 70,
     };
-    fitness += tierMap[formData.fitness.membershipTier] || 0;
+    gymFitnessAmount = tierMap[formData.fitness.membershipTier] || 0;
+    fitness += gymFitnessAmount;
   } else if (formData.fitness.hasMembership === "Drop-in Sessions") {
     const dropInMap: Record<string, number> = {
       "1-2x/week": 40,
@@ -116,7 +132,8 @@ export function calculateEstimates(formData: FormData): Omit<EstimationResult, '
       "2-3x/month": 15,
       "Less than 2x/month": 5,
     };
-    fitness += dropInMap[formData.fitness.dropInSessionsPerWeek] || 0;
+    gymFitnessAmount = dropInMap[formData.fitness.dropInSessionsPerWeek] || 0;
+    fitness += gymFitnessAmount;
   }
 
   // Wellness services
@@ -126,9 +143,11 @@ export function calculateEstimates(formData: FormData): Omit<EstimationResult, '
     "Monthly": 40,
     "Less than monthly": 15,
   };
+  let wellnessAmount = 0;
   if (formData.fitness.wellnessSpend.length > 0) {
     const wellnessFreq = wellnessFreqMap[formData.fitness.wellnessFrequency] || 0;
-    fitness += wellnessFreq * formData.fitness.wellnessSpend.length;
+    wellnessAmount = wellnessFreq * formData.fitness.wellnessSpend.length;
+    fitness += wellnessAmount;
   }
 
   // Hair salon
@@ -144,14 +163,33 @@ export function calculateEstimates(formData: FormData): Omit<EstimationResult, '
     "Cut and wash/styling": 1.3,
     "Color treatment/Extensions": 2,
   };
-  fitness += baseHairCost * (hairServiceMultiplier[formData.fitness.hairServiceType] || 1);
+  const hairAmount = baseHairCost * (hairServiceMultiplier[formData.fitness.hairServiceType] || 1);
+  fitness += hairAmount;
+
+  // Personal care
+  const personalCareMap: Record<string, number> = {
+    "Basic (drugstore)": 15,
+    "Moderate": 35,
+    "Premium (salon/spa)": 60,
+  };
+  const personalCareAmount = personalCareMap[formData.fitness.personalCare] || 0;
+  fitness += personalCareAmount;
+  
+  wellnessSelfCareAmount = wellnessAmount + hairAmount + personalCareAmount;
 
   // Subscriptions estimation
   if (formData.subscriptions.hasSubscriptions === "Yes") {
-    subscriptions += formData.subscriptions.services.length * 15;
-    if (formData.subscriptions.other) {
-      subscriptions += 10;
-    }
+    const streamingServices = formData.subscriptions.services.filter(s => 
+      s.includes("Netflix") || s.includes("Spotify") || s.includes("Disney+") || s.includes("HBO") || s.includes("Apple")
+    );
+    const otherServices = formData.subscriptions.services.filter(s => 
+      !s.includes("Netflix") && !s.includes("Spotify") && !s.includes("Disney+") && !s.includes("HBO") && !s.includes("Apple")
+    );
+    
+    streamingAmount = streamingServices.length * 15;
+    appsServicesAmount = otherServices.length * 15 + (formData.subscriptions.other ? 10 : 0);
+    
+    subscriptions += streamingAmount + appsServicesAmount;
   }
 
   // Shopping estimation
@@ -168,21 +206,13 @@ export function calculateEstimates(formData: FormData): Omit<EstimationResult, '
     "Mix of budget and quality": 1,
     "Quality/designer": 1.5,
   };
-  shopping += baseClothing * (qualityMultiplier[formData.shopping.shoppingStyle] || 1);
-
-  const personalCareMap: Record<string, number> = {
-    "Basic (drugstore)": 15,
-    "Moderate": 35,
-    "Premium (salon/spa)": 60,
-  };
-  fitness += personalCareMap[formData.fitness.personalCare] || 0;
-
   const buyingHabitMultiplier: Record<string, number> = {
     "I buy items I need plus some extras": 1,
     "I buy what I need": 0.8,
     "I frequently buy impulsively": 1.3,
   };
-  shopping *= buyingHabitMultiplier[formData.shopping.buyingHabit] || 1;
+  wardrobeStyleAmount = baseClothing * (qualityMultiplier[formData.shopping.shoppingStyle] || 1) * (buyingHabitMultiplier[formData.shopping.buyingHabit] || 1);
+  shopping += wardrobeStyleAmount;
 
   // Social estimation
   if (formData.social.socializingStyle === "At-home") {
@@ -192,7 +222,7 @@ export function calculateEstimates(formData: FormData): Omit<EstimationResult, '
       "Monthly": 30,
       "Few times a year": 10,
     };
-    social += hostingFreqMap[formData.social.hostingFrequency] || 0;
+    casualHangoutsAmount += hostingFreqMap[formData.social.hostingFrequency] || 0;
 
     const hostingStyleMap: Record<string, number> = {
       "Snacks and drinks": 0,
@@ -200,7 +230,8 @@ export function calculateEstimates(formData: FormData): Omit<EstimationResult, '
       "Cook a full meal": 30,
       "Potluck style": 0,
     };
-    social += hostingStyleMap[formData.social.hostingStyle] || 0;
+    casualHangoutsAmount += hostingStyleMap[formData.social.hostingStyle] || 0;
+    social += casualHangoutsAmount;
   } else if (formData.social.socializingStyle === "Casual outings") {
     const casualFreqMap: Record<string, number> = {
       "Multiple times a week": 150,
@@ -208,7 +239,7 @@ export function calculateEstimates(formData: FormData): Omit<EstimationResult, '
       "Bi-weekly": 40,
       "Monthly": 20,
     };
-    social += casualFreqMap[formData.social.casualFrequency] || 0;
+    casualHangoutsAmount += casualFreqMap[formData.social.casualFrequency] || 0;
 
     const casualTypeMap: Record<string, number> = {
       "Coffee or cafe": 0,
@@ -216,7 +247,8 @@ export function calculateEstimates(formData: FormData): Omit<EstimationResult, '
       "Movies or entertainment": 30,
       "Shopping with friends": 0,
     };
-    social += casualTypeMap[formData.social.casualType] || 0;
+    casualHangoutsAmount += casualTypeMap[formData.social.casualType] || 0;
+    social += casualHangoutsAmount;
   } else if (formData.social.socializingStyle === "Active plans") {
     const activeFreqMap: Record<string, number> = {
       "Multiple times a week": 120,
@@ -224,7 +256,7 @@ export function calculateEstimates(formData: FormData): Omit<EstimationResult, '
       "Bi-weekly": 30,
       "Monthly": 15,
     };
-    social += activeFreqMap[formData.social.activeFrequency] || 0;
+    casualHangoutsAmount += activeFreqMap[formData.social.activeFrequency] || 0;
 
     const activeTypeMap: Record<string, number> = {
       "Hiking or outdoor sports": 0,
@@ -232,7 +264,8 @@ export function calculateEstimates(formData: FormData): Omit<EstimationResult, '
       "Sports leagues or pickup games": 40,
       "Adventure activities": 60,
     };
-    social += activeTypeMap[formData.social.activeType] || 0;
+    casualHangoutsAmount += activeTypeMap[formData.social.activeType] || 0;
+    social += casualHangoutsAmount;
   } else if (formData.social.socializingStyle === "Going-out/nightlife") {
     const nightlifeFreqMap: Record<string, number> = {
       "Multiple times a week": 300,
@@ -240,7 +273,7 @@ export function calculateEstimates(formData: FormData): Omit<EstimationResult, '
       "Bi-weekly": 75,
       "Monthly or less": 30,
     };
-    social += nightlifeFreqMap[formData.social.nightlifeFrequency] || 0;
+    nightsOutAmount += nightlifeFreqMap[formData.social.nightlifeFrequency] || 0;
 
     const nightlifeStyleMap: Record<string, number> = {
       "Couple drinks at a bar": 0,
@@ -248,7 +281,7 @@ export function calculateEstimates(formData: FormData): Omit<EstimationResult, '
       "Full night out with clubs": 60,
       "VIP or bottle service": 100,
     };
-    social += nightlifeStyleMap[formData.social.nightlifeStyle] || 0;
+    nightsOutAmount += nightlifeStyleMap[formData.social.nightlifeStyle] || 0;
 
     const buyingRoundsMap: Record<string, number> = {
       "Often": 80,
@@ -256,31 +289,47 @@ export function calculateEstimates(formData: FormData): Omit<EstimationResult, '
       "Rarely": 10,
       "Never": 0,
     };
-    social += buyingRoundsMap[formData.social.buyingRounds] || 0;
+    nightsOutAmount += buyingRoundsMap[formData.social.buyingRounds] || 0;
+    social += nightsOutAmount;
   }
 
   const totalMonthly = Math.round(foodDining + transportation + fitness + subscriptions + shopping + social);
   const totalMonthlyMin = Math.round(totalMonthly * 0.85);
   const totalMonthlyMax = Math.round(totalMonthly * 1.15);
 
-  // Build category breakdown
+  // Build detailed category breakdown with 12 subcategories (always show all)
   const categories = [
-    { name: "Food & Dining", amount: Math.round(foodDining), color: "bg-chart-1" },
+    { name: "Coffee & Drinks", amount: Math.round(coffeeDrinks), color: "bg-chart-1" },
+    { name: "Dining Out", amount: Math.round(diningOut), color: "bg-chart-1" },
+    { name: "Delivery & Takeout", amount: Math.round(deliveryTakeout), color: "bg-chart-1" },
     { name: "Transportation", amount: Math.round(transportation), color: "bg-chart-2" },
-    { name: "Subscriptions", amount: Math.round(subscriptions), color: "bg-chart-3" },
-    { name: "Fitness & Wellness", amount: Math.round(fitness), color: "bg-chart-4" },
-    { name: "Shopping", amount: Math.round(shopping), color: "bg-chart-5" },
-    { name: "Social", amount: Math.round(social), color: "bg-amber-400" },
-  ].filter(c => c.amount > 0);
+    { name: "Streaming", amount: Math.round(streamingAmount), color: "bg-chart-3" },
+    { name: "Apps & Services", amount: Math.round(appsServicesAmount), color: "bg-chart-3" },
+    { name: "Gym & Fitness", amount: Math.round(gymFitnessAmount), color: "bg-chart-4" },
+    { name: "Wellness & Self-Care", amount: Math.round(wellnessSelfCareAmount), color: "bg-chart-4" },
+    { name: "Wardrobe & Style", amount: Math.round(wardrobeStyleAmount), color: "bg-chart-5" },
+    { name: "Hobbies & Extras", amount: 0, color: "bg-chart-5" },
+    { name: "Nights Out", amount: Math.round(nightsOutAmount), color: "bg-amber-400" },
+    { name: "Casual Hangouts", amount: Math.round(casualHangoutsAmount), color: "bg-amber-400" },
+  ];
 
   const totalForPercentage = categories.reduce((sum, c) => sum + c.amount, 0);
   const categoriesWithPercentage = categories.map(c => ({
     ...c,
     percentage: totalForPercentage > 0 ? parseFloat(((c.amount / totalForPercentage) * 100).toFixed(1)) : 0,
   }));
+  
+  const mainCategories = [
+    { name: "Food & Dining", amount: Math.round(foodDining) },
+    { name: "Transportation", amount: Math.round(transportation) },
+    { name: "Subscriptions", amount: Math.round(subscriptions) },
+    { name: "Fitness & Wellness", amount: Math.round(fitness) },
+    { name: "Shopping", amount: Math.round(shopping) },
+    { name: "Social", amount: Math.round(social) },
+  ].filter(c => c.amount > 0).sort((a, b) => b.amount - a.amount);
 
-  const topCategory = categoriesWithPercentage.length > 0 ? categoriesWithPercentage[0].name : "N/A";
-  const topCategoryAmount = categoriesWithPercentage.length > 0 ? categoriesWithPercentage[0].amount : 0;
+  const topCategory = mainCategories.length > 0 ? mainCategories[0].name : "N/A";
+  const topCategoryAmount = mainCategories.length > 0 ? mainCategories[0].amount : 0;
 
   // Determine biggest opportunity and alignment
   let biggestOpportunity = "Review your spending patterns";
