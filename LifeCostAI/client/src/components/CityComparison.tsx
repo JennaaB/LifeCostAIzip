@@ -999,42 +999,49 @@ export default function CityComparison({ onBack, baselineCategories, baseCity = 
                       </div>
                       <h4 className="font-semibold text-lg">{cat.name}</h4>
                     </div>
-                    <div className="flex justify-around items-end gap-3 h-48">
-                      {selectedCityData.map((city, index) => {
-                        const amount = getCategoryAmount(city.categoryMultipliers, cat.name, city);
-                        const keyMap: Record<string, keyof CityData["categoryMultipliers"]> = {
-                          "Food & Dining": "foodDining",
-                          "Transportation": "transportation",
-                          "Subscriptions": "subscriptions",
-                          "Health & Wellness": "fitness",
-                          "Shopping": "shopping",
-                        };
-                        const multiplier = cat.name === "Housing" ? 1 : city.categoryMultipliers[keyMap[cat.name]];
-                        const maxAmount = Math.max(
-                          ...selectedCityData.map((c) => getCategoryAmount(c.categoryMultipliers, cat.name, c))
-                        );
-                        const barHeight = (amount / maxAmount) * 100;
-                        return (
-                          <div key={city.name} className="flex flex-col items-center gap-2 flex-1">
-                            <div className="text-xs font-bold text-center">~${amount}</div>
-                            {city.name !== baseCity && cat.name !== "Housing" && (
-                              <div className="text-xs mb-1">{getDiffBadge(multiplier)}</div>
-                            )}
-                            <div className="w-full bg-muted rounded-t-md overflow-hidden flex-1 flex items-end justify-center" style={{ minHeight: "120px" }}>
-                              <div
-                                className="w-3/4 rounded-t-md transition-all"
-                                style={{
-                                  height: `${barHeight}%`,
-                                  backgroundColor: chartColors[index],
-                                  minHeight: "8px",
-                                }}
-                              />
-                            </div>
-                            <div className="text-xs font-medium text-center">{city.name}</div>
-                          </div>
-                        );
-                      })}
-                    </div>
+                    {(() => {
+                      const maxAmount = Math.max(
+                        ...selectedCityData.map((c) => getCategoryAmount(c.categoryMultipliers, cat.name, c))
+                      );
+                      const barContainerHeight = 140;
+                      return (
+                        <div className="flex justify-around items-end gap-3" style={{ height: `${barContainerHeight + 60}px` }}>
+                          {selectedCityData.map((city, index) => {
+                            const amount = getCategoryAmount(city.categoryMultipliers, cat.name, city);
+                            const keyMap: Record<string, keyof CityData["categoryMultipliers"]> = {
+                              "Food & Dining": "foodDining",
+                              "Transportation": "transportation",
+                              "Subscriptions": "subscriptions",
+                              "Health & Wellness": "fitness",
+                              "Shopping": "shopping",
+                            };
+                            const multiplier = cat.name === "Housing" ? 1 : city.categoryMultipliers[keyMap[cat.name]];
+                            const barHeightPx = Math.max(8, (amount / maxAmount) * barContainerHeight);
+                            return (
+                              <div key={city.name} className="flex flex-col items-center gap-1 flex-1">
+                                <div className="text-xs font-bold text-center">~${amount.toLocaleString()}</div>
+                                {city.name !== baseCity && cat.name !== "Housing" && (
+                                  <div className="text-xs">{getDiffBadge(multiplier)}</div>
+                                )}
+                                <div 
+                                  className="w-full flex items-end justify-center" 
+                                  style={{ height: `${barContainerHeight}px` }}
+                                >
+                                  <div
+                                    className="w-3/4 rounded-t-md transition-all"
+                                    style={{
+                                      height: `${barHeightPx}px`,
+                                      backgroundColor: chartColors[index],
+                                    }}
+                                  />
+                                </div>
+                                <div className="text-xs font-medium text-center mt-1">{city.name}</div>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      );
+                    })()}
                   </Card>
                 );
               })}
