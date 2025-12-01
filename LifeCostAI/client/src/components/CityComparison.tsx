@@ -672,7 +672,7 @@ export default function CityComparison({ onBack, baselineCategories, baseCity = 
   };
 
   const getCityTotal = (city: CityData) => {
-    return categories.reduce((sum, cat) => sum + getCategoryAmount(city.categoryMultipliers, cat.name), 0);
+    return categories.reduce((sum, cat) => sum + getCategoryAmount(city.categoryMultipliers, cat.name, city), 0);
   };
 
   const comparisonBarData = useMemo(() => {
@@ -689,18 +689,23 @@ export default function CityComparison({ onBack, baselineCategories, baseCity = 
     return categoryInfo.map((cat) => {
       const result: Record<string, any> = { category: cat.name.split(" ")[0] };
       selectedCityData.forEach((city) => {
-        const keyMap: Record<string, keyof CityData["categoryMultipliers"]> = {
-          "Food & Dining": "foodDining",
-          "Transportation": "transportation",
-          "Subscriptions": "subscriptions",
-          "Health & Wellness": "fitness",
-          "Shopping": "shopping",
-        };
-        result[city.name] = Math.round(city.categoryMultipliers[keyMap[cat.name]] * 100);
+        if (cat.name === "Housing") {
+          const baseRent = cityData.find((c) => c.name === baseCity)?.rentEstimate.oneBed || 1450;
+          result[city.name] = Math.round((city.rentEstimate.oneBed / baseRent) * 100);
+        } else {
+          const keyMap: Record<string, keyof CityData["categoryMultipliers"]> = {
+            "Food & Dining": "foodDining",
+            "Transportation": "transportation",
+            "Subscriptions": "subscriptions",
+            "Health & Wellness": "fitness",
+            "Shopping": "shopping",
+          };
+          result[city.name] = Math.round(city.categoryMultipliers[keyMap[cat.name]] * 100);
+        }
       });
       return result;
     });
-  }, [selectedCityData]);
+  }, [selectedCityData, baseCity]);
 
   const chartColors = ["hsl(var(--chart-1))", "hsl(var(--chart-2))", "hsl(var(--chart-4))", "hsl(var(--chart-5))"];
 
