@@ -116,21 +116,23 @@ export function calculateEstimates(formData: FormData): Omit<EstimationResult, '
   };
   transportation += rideshareFreqMap[formData.transportation.rideshareTripsPerWeek] || 0;
 
-  // Health & Wellness estimation
-  if (formData.fitness.hasMembership === "Yes") {
+  // Health & Wellness estimation - form uses "yes"/"no" lowercase
+  if (formData.fitness.hasMembership === "yes") {
     const tierMap: Record<string, number> = {
-      "Budget ($10-20/month)": 15,
-      "Standard ($25-50/month)": 35,
-      "Premium ($50+/month)": 70,
+      "basic": 25,
+      "mid-tier": 50,
+      "premium": 90,
     };
     gymFitnessAmount = tierMap[formData.fitness.membershipTier] || 0;
     fitness += gymFitnessAmount;
-  } else if (formData.fitness.hasMembership === "Drop-in Sessions") {
+  } else if (formData.fitness.hasMembership === "no") {
+    // Drop-in sessions when no membership
     const dropInMap: Record<string, number> = {
-      "1-2x/week": 40,
-      "Once a week": 20,
-      "2-3x/month": 15,
-      "Less than 2x/month": 5,
+      "Never": 0,
+      "1-2 per week": 40,
+      "3-4 per week": 80,
+      "5-6 per week": 120,
+      "Daily": 150,
     };
     gymFitnessAmount = dropInMap[formData.fitness.dropInSessionsPerWeek] || 0;
     fitness += gymFitnessAmount;
@@ -196,24 +198,24 @@ export function calculateEstimates(formData: FormData): Omit<EstimationResult, '
     subscriptions += streamingAmount + appsServicesAmount;
   }
 
-  // Shopping estimation
+  // Shopping estimation - form values updated to match
   const clothingFreqMap: Record<string, number> = {
+    "Multiple times per week": 200,
     "Weekly": 150,
-    "2-3x/month": 100,
+    "2-3 times per month": 100,
     "Monthly": 60,
-    "Few times/year": 20,
-    "Rarely": 5,
+    "Rarely": 20,
   };
   const baseClothing = clothingFreqMap[formData.shopping.clothingFrequency] || 0;
   const qualityMultiplier: Record<string, number> = {
-    "Budget": 0.8,
-    "Mix of budget and quality": 1,
-    "Quality/designer": 1.5,
+    "Wait for sales & discounts": 0.7,
+    "Balanced budget & quality": 1,
+    "Premium high-quality items": 1.5,
   };
   const buyingHabitMultiplier: Record<string, number> = {
-    "I buy items I need plus some extras": 1,
-    "I buy what I need": 0.8,
-    "I frequently buy impulsively": 1.3,
+    "Planned (intentional)": 0.8,
+    "Mix of both": 1,
+    "Spontaneous (impulsive)": 1.3,
   };
   wardrobeStyleAmount = baseClothing * (qualityMultiplier[formData.shopping.shoppingStyle] || 1) * (buyingHabitMultiplier[formData.shopping.buyingHabit] || 1);
   shopping += wardrobeStyleAmount;
