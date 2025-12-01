@@ -496,6 +496,7 @@ const cityData: CityData[] = [
 const categoryInfo = [
   { key: "foodDining", name: "Food & Dining", icon: Utensils, color: "hsl(var(--chart-1))" },
   { key: "transportation", name: "Transportation", icon: Car, color: "hsl(var(--chart-2))" },
+  { key: "housing", name: "Housing", icon: HomeIcon, color: "hsl(261 80% 53%)" },
   { key: "subscriptions", name: "Subscriptions", icon: Tv, color: "hsl(var(--chart-3))" },
   { key: "fitness", name: "Health & Wellness", icon: Dumbbell, color: "hsl(var(--chart-4))" },
   { key: "shopping", name: "Shopping", icon: ShoppingBag, color: "hsl(var(--chart-5))" },
@@ -594,6 +595,7 @@ export default function CityComparison({ onBack, baselineCategories, baseCity = 
   const defaultCategories = [
     { name: "Food & Dining", amount: 350 },
     { name: "Transportation", amount: 200 },
+    { name: "Housing", amount: 1200 },
     { name: "Subscriptions", amount: 75 },
     { name: "Health & Wellness", amount: 120 },
     { name: "Shopping", amount: 150 },
@@ -653,7 +655,10 @@ export default function CityComparison({ onBack, baselineCategories, baseCity = 
     return selectedCities.map((name) => cityData.find((c) => c.name === name)!).filter(Boolean);
   }, [selectedCities]);
 
-  const getCategoryAmount = (cityMultipliers: CityData["categoryMultipliers"], categoryName: string) => {
+  const getCategoryAmount = (cityMultipliers: CityData["categoryMultipliers"], categoryName: string, city?: CityData) => {
+    if (categoryName === "Housing" && city) {
+      return city.rentEstimate.oneBed;
+    }
     const baseAmount = categories.find((c) => c.name === categoryName)?.amount || 0;
     const keyMap: Record<string, keyof CityData["categoryMultipliers"]> = {
       "Food & Dining": "foodDining",
@@ -674,7 +679,7 @@ export default function CityComparison({ onBack, baselineCategories, baseCity = 
     return categoryInfo.map((cat) => {
       const result: Record<string, any> = { category: cat.name.split(" ")[0] };
       selectedCityData.forEach((city) => {
-        result[city.name] = getCategoryAmount(city.categoryMultipliers, cat.name);
+        result[city.name] = getCategoryAmount(city.categoryMultipliers, cat.name, city);
       });
       return result;
     });
@@ -956,10 +961,10 @@ export default function CityComparison({ onBack, baselineCategories, baseCity = 
               <h3 className="text-xl font-semibold mb-6">Category-by-Category Breakdown</h3>
               <div className="h-96">
                 <ResponsiveContainer width="100%" height="100%">
-                  <BarChart data={comparisonBarData} layout="vertical">
+                  <BarChart data={comparisonBarData}>
                     <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis type="number" tickFormatter={(v) => `$${v}`} />
-                    <YAxis dataKey="category" type="category" width={100} />
+                    <XAxis dataKey="category" />
+                    <YAxis tickFormatter={(v) => `$${v}`} />
                     <Tooltip formatter={(value: number) => `$${value}`} />
                     <Legend />
                     {selectedCityData.map((city, index) => (
@@ -967,7 +972,7 @@ export default function CityComparison({ onBack, baselineCategories, baseCity = 
                         key={city.name}
                         dataKey={city.name}
                         fill={chartColors[index]}
-                        radius={[0, 4, 4, 0]}
+                        radius={[4, 4, 0, 0]}
                       />
                     ))}
                   </BarChart>
@@ -980,7 +985,7 @@ export default function CityComparison({ onBack, baselineCategories, baseCity = 
                 const Icon = cat.icon;
                 return (
                   <Card key={cat.key} className="p-6">
-                    <div className="flex items-center gap-3 mb-4">
+                    <div className="flex items-center gap-3 mb-6">
                       <div
                         className="w-10 h-10 rounded-lg flex items-center justify-center"
                         style={{ backgroundColor: `${cat.color}20` }}
@@ -989,39 +994,38 @@ export default function CityComparison({ onBack, baselineCategories, baseCity = 
                       </div>
                       <h4 className="font-semibold text-lg">{cat.name}</h4>
                     </div>
-                    <div className="space-y-3">
+                    <div className="flex justify-around items-end gap-3 h-48">
                       {selectedCityData.map((city, index) => {
-                        const amount = getCategoryAmount(city.categoryMultipliers, cat.name);
-                        const baseAmount = categories.find((c) => c.name === cat.name)?.amount || 0;
+                        const amount = getCategoryAmount(city.categoryMultipliers, cat.name, city);
                         const keyMap: Record<string, keyof CityData["categoryMultipliers"]> = {
                           "Food & Dining": "foodDining",
                           "Transportation": "transportation",
                           "Subscriptions": "subscriptions",
-                          "Fitness & Wellness": "fitness",
+                          "Health & Wellness": "fitness",
                           "Shopping": "shopping",
                         };
-                        const multiplier = city.categoryMultipliers[keyMap[cat.name]];
+                        const multiplier = cat.name === "Housing" ? 1 : city.categoryMultipliers[keyMap[cat.name]];
                         const maxAmount = Math.max(
-                          ...selectedCityData.map((c) => getCategoryAmount(c.categoryMultipliers, cat.name))
+                          ...selectedCityData.map((c) => getCategoryAmount(c.categoryMultipliers, cat.name, c))
                         );
+                        const barHeight = (amount / maxAmount) * 100;
                         return (
-                          <div key={city.name} className="space-y-1">
-                            <div className="flex justify-between items-center text-sm">
-                              <span className="font-medium">{city.name}</span>
-                              <div className="flex items-center gap-2">
-                                <span className="font-bold">~${amount}</span>
-                                {city.name !== baseCity && getDiffBadge(multiplier)}
-                              </div>
-                            </div>
-                            <div className="h-2 bg-muted rounded-full overflow-hidden">
+                          <div key={city.name} className="flex flex-col items-center gap-2 flex-1">
+                            <div className="text-xs font-bold text-center">~${amount}</div>
+                            {city.name !== baseCity && cat.name !== "Housing" && (
+                              <div className="text-xs mb-1">{getDiffBadge(multiplier)}</div>
+                            )}
+                            <div className="w-full bg-muted rounded-t-md overflow-hidden flex-1 flex items-end justify-center" style={{ minHeight: "120px" }}>
                               <div
-                                className="h-full rounded-full transition-all"
+                                className="w-3/4 rounded-t-md transition-all"
                                 style={{
-                                  width: `${(amount / maxAmount) * 100}%`,
+                                  height: `${barHeight}%`,
                                   backgroundColor: chartColors[index],
+                                  minHeight: "8px",
                                 }}
                               />
                             </div>
+                            <div className="text-xs font-medium text-center">{city.name}</div>
                           </div>
                         );
                       })}
