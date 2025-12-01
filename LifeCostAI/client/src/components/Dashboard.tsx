@@ -338,26 +338,21 @@ export default function Dashboard({ onEdit, onBackToHome, onSimulator, onCityCom
           {/* Category Breakdown */}
           <Card className="lg:col-span-3 p-6 flex flex-col">
             <h3 className="text-xl font-semibold mb-4">Category Breakdown</h3>
-            <div className="flex-1 flex flex-col justify-between">
+            <div className="flex-1 flex flex-col gap-3">
               {dashboardData.categories.map((category) => (
-                <div key={category.name} className="space-y-1">
-                  <div className="flex justify-between items-center">
-                    <div className="flex items-center gap-2">
-                      <div className={`w-6 h-6 rounded-md ${categoryBgColors[category.name] || 'bg-muted'} flex items-center justify-center`}>
-                        <category.icon className={`w-3 h-3 ${categoryColors[category.name] || 'text-primary'}`} />
-                      </div>
-                      <span className={`text-base font-medium ${categoryColors[category.name] || 'text-primary'}`}>{category.name}</span>
+                <div key={category.name} className="flex items-center gap-3">
+                  <div className="flex items-center gap-2 w-40 shrink-0">
+                    <div className={`w-6 h-6 rounded-md ${categoryBgColors[category.name] || 'bg-muted'} flex items-center justify-center`}>
+                      <category.icon className={`w-3 h-3 ${categoryColors[category.name] || 'text-primary'}`} />
                     </div>
-                    <div className="flex items-center gap-3">
-                      <span className="text-xs text-muted-foreground">{category.percentage}%</span>
-                      <span className="text-sm font-semibold w-16 text-right">~${category.amount}</span>
-                    </div>
+                    <span className="text-sm font-medium truncate">{category.name}</span>
                   </div>
-                  <div className="h-2 bg-muted rounded-full overflow-hidden">
+                  <div className="flex-1 flex items-center gap-3">
                     <div
-                      className={`h-full ${category.color} transition-all`}
-                      style={{ width: `${(category.amount / maxCategory) * 100}%` }}
+                      className={`h-6 ${category.color} rounded transition-all`}
+                      style={{ width: `${maxCategory > 0 ? (category.amount / maxCategory) * 100 : 0}%`, minWidth: category.amount > 0 ? '8px' : '0' }}
                     />
+                    <span className="text-sm font-semibold w-16 text-right shrink-0">${category.amount}</span>
                   </div>
                 </div>
               ))}
