@@ -286,3 +286,46 @@
     inset: -1px;
   }
 }
+
+/* Print-specific styles for Dashboard PDF export */
+@media print {
+  @page {
+    size: auto;
+    margin: 15mm;
+  }
+
+  body {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  /* Hide elements that shouldn't appear in PDF */
+  .print-hide {
+    display: none !important;
+  }
+
+  /* Ensure dashboard content takes full width */
+  .print-content {
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  /* Prevent page breaks inside cards */
+  .print-content > * {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  /* Ensure charts and SVGs print properly */
+  svg {
+    max-width: 100%;
+    height: auto;
+  }
+
+  /* Preserve background colors and borders in print */
+  * {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+}

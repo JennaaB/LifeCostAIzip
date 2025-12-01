@@ -283,15 +283,8 @@ export default function Dashboard({ onEdit, onBackToHome, onSimulator, onCityCom
         console.error("html2canvas failed:", html2canvasError);
         console.log("Step X: Falling back to window.print()");
         
-        // Fallback to print dialog if html2canvas fails
-        const printWindow = window.open('', '', 'width=800,height=600');
-        if (printWindow) {
-          printWindow.document.write(element.outerHTML);
-          printWindow.document.close();
-          setTimeout(() => {
-            printWindow.print();
-          }, 250);
-        }
+        // Fallback to native browser print (preserves all styling)
+        window.print();
       }
       
     } catch (error: any) {
@@ -306,7 +299,7 @@ export default function Dashboard({ onEdit, onBackToHome, onSimulator, onCityCom
     <div className="min-h-screen py-12 px-6 bg-background">
       <div className="max-w-screen-2xl mx-auto space-y-8">
         {/* Header */}
-        <div className="flex flex-wrap justify-between items-center gap-4">
+        <div className="flex flex-wrap justify-between items-center gap-4 print-hide">
           <div>
             <h1 className="text-4xl font-bold">Your Lifestyle Snapshot</h1>
             <p className="text-muted-foreground mt-2">Based on typical costs in {dashboardData.city}</p>
@@ -338,8 +331,14 @@ export default function Dashboard({ onEdit, onBackToHome, onSimulator, onCityCom
           </div>
         </div>
 
+        {/* Print-only title */}
+        <div className="hidden print:block mb-8">
+          <h1 className="text-4xl font-bold">Your Lifestyle Snapshot</h1>
+          <p className="text-muted-foreground mt-2">Based on typical costs in {dashboardData.city}</p>
+        </div>
+
         {/* Dashboard Content for PDF Export */}
-        <div ref={dashboardRef} className="space-y-8">
+        <div ref={dashboardRef} className="space-y-8 print-content">
           {/* Hero Metric */}
         <Card className="p-8">
           <div className="flex flex-col lg:flex-row gap-8 items-center">
@@ -548,7 +547,7 @@ export default function Dashboard({ onEdit, onBackToHome, onSimulator, onCityCom
 
         {/* Spending Simulator Card */}
         <Card 
-          className="p-8 cursor-pointer hover:shadow-lg transition-all border-2 border-primary/20 hover:border-primary/40 bg-gradient-to-br from-primary/5 to-primary/10"
+          className="p-8 cursor-pointer hover:shadow-lg transition-all border-2 border-primary/20 hover:border-primary/40 bg-gradient-to-br from-primary/5 to-primary/10 print-hide"
           onClick={onSimulator}
           data-testid="button-simulator"
         >
@@ -573,7 +572,9 @@ export default function Dashboard({ onEdit, onBackToHome, onSimulator, onCityCom
         </div>
 
         {/* Global Map - Outside PDF export area */}
-        <GlobalMap baseAmount={dashboardData.totalMonthly} baseCity={dashboardData.city} onDeepDive={onCityComparison} />
+        <div className="print-hide">
+          <GlobalMap baseAmount={dashboardData.totalMonthly} baseCity={dashboardData.city} onDeepDive={onCityComparison} />
+        </div>
       </div>
     </div>
   );
