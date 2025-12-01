@@ -75,7 +75,16 @@ export default function Home() {
     const estimates = formData ? calculateEstimates(formData) : null;
     const baselineCategories = estimates?.categories.map(c => ({ name: c.name, amount: c.amount }));
     const baseCity = estimates?.city || "Calgary";
-    return <CityComparison onBack={handleBackToDashboard} baselineCategories={baselineCategories} baseCity={baseCity} />;
+    const baselineTotal = estimates?.totalMonthly || 0;
+    return (
+      <CityComparison 
+        onBack={handleBackToDashboard} 
+        baselineCategories={baselineCategories} 
+        baseCity={baseCity}
+        formData={formData || undefined}
+        baselineTotal={baselineTotal}
+      />
+    );
   }
 
   return (

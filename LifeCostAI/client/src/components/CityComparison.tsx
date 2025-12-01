@@ -1,9 +1,10 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect, useCallback } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Skeleton } from "@/components/ui/skeleton";
 import {
   ArrowLeft,
   Globe,
@@ -19,6 +20,8 @@ import {
   Minus,
   BarChart3,
   Building2,
+  Sparkles,
+  Loader2,
 } from "lucide-react";
 import {
   BarChart,
@@ -498,15 +501,95 @@ const categoryInfo = [
   { key: "shopping", name: "Shopping", icon: ShoppingBag, color: "hsl(var(--chart-5))" },
 ];
 
+interface FormData {
+  foodDining: {
+    coffeeFrequency: string;
+    deliveryFrequency: string;
+    diningOutFrequency: string;
+    diningStyle: string;
+  };
+  transportation: {
+    commuteMethod: string;
+    distance?: string;
+    payForParking?: string;
+    parkingRateType?: string;
+    transitPassType?: string;
+    rideshareTripsPerWeek?: string;
+  };
+  fitness: {
+    hasMembership: string;
+    membershipTier?: string;
+    dropInSessionsPerWeek?: string;
+    wellnessSpend: string[];
+    wellnessFrequency: string;
+    hairCutFrequency: string;
+    hairServiceType: string;
+    personalCare: string;
+  };
+  subscriptions: {
+    hasSubscriptions: string;
+    services: string[];
+    other?: string;
+  };
+  shopping: {
+    clothingFrequency: string;
+    shoppingStyle: string;
+    buyingHabit: string;
+  };
+  social: {
+    socializingStyle: string;
+    hostingFrequency?: string;
+    hostingStyle?: string;
+    casualFrequency?: string;
+    casualType?: string;
+    activeFrequency?: string;
+    activeType?: string;
+    nightlifeFrequency?: string;
+    nightlifeStyle?: string;
+    buyingRounds?: string;
+  };
+  goals: {
+    values: string[];
+  };
+}
+
+interface AICityCostEstimate {
+  cityName: string;
+  country: string;
+  totalMonthly: number;
+  categories: {
+    coffeeDrinks: number;
+    diningOut: number;
+    deliveryTakeout: number;
+    transportation: number;
+    streaming: number;
+    appsServices: number;
+    gymFitness: number;
+    wellnessSelfCare: number;
+    wardrobeStyle: number;
+    hobbiesExtras: number;
+    nightsOut: number;
+    casualHangouts: number;
+  };
+  insights: string[];
+  costOfLivingIndex: number;
+}
+
 interface CityComparisonProps {
   onBack: () => void;
   baselineCategories?: Array<{ name: string; amount: number }>;
   baseCity?: string;
+  formData?: FormData;
+  baselineTotal?: number;
 }
 
-export default function CityComparison({ onBack, baselineCategories, baseCity = "Calgary" }: CityComparisonProps) {
+export default function CityComparison({ onBack, baselineCategories, baseCity = "Calgary", formData, baselineTotal = 0 }: CityComparisonProps) {
   const [selectedCities, setSelectedCities] = useState<string[]>([baseCity, "Toronto"]);
   const [activeTab, setActiveTab] = useState("overview");
+  const [aiCityData, setAiCityData] = useState<AICityCostEstimate[]>([]);
+  const [comparisonNotes, setComparisonNotes] = useState<string>("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [hasAIData, setHasAIData] = useState(false);
 
   const defaultCategories = [
     { name: "Food & Dining", amount: 350 },
@@ -517,7 +600,42 @@ export default function CityComparison({ onBack, baselineCategories, baseCity = 
   ];
 
   const categories = baselineCategories && baselineCategories.length > 0 ? baselineCategories : defaultCategories;
-  const totalBaseline = categories.reduce((sum, c) => sum + c.amount, 0);
+  const totalBaselineCalc = baselineTotal > 0 ? baselineTotal : categories.reduce((sum, c) => sum + c.amount, 0);
+
+  const fetchAICityComparison = useCallback(async () => {
+    if (!formData || selectedCities.length === 0) return;
+    
+    setIsLoading(true);
+    try {
+      const response = await fetch("/api/compare-cities", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          formData,
+          selectedCities,
+          baselineTotal: totalBaselineCalc
+        }),
+      });
+
+      if (!response.ok) throw new Error("Failed to fetch AI comparison");
+
+      const data = await response.json();
+      setAiCityData(data.cities || []);
+      setComparisonNotes(data.comparisonNotes || "");
+      setHasAIData(true);
+    } catch (error) {
+      console.error("Error fetching AI city comparison:", error);
+      setHasAIData(false);
+    } finally {
+      setIsLoading(false);
+    }
+  }, [formData, selectedCities, totalBaselineCalc]);
+
+  useEffect(() => {
+    if (formData) {
+      fetchAICityComparison();
+    }
+  }, [selectedCities, formData]);
 
   const toggleCity = (cityName: string) => {
     if (selectedCities.includes(cityName)) {
@@ -680,47 +798,129 @@ export default function CityComparison({ onBack, baselineCategories, baseCity = 
           </TabsList>
 
           <TabsContent value="overview" className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-              {selectedCityData.map((city, index) => {
-                const cityTotal = getCityTotal(city);
-                const isBase = city.name === baseCity;
-                return (
-                  <Card
-                    key={city.name}
-                    className={`p-6 space-y-4 ${isBase ? "border-primary bg-primary/5" : ""}`}
-                  >
-                    <div className="flex items-start justify-between">
-                      <div>
-                        <div className="flex items-center gap-2">
-                          <MapPin
-                            className="w-5 h-5"
-                            style={{ color: chartColors[index] }}
-                          />
-                          <h3 className="font-bold text-lg">{city.name}</h3>
-                        </div>
-                        <p className="text-sm text-muted-foreground">{city.country}</p>
-                      </div>
-                      {isBase ? (
-                        <Badge>Your Base</Badge>
-                      ) : (
-                        getDiffBadge(city.multiplier)
-                      )}
+            {comparisonNotes && hasAIData && (
+              <Card className="p-4 bg-primary/5 border-primary/20">
+                <div className="flex items-start gap-3">
+                  <Sparkles className="w-5 h-5 text-primary mt-0.5" />
+                  <div>
+                    <p className="font-medium text-sm">AI-Powered Insights</p>
+                    <p className="text-sm text-muted-foreground mt-1">{comparisonNotes}</p>
+                  </div>
+                </div>
+              </Card>
+            )}
+
+            {isLoading ? (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                {selectedCities.map((cityName) => (
+                  <Card key={cityName} className="p-6 space-y-4">
+                    <div className="flex items-center gap-2">
+                      <Loader2 className="w-5 h-5 animate-spin text-primary" />
+                      <span className="font-medium">{cityName}</span>
                     </div>
-                    <div className="space-y-2">
-                      <p className="text-3xl font-bold">~${cityTotal.toLocaleString()}</p>
-                      <p className="text-sm text-muted-foreground">/month lifestyle cost</p>
-                    </div>
-                    <div className="pt-3 border-t space-y-1">
-                      {city.highlights.slice(0, 2).map((h, i) => (
-                        <p key={i} className="text-xs text-muted-foreground">
-                          • {h}
-                        </p>
-                      ))}
-                    </div>
+                    <Skeleton className="h-8 w-24" />
+                    <Skeleton className="h-4 w-full" />
+                    <Skeleton className="h-4 w-3/4" />
                   </Card>
-                );
-              })}
-            </div>
+                ))}
+              </div>
+            ) : hasAIData && aiCityData.length > 0 ? (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                {aiCityData.map((city, index) => {
+                  const isBase = city.cityName === baseCity;
+                  const diffPercent = totalBaselineCalc > 0 
+                    ? Math.round(((city.totalMonthly - totalBaselineCalc) / totalBaselineCalc) * 100)
+                    : 0;
+                  return (
+                    <Card
+                      key={city.cityName}
+                      className={`p-6 space-y-4 ${isBase ? "border-primary bg-primary/5" : ""}`}
+                    >
+                      <div className="flex items-start justify-between">
+                        <div>
+                          <div className="flex items-center gap-2">
+                            <MapPin
+                              className="w-5 h-5"
+                              style={{ color: chartColors[index] }}
+                            />
+                            <h3 className="font-bold text-lg">{city.cityName}</h3>
+                          </div>
+                          <p className="text-sm text-muted-foreground">{city.country}</p>
+                        </div>
+                        {isBase ? (
+                          <Badge>Your Base</Badge>
+                        ) : diffPercent > 5 ? (
+                          <Badge variant="destructive" className="gap-1">
+                            <TrendingUp className="w-3 h-3" />+{diffPercent}%
+                          </Badge>
+                        ) : diffPercent < -5 ? (
+                          <Badge className="gap-1 bg-green-500 hover:bg-green-600">
+                            <TrendingDown className="w-3 h-3" />{diffPercent}%
+                          </Badge>
+                        ) : (
+                          <Badge variant="secondary" className="gap-1">
+                            <Minus className="w-3 h-3" />Similar
+                          </Badge>
+                        )}
+                      </div>
+                      <div className="space-y-2">
+                        <p className="text-3xl font-bold">${city.totalMonthly.toLocaleString()}</p>
+                        <p className="text-sm text-muted-foreground">/month lifestyle cost</p>
+                      </div>
+                      <div className="pt-3 border-t space-y-1">
+                        {city.insights.slice(0, 2).map((insight, i) => (
+                          <p key={i} className="text-xs text-muted-foreground">
+                            • {insight}
+                          </p>
+                        ))}
+                      </div>
+                    </Card>
+                  );
+                })}
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                {selectedCityData.map((city, index) => {
+                  const cityTotal = getCityTotal(city);
+                  const isBase = city.name === baseCity;
+                  return (
+                    <Card
+                      key={city.name}
+                      className={`p-6 space-y-4 ${isBase ? "border-primary bg-primary/5" : ""}`}
+                    >
+                      <div className="flex items-start justify-between">
+                        <div>
+                          <div className="flex items-center gap-2">
+                            <MapPin
+                              className="w-5 h-5"
+                              style={{ color: chartColors[index] }}
+                            />
+                            <h3 className="font-bold text-lg">{city.name}</h3>
+                          </div>
+                          <p className="text-sm text-muted-foreground">{city.country}</p>
+                        </div>
+                        {isBase ? (
+                          <Badge>Your Base</Badge>
+                        ) : (
+                          getDiffBadge(city.multiplier)
+                        )}
+                      </div>
+                      <div className="space-y-2">
+                        <p className="text-3xl font-bold">~${cityTotal.toLocaleString()}</p>
+                        <p className="text-sm text-muted-foreground">/month lifestyle cost</p>
+                      </div>
+                      <div className="pt-3 border-t space-y-1">
+                        {city.highlights.slice(0, 2).map((h, i) => (
+                          <p key={i} className="text-xs text-muted-foreground">
+                            • {h}
+                          </p>
+                        ))}
+                      </div>
+                    </Card>
+                  );
+                })}
+              </div>
+            )}
 
             <Card className="p-6">
               <h3 className="text-xl font-semibold mb-6">Cost Index Comparison</h3>
