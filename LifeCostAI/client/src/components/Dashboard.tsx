@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -106,9 +106,42 @@ interface DashboardProps {
 
 export default function Dashboard({ onEdit, onBackToHome, onSimulator, onCityComparison, formData }: DashboardProps) {
   const estimationData = formData ? calculateEstimates(formData) : null;
+  const [aiInsights, setAiInsights] = useState<any>(null);
+  const [isLoadingInsights, setIsLoadingInsights] = useState(false);
+  
+  useEffect(() => {
+    if (formData) {
+      fetchAIInsights();
+    }
+  }, [formData]);
+  
+  const fetchAIInsights = async () => {
+    if (!formData) return;
+    
+    setIsLoadingInsights(true);
+    try {
+      const response = await fetch('/api/generate-insights', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+      
+      if (response.ok) {
+        const data = await response.json();
+        setAiInsights(data);
+      }
+    } catch (error) {
+      console.error('Error fetching AI insights:', error);
+    } finally {
+      setIsLoadingInsights(false);
+    }
+  };
   
   const dashboardData = estimationData ? {
     ...estimationData,
+    biggestOpportunity: aiInsights?.biggestOpportunity || estimationData.biggestOpportunity,
     categories: estimationData.categories.map(c => ({
       ...c,
       icon: categoryIcons[c.name] || Coffee,
@@ -117,7 +150,10 @@ export default function Dashboard({ onEdit, onBackToHome, onSimulator, onCityCom
       ...d,
       icon: categoryIcons[d.habit.split(":")[0]] || Coffee,
     })),
-    recommendations: estimationData.recommendations.map(r => ({
+    recommendations: aiInsights?.recommendations?.map((r: any) => ({
+      ...r,
+      icon: Target,
+    })) || estimationData.recommendations.map(r => ({
       ...r,
       icon: recommendationIcons[r.title] || Target,
     })),
@@ -427,26 +463,51 @@ export default function Dashboard({ onEdit, onBackToHome, onSimulator, onCityCom
         <div className="space-y-6">
           <div className="flex items-center gap-2">
             <Sparkles className="w-5 h-5 text-primary" />
-            <h3 className="text-2xl font-semibold">Personalized Recommendations</h3>
+            <h3 className="text-2xl font-semibold">
+              {isLoadingInsights ? "Generating Personalized Insights..." : "Personalized Recommendations"}
+            </h3>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {dashboardData.recommendations.map((rec, index) => (
-              <Card key={index} className="p-6 space-y-4 hover-elevate">
-                <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center">
-                  <rec.icon className="w-6 h-6 text-primary" />
-                </div>
-                <div className="space-y-2">
-                  <h4 className="font-semibold text-lg">{rec.title}</h4>
-                  <p className="text-sm text-muted-foreground leading-relaxed">{rec.description}</p>
-                </div>
-                <div className="pt-2 border-t">
-                  <Badge variant="secondary" className="text-sm">
-                    Save ~${rec.savings}/month
-                  </Badge>
-                </div>
-              </Card>
-            ))}
-          </div>
+          
+          {aiInsights?.personalizedMessage && (
+            <Card className="p-6 bg-primary/5 border-primary/20">
+              <p className="text-base leading-relaxed">{aiInsights.personalizedMessage}</p>
+            </Card>
+          )}
+          
+          {isLoadingInsights ? (
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {[1, 2, 3].map((i) => (
+                <Card key={i} className="p-6 space-y-4 animate-pulse">
+                  <div className="w-12 h-12 rounded-lg bg-muted" />
+                  <div className="space-y-2">
+                    <div className="h-5 bg-muted rounded w-3/4" />
+                    <div className="h-4 bg-muted rounded w-full" />
+                    <div className="h-4 bg-muted rounded w-5/6" />
+                  </div>
+                  <div className="h-6 bg-muted rounded w-1/2" />
+                </Card>
+              ))}
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {dashboardData.recommendations.map((rec, index) => (
+                <Card key={index} className="p-6 space-y-4 hover-elevate">
+                  <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center">
+                    <rec.icon className="w-6 h-6 text-primary" />
+                  </div>
+                  <div className="space-y-2">
+                    <h4 className="font-semibold text-lg">{rec.title}</h4>
+                    <p className="text-sm text-muted-foreground leading-relaxed">{rec.description}</p>
+                  </div>
+                  <div className="pt-2 border-t">
+                    <Badge variant="secondary" className="text-sm">
+                      Save ~${rec.savings}/month
+                    </Badge>
+                  </div>
+                </Card>
+              ))}
+            </div>
+          )}
         </div>
 
         {/* Spending Simulator Card */}
