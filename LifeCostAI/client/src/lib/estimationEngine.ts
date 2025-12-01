@@ -343,10 +343,13 @@ export function calculateEstimates(formData: FormData): Omit<EstimationResult, '
     goalAlignment = Math.min(100, 70 + (transportation / (totalMonthly || 1)) * 30);
   }
 
-  const topDrivers = categoriesWithPercentage.slice(0, 3).map(c => ({
-    habit: `${c.name}: $${c.amount}/month`,
-    monthlyCost: c.amount,
-  }));
+  const topDrivers = [...categoriesWithPercentage]
+    .sort((a, b) => b.amount - a.amount)
+    .slice(0, 3)
+    .map(c => ({
+      habit: `${c.name}: $${c.amount}/month`,
+      monthlyCost: c.amount,
+    }));
 
   const recommendations = [];
   if (formData.foodDining.deliveryFrequency !== "Never") {
