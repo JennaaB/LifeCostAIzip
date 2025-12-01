@@ -68,6 +68,123 @@ export interface AIInsightsResponse {
   personalizedMessage: string;
 }
 
+export interface CityCostEstimate {
+  cityName: string;
+  country: string;
+  totalMonthly: number;
+  categories: {
+    coffeeDrinks: number;
+    diningOut: number;
+    deliveryTakeout: number;
+    transportation: number;
+    streaming: number;
+    appsServices: number;
+    gymFitness: number;
+    wellnessSelfCare: number;
+    wardrobeStyle: number;
+    hobbiesExtras: number;
+    nightsOut: number;
+    casualHangouts: number;
+  };
+  insights: string[];
+  costOfLivingIndex: number;
+}
+
+export interface CityCostComparisonResponse {
+  cities: CityCostEstimate[];
+  comparisonNotes: string;
+}
+
+export async function generateCityCostComparison(
+  formData: FormData,
+  selectedCities: string[],
+  baselineTotal: number
+): Promise<CityCostComparisonResponse> {
+  try {
+    const prompt = `You are a cost-of-living expert with current knowledge of prices in major cities worldwide. 
+Based on the user's lifestyle habits, estimate what their EXACT monthly costs would be in each selected city using current 2024/2025 market prices.
+
+User's Lifestyle Habits:
+- Coffee: ${formData.foodDining.coffeeFrequency}
+- Food Delivery: ${formData.foodDining.deliveryFrequency}
+- Dining Out: ${formData.foodDining.diningOutFrequency} (${formData.foodDining.diningStyle || "casual"} style)
+- Transportation: ${formData.transportation.commuteMethod}${formData.transportation.rideshareTripsPerWeek ? `, rideshare ${formData.transportation.rideshareTripsPerWeek}` : ""}
+- Fitness: ${formData.fitness.hasMembership === "Yes" ? `Gym member (${formData.fitness.membershipTier || "standard"})` : "No gym membership"}
+- Wellness: ${formData.fitness.wellnessSpend?.join(", ") || "None"}
+- Subscriptions: ${formData.subscriptions.hasSubscriptions === "yes" ? formData.subscriptions.services.join(", ") : "None"}
+- Shopping: ${formData.shopping.clothingFrequency}, ${formData.shopping.shoppingStyle}
+- Social: ${formData.social.socializingStyle}${formData.social.nightlifeFrequency ? `, nightlife ${formData.social.nightlifeFrequency}` : ""}
+
+Cities to analyze: ${selectedCities.join(", ")}
+User's baseline monthly total: $${baselineTotal}
+
+For each city, provide realistic monthly cost estimates in USD based on current local prices. Consider:
+- Coffee shop prices (Starbucks, local cafes)
+- Restaurant prices (casual vs upscale dining)
+- Food delivery fees and markups
+- Public transit passes vs rideshare costs
+- Gym membership rates
+- Streaming service prices (may vary by region)
+- Shopping costs (local vs international brands)
+- Nightlife costs (drinks, entertainment)
+
+Respond in JSON format:
+{
+  "cities": [
+    {
+      "cityName": "City Name",
+      "country": "Country",
+      "totalMonthly": number,
+      "categories": {
+        "coffeeDrinks": number,
+        "diningOut": number,
+        "deliveryTakeout": number,
+        "transportation": number,
+        "streaming": number,
+        "appsServices": number,
+        "gymFitness": number,
+        "wellnessSelfCare": number,
+        "wardrobeStyle": number,
+        "hobbiesExtras": number,
+        "nightsOut": number,
+        "casualHangouts": number
+      },
+      "insights": ["2-3 short tips specific to this city"],
+      "costOfLivingIndex": number (100 = baseline city)
+    }
+  ],
+  "comparisonNotes": "Brief 2-3 sentence summary of key differences"
+}`;
+
+    const response = await openai.chat.completions.create({
+      model: "gpt-4o-mini",
+      messages: [
+        {
+          role: "system",
+          content: "You are an expert on global cost of living with up-to-date knowledge of prices in major cities. Provide accurate, realistic cost estimates based on current market prices. Use USD for all amounts."
+        },
+        {
+          role: "user",
+          content: prompt
+        }
+      ],
+      response_format: { type: "json_object" },
+      temperature: 0.5,
+      max_tokens: 2000,
+    });
+
+    const result = JSON.parse(response.choices[0].message.content || "{}");
+    
+    return {
+      cities: result.cities || [],
+      comparisonNotes: result.comparisonNotes || "Cost comparison generated based on current market data."
+    };
+  } catch (error) {
+    console.error("Error generating city cost comparison:", error);
+    throw new Error("Failed to generate city cost comparison");
+  }
+}
+
 export async function generatePersonalizedInsights(
   formData: FormData,
   estimatedTotal: number,
