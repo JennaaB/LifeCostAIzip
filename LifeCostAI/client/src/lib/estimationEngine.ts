@@ -94,8 +94,13 @@ export function calculateEstimates(formData: FormData): Omit<EstimationResult, '
 
   // Transportation estimation - values match form options
   if (formData.transportation.commuteMethod === "Personal Car") {
-    // Base cost for driving - assume average commute costs
-    transportation += 200;
+    // Base cost for driving based on car type
+    const carTypeCostMap: Record<string, number> = {
+      "Budget": 150,
+      "Mid-range": 250,
+      "Luxury": 400,
+    };
+    transportation += carTypeCostMap[formData.transportation.carType] || 200;
 
     if (formData.transportation.payForParking === "Yes") {
       const parkingRateMap: Record<string, number> = {

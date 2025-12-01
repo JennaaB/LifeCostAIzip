@@ -1,7 +1,7 @@
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import type { FormData } from "../LifestyleForm";
-import { Bike, Bus, Car, Smartphone, Home } from "lucide-react";
+import { Bike, Bus, Car, Smartphone, Home, Fuel } from "lucide-react";
 
 interface TransportationStepProps {
   data: FormData;
@@ -24,6 +24,11 @@ export default function TransportationStep({ data, onChange }: TransportationSte
   ];
   const parkingRateTypes = ["Hourly rate", "Daily rate", "Monthly pass", "Seasonal pass"];
   const transitPassTypes = ["Daily rate", "Monthly pass", "Free (school/employer provided)"];
+  const carTypes = [
+    { value: "Budget", label: "Budget", desc: "Economy car, regular gas" },
+    { value: "Mid-range", label: "Mid-range", desc: "Standard sedan or SUV" },
+    { value: "Luxury", label: "Luxury", desc: "Premium car, premium gas" },
+  ];
 
   return (
     <div className="space-y-8 sm:space-y-10">
@@ -33,7 +38,7 @@ export default function TransportationStep({ data, onChange }: TransportationSte
           value={data.transportation.commuteMethod}
           onValueChange={(value) => onChange({
             ...data,
-            transportation: { ...data.transportation, commuteMethod: value, payForParking: "", parkingRateType: "", transitPassType: "" }
+            transportation: { ...data.transportation, commuteMethod: value, payForParking: "", parkingRateType: "", transitPassType: "", carType: "" }
           })}
           className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3"
         >
@@ -80,6 +85,41 @@ export default function TransportationStep({ data, onChange }: TransportationSte
                     peer-focus-visible:ring-2 peer-focus-visible:ring-primary peer-focus-visible:ring-offset-2"
                 >
                   <span className="text-sm sm:text-base font-medium text-center">{type}</span>
+                </Label>
+              </div>
+            ))}
+          </RadioGroup>
+        </div>
+      )}
+
+      {data.transportation.commuteMethod === "Personal Car" && (
+        <div className="space-y-4 animate-in fade-in slide-in-from-top-2 duration-300">
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 rounded-lg bg-blue-100 flex items-center justify-center">
+              <Fuel className="w-4 h-4 text-blue-600" />
+            </div>
+            <Label className="text-base sm:text-lg font-semibold">What type of car do you drive?</Label>
+          </div>
+          <RadioGroup
+            value={data.transportation.carType}
+            onValueChange={(value) => onChange({
+              ...data,
+              transportation: { ...data.transportation, carType: value }
+            })}
+            className="grid grid-cols-1 sm:grid-cols-3 gap-3"
+          >
+            {carTypes.map((type) => (
+              <div key={type.value} className="relative">
+                <RadioGroupItem value={type.value} id={`car-type-${type.value}`} className="peer sr-only" data-testid={`radio-car-${type.value.toLowerCase()}`} />
+                <Label 
+                  htmlFor={`car-type-${type.value}`} 
+                  className="flex flex-col items-center justify-center p-4 sm:p-5 rounded-xl border-2 cursor-pointer transition-all min-h-[80px] sm:min-h-[100px]
+                    hover:border-primary/50 hover:bg-primary/5
+                    peer-data-[state=checked]:border-primary peer-data-[state=checked]:bg-primary/10
+                    peer-focus-visible:ring-2 peer-focus-visible:ring-primary peer-focus-visible:ring-offset-2"
+                >
+                  <span className="text-sm sm:text-base font-semibold text-center peer-data-[state=checked]:text-primary">{type.label}</span>
+                  <span className="text-xs sm:text-sm text-muted-foreground text-center mt-1">{type.desc}</span>
                 </Label>
               </div>
             ))}
