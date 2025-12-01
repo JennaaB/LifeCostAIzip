@@ -15,7 +15,7 @@ export default function FinalCTA({ onGetStarted, onSeeExample }: FinalCTAProps) 
             Ready to Understand Your Lifestyle?
           </h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Take 3 minutes to answer simple questions about your daily habits and get instant AI-powered insights about your spending patterns.
+            Take 5 minutes to answer simple questions about your daily habits and get instant AI-powered insights about your spending patterns.
           </p>
         </div>
 
