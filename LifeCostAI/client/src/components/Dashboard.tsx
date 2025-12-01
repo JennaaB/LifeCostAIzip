@@ -490,7 +490,7 @@ export default function Dashboard({ onEdit, onBackToHome, onSimulator, onCityCom
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {dashboardData.recommendations.map((rec, index) => (
+              {dashboardData.recommendations.map((rec: any, index: number) => (
                 <Card key={index} className="p-6 space-y-4 hover-elevate">
                   <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center">
                     <rec.icon className="w-6 h-6 text-primary" />
