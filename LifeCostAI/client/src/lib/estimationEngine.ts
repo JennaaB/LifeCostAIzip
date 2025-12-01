@@ -48,73 +48,73 @@ export function calculateEstimates(formData: FormData): Omit<EstimationResult, '
   let nightsOutAmount = 0;
   let casualHangoutsAmount = 0;
 
-  // Food & Dining estimation
+  // Food & Dining estimation - values match form options
   const coffeeFreqMap: Record<string, number> = {
     "Daily": 150,
-    "5-6x/week": 120,
-    "3-4x/week": 60,
-    "1-2x/week": 30,
-    "Less than weekly": 10,
+    "Often (2-3x/week)": 90,
+    "Sometimes (1x/week)": 30,
+    "Rarely (1-2x/month)": 10,
+    "Never": 0,
   };
   coffeeDrinks = coffeeFreqMap[formData.foodDining.coffeeFrequency] || 0;
   foodDining += coffeeDrinks;
 
   const deliveryFreqMap: Record<string, number> = {
-    "2-3x/week": 300,
-    "1x/week": 120,
-    "2-3x/month": 60,
-    "Less than 2x/month": 20,
+    "Daily": 600,
+    "Often (2-3x/week)": 300,
+    "Sometimes (1x/week)": 120,
+    "Rarely (1-2x/month)": 40,
     "Never": 0,
   };
   deliveryTakeout = deliveryFreqMap[formData.foodDining.deliveryFrequency] || 0;
   foodDining += deliveryTakeout;
 
   const diningFreqMap: Record<string, number> = {
-    "2-3x/week": 200,
-    "1x/week": 80,
-    "2-3x/month": 40,
-    "Less than 2x/month": 15,
+    "Daily": 400,
+    "Often (2-3x/week)": 200,
+    "Sometimes (1x/week)": 80,
+    "Rarely (1-2x/month)": 30,
     "Never": 0,
   };
   const diningAmount = diningFreqMap[formData.foodDining.diningOutFrequency] || 0;
-  diningOut = formData.foodDining.diningStyle === "Upscale" ? diningAmount * 1.5 : diningAmount;
+  const isUpscale = formData.foodDining.diningStyle?.includes("fine dining") || formData.foodDining.diningStyle?.includes("premium");
+  diningOut = isUpscale ? diningAmount * 1.5 : diningAmount;
   foodDining += diningOut;
 
-  // Transportation estimation
+  // Transportation estimation - values match form options
   if (formData.transportation.commuteMethod === "Personal Car") {
-    const distanceMap: Record<string, number> = {
-      "Less than 5km": 80,
-      "5-15km": 150,
-      "15-30km": 250,
-      "30km+": 400,
-    };
-    transportation += distanceMap[formData.transportation.distance] || 0;
+    // Base cost for driving - assume average commute costs
+    transportation += 200;
 
     if (formData.transportation.payForParking === "Yes") {
       const parkingRateMap: Record<string, number> = {
-        "Per visit ($5-15)": 80,
-        "Monthly permit ($50-150)": 100,
+        "Hourly rate": 150,
         "Daily rate": 200,
+        "Monthly pass": 100,
+        "Seasonal pass": 80,
       };
       transportation += parkingRateMap[formData.transportation.parkingRateType] || 0;
     }
   } else if (formData.transportation.commuteMethod === "Public Transit") {
     const transitPassMap: Record<string, number> = {
-      "Monthly pass": 120,
-      "Pay-per-trip": 100,
-      "Employer subsidized": 30,
+      "Daily rate": 150,
+      "Monthly pass": 100,
+      "Free (school/employer provided)": 0,
     };
     transportation += transitPassMap[formData.transportation.transitPassType] || 0;
-  } else if (formData.transportation.commuteMethod === "Rideshare") {
-    const rideshareFreqMap: Record<string, number> = {
-      "Daily": 400,
-      "5-6x/week": 300,
-      "3-4x/week": 150,
-      "1-2x/week": 60,
-      "Less than 1x/week": 20,
-    };
-    transportation += rideshareFreqMap[formData.transportation.rideshareTripsPerWeek] || 0;
+  } else if (formData.transportation.commuteMethod === "Rideshare (Uber/Lyft)") {
+    transportation += 300; // Base rideshare commute cost
   }
+  
+  // Additional rideshare trips per week
+  const rideshareFreqMap: Record<string, number> = {
+    "10+ times": 400,
+    "6-10 times": 250,
+    "3-5 times": 150,
+    "1-2 times": 60,
+    "Never": 0,
+  };
+  transportation += rideshareFreqMap[formData.transportation.rideshareTripsPerWeek] || 0;
 
   // Health & Wellness estimation
   if (formData.fitness.hasMembership === "Yes") {
@@ -177,17 +177,21 @@ export function calculateEstimates(formData: FormData): Omit<EstimationResult, '
   
   wellnessSelfCareAmount = wellnessAmount + hairAmount + personalCareAmount;
 
-  // Subscriptions estimation
-  if (formData.subscriptions.hasSubscriptions === "Yes") {
+  // Subscriptions estimation - form uses "yes" lowercase
+  if (formData.subscriptions.hasSubscriptions === "yes") {
+    // Streaming services: Netflix, Disney+, Spotify, Crave
+    const streamingServicesList = ["Netflix", "Disney+", "Spotify", "Crave"];
     const streamingServices = formData.subscriptions.services.filter(s => 
-      s.includes("Netflix") || s.includes("Spotify") || s.includes("Disney+") || s.includes("HBO") || s.includes("Apple")
+      streamingServicesList.includes(s)
     );
+    
+    // Apps & Services: Amazon Prime, ChatGPT, Claude, UberOne
     const otherServices = formData.subscriptions.services.filter(s => 
-      !s.includes("Netflix") && !s.includes("Spotify") && !s.includes("Disney+") && !s.includes("HBO") && !s.includes("Apple")
+      !streamingServicesList.includes(s)
     );
     
     streamingAmount = streamingServices.length * 15;
-    appsServicesAmount = otherServices.length * 15 + (formData.subscriptions.other ? 10 : 0);
+    appsServicesAmount = otherServices.length * 15 + (formData.subscriptions.other ? 20 : 0);
     
     subscriptions += streamingAmount + appsServicesAmount;
   }
