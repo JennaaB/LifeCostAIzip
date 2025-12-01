@@ -145,7 +145,7 @@ export default function TransportationStep({ data, onChange }: TransportationSte
         </div>
       )}
 
-      {data.transportation.commuteMethod === "Personal Car" && (
+      {data.transportation.commuteMethod === "Personal Car" && data.transportation.carType !== "" && (
         <div className="space-y-4 animate-in fade-in slide-in-from-top-2 duration-300">
           <Label className="text-base sm:text-lg font-semibold block">Do you pay for parking?</Label>
           <RadioGroup
@@ -174,7 +174,7 @@ export default function TransportationStep({ data, onChange }: TransportationSte
         </div>
       )}
 
-      {data.transportation.payForParking === "Yes" && (
+      {data.transportation.commuteMethod === "Personal Car" && data.transportation.payForParking === "Yes" && (
         <div className="space-y-4 animate-in fade-in slide-in-from-top-2 duration-300">
           <Label className="text-base sm:text-lg font-semibold block">What type of parking rate do you pay?</Label>
           <RadioGroup
