@@ -210,28 +210,37 @@ export default function Dashboard({ onEdit, onBackToHome, onSimulator, onCityCom
   const [isExporting, setIsExporting] = useState(false);
 
   const handleExportPDF = async () => {
-    if (!dashboardRef.current) return;
+    if (!dashboardRef.current) {
+      console.error("Dashboard ref not found");
+      return;
+    }
     
     setIsExporting(true);
     
     try {
       const element = dashboardRef.current;
+      
       const canvas = await html2canvas(element, {
         scale: 1.5,
         useCORS: true,
         allowTaint: true,
         backgroundColor: "#ffffff",
-        logging: false,
+        logging: true,
         imageTimeout: 15000,
-        removeContainer: true,
+        onclone: (clonedDoc) => {
+          const clonedElement = clonedDoc.querySelector('[data-dashboard-content]');
+          if (clonedElement) {
+            (clonedElement as HTMLElement).style.transform = 'none';
+          }
+        }
       });
       
-      const imgData = canvas.toDataURL("image/jpeg", 0.85);
+      const imgData = canvas.toDataURL("image/jpeg", 0.8);
+      
       const pdf = new jsPDF({
         orientation: "portrait",
         unit: "mm",
         format: "a4",
-        compress: true,
       });
       
       const pdfWidth = pdf.internal.pageSize.getWidth();
@@ -257,10 +266,22 @@ export default function Dashboard({ onEdit, onBackToHome, onSimulator, onCityCom
         heightLeft -= pageHeight;
       }
       
-      const date = new Date().toISOString().split("T")[0];
-      pdf.save(`LifeCostAI-Snapshot-${date}.pdf`);
-    } catch (error) {
-      console.error("Error generating PDF:", error);
+      const pdfBlob = pdf.output('blob');
+      const blobUrl = URL.createObjectURL(pdfBlob);
+      
+      const link = document.createElement('a');
+      link.href = blobUrl;
+      link.download = `LifeCostAI-Snapshot-${new Date().toISOString().split("T")[0]}.pdf`;
+      link.target = '_blank';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      
+      setTimeout(() => URL.revokeObjectURL(blobUrl), 1000);
+      
+    } catch (error: any) {
+      console.error("Error generating PDF:", error?.message || error?.toString() || "Unknown error");
+      alert("There was an issue generating the PDF. Please try again.");
     } finally {
       setIsExporting(false);
     }
