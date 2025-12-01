@@ -117,7 +117,20 @@ Preferred communication style: Simple, everyday language.
 - Uses user's baseline spending data for personalized comparisons
 - Accessible from Global Cost Comparison section via "Explore" button
 
+**AI-Powered Personalization:**
+- OpenAI GPT-4o-mini integration for cost-effective, personalized spending insights
+- API endpoint (`/api/generate-insights`) generates tailored recommendations based on user's lifestyle habits and goals
+- AI service module (`server/services/aiInsights.ts`) sends spending data and goals to OpenAI for analysis
+- Dashboard displays AI-generated recommendations with estimated savings, personalized messages, and biggest opportunity insights
+- Loading states with skeleton screens while AI processes user data
+- Fallback to rule-based recommendations if AI service unavailable
+- User's OpenAI API key stored securely as a secret (OPENAI_API_KEY)
+
 ### External Dependencies
+
+**AI Integration:**
+- OpenAI SDK for AI-powered insights generation
+- GPT-4o-mini model for cost-effective personalized recommendations
 
 **UI Component Libraries:**
 - @radix-ui/* primitives for accessible, unstyled UI components (accordion, alert-dialog, avatar, checkbox, dialog, dropdown-menu, hover-card, label, menubar, navigation-menu, popover, progress, radio-group, scroll-area, select, separator, slider, slot, switch, tabs, toast, toggle, tooltip)
