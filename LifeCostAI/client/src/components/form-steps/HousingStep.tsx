@@ -28,8 +28,9 @@ export default function HousingStep({ data, onChange }: HousingStepProps) {
     { value: "Inner city", label: "Inner city", desc: "Downtown, city center" },
   ];
 
-  const showTierAndLocation = data.housing.livingSituation === "Renting" || data.housing.livingSituation === "Own a home";
-  const showMortgageQuestion = data.housing.livingSituation === "Own a home";
+  const canShowTier = data.housing.livingSituation === "Renting" || data.housing.livingSituation === "Own a home";
+  const canShowLocation = canShowTier && data.housing.housingTier !== "";
+  const canShowMortgage = data.housing.livingSituation === "Own a home" && data.housing.locationType !== "";
 
   return (
     <div className="space-y-8 sm:space-y-10">
@@ -70,7 +71,7 @@ export default function HousingStep({ data, onChange }: HousingStepProps) {
         </RadioGroup>
       </div>
 
-      {showTierAndLocation && (
+      {canShowTier && (
         <div className="space-y-4 animate-in fade-in slide-in-from-top-2 duration-300">
           <Label className="text-base sm:text-lg font-semibold block">How would you describe your housing?</Label>
           <RadioGroup
@@ -100,7 +101,7 @@ export default function HousingStep({ data, onChange }: HousingStepProps) {
         </div>
       )}
 
-      {showTierAndLocation && (
+      {canShowLocation && (
         <div className="space-y-4 animate-in fade-in slide-in-from-top-2 duration-300">
           <div className="flex items-center gap-3">
             <div className="w-8 h-8 rounded-lg bg-emerald-100 flex items-center justify-center">
@@ -135,7 +136,7 @@ export default function HousingStep({ data, onChange }: HousingStepProps) {
         </div>
       )}
 
-      {showMortgageQuestion && (
+      {canShowMortgage && (
         <div className="space-y-4 animate-in fade-in slide-in-from-top-2 duration-300">
           <Label className="text-base sm:text-lg font-semibold block">Do you pay a mortgage?</Label>
           <RadioGroup
