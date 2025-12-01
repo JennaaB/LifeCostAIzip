@@ -319,7 +319,7 @@ export default function GlobalMap({ baseAmount, baseCity, onDeepDive }: GlobalMa
                 Compare multiple cities side-by-side with detailed category breakdowns, housing costs, and transportation analysis
               </p>
             </div>
-            <Button size="lg" className="gap-2 shrink-0 text-base px-6 py-6">
+            <Button size="lg" className="gap-2 shrink-0 text-base px-6">
               Explore
               <ArrowRight className="w-5 h-5" />
             </Button>
