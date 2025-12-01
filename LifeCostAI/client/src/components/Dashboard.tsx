@@ -219,59 +219,84 @@ export default function Dashboard({ onEdit, onBackToHome, onSimulator, onCityCom
     
     try {
       const element = dashboardRef.current;
+      console.log("Step 1: Starting PDF export");
       
-      const canvas = await html2canvas(element, {
-        scale: 1.5,
-        useCORS: true,
-        backgroundColor: "#ffffff",
-      });
-      
-      const imgData = canvas.toDataURL("image/jpeg", 0.8);
-      
-      const pdf = new jsPDF({
-        orientation: "portrait",
-        unit: "mm",
-        format: "a4",
-      });
-      
-      const pdfWidth = pdf.internal.pageSize.getWidth();
-      const pdfHeight = pdf.internal.pageSize.getHeight();
-      const imgWidth = canvas.width;
-      const imgHeight = canvas.height;
-      const ratio = Math.min(pdfWidth / imgWidth, pdfHeight / imgHeight);
-      const imgX = (pdfWidth - imgWidth * ratio) / 2;
-      const imgY = 10;
-      
-      const scaledHeight = imgHeight * ratio;
-      const pageHeight = pdfHeight - 20;
-      let heightLeft = scaledHeight;
-      let position = imgY;
-      
-      pdf.addImage(imgData, "JPEG", imgX, position, imgWidth * ratio, scaledHeight);
-      heightLeft -= pageHeight;
-      
-      while (heightLeft > 0) {
-        position = heightLeft - scaledHeight + imgY;
-        pdf.addPage();
+      try {
+        console.log("Step 2: Attempting html2canvas capture with scale 1.5");
+        const canvas = await html2canvas(element, {
+          scale: 1.2,
+          useCORS: true,
+          backgroundColor: "#ffffff",
+          allowTaint: true,
+          foreignObjectRendering: false,
+        });
+        
+        console.log("Step 3: Canvas created successfully");
+        const imgData = canvas.toDataURL("image/jpeg", 0.75);
+        console.log("Step 4: Image data generated");
+        
+        const pdf = new jsPDF({
+          orientation: "portrait",
+          unit: "mm",
+          format: "a4",
+        });
+        
+        const pdfWidth = pdf.internal.pageSize.getWidth();
+        const pdfHeight = pdf.internal.pageSize.getHeight();
+        const imgWidth = canvas.width;
+        const imgHeight = canvas.height;
+        const ratio = Math.min(pdfWidth / imgWidth, pdfHeight / imgHeight);
+        const imgX = (pdfWidth - imgWidth * ratio) / 2;
+        const imgY = 10;
+        
+        const scaledHeight = imgHeight * ratio;
+        const pageHeight = pdfHeight - 20;
+        let heightLeft = scaledHeight;
+        let position = imgY;
+        
         pdf.addImage(imgData, "JPEG", imgX, position, imgWidth * ratio, scaledHeight);
         heightLeft -= pageHeight;
+        
+        while (heightLeft > 0) {
+          position = heightLeft - scaledHeight + imgY;
+          pdf.addPage();
+          pdf.addImage(imgData, "JPEG", imgX, position, imgWidth * ratio, scaledHeight);
+          heightLeft -= pageHeight;
+        }
+        
+        console.log("Step 5: PDF pages added");
+        const pdfBlob = pdf.output('blob');
+        const blobUrl = URL.createObjectURL(pdfBlob);
+        
+        console.log("Step 6: Triggering download");
+        const link = document.createElement('a');
+        link.href = blobUrl;
+        link.download = `LifeCostAI-Snapshot-${new Date().toISOString().split("T")[0]}.pdf`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        
+        setTimeout(() => URL.revokeObjectURL(blobUrl), 1000);
+        console.log("Step 7: PDF export complete");
+        
+      } catch (html2canvasError: any) {
+        console.error("html2canvas failed:", html2canvasError);
+        console.log("Step X: Falling back to window.print()");
+        
+        // Fallback to print dialog if html2canvas fails
+        const printWindow = window.open('', '', 'width=800,height=600');
+        if (printWindow) {
+          printWindow.document.write(element.outerHTML);
+          printWindow.document.close();
+          setTimeout(() => {
+            printWindow.print();
+          }, 250);
+        }
       }
       
-      const pdfBlob = pdf.output('blob');
-      const blobUrl = URL.createObjectURL(pdfBlob);
-      
-      const link = document.createElement('a');
-      link.href = blobUrl;
-      link.download = `LifeCostAI-Snapshot-${new Date().toISOString().split("T")[0]}.pdf`;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      
-      setTimeout(() => URL.revokeObjectURL(blobUrl), 1000);
-      
     } catch (error: any) {
-      console.error("Error generating PDF:", error?.message || error?.toString() || "Unknown error");
-      alert("There was an issue generating the PDF. Please try again.");
+      console.error("Error in PDF export:", error?.message || String(error));
+      alert("There was an issue generating the PDF. Try using your browser's Print function (Ctrl+P) instead.");
     } finally {
       setIsExporting(false);
     }
