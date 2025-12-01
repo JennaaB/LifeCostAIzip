@@ -337,19 +337,19 @@ export default function Dashboard({ onEdit, onBackToHome, onSimulator, onCityCom
             <h3 className="text-xl font-semibold mb-4">Category Breakdown</h3>
             <div className="flex-1 flex flex-col justify-between">
               {dashboardData.categories.map((category) => (
-                <div key={category.name} className="space-y-1">
+                <div key={category.name} className="space-y-2">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
-                      <div className={`w-6 h-6 rounded ${categoryBgColors[category.name] || 'bg-muted'} flex items-center justify-center`}>
-                        <category.icon className={`w-3.5 h-3.5 ${categoryColors[category.name] || 'text-primary'}`} />
+                      <div className={`w-7 h-7 rounded ${categoryBgColors[category.name] || 'bg-muted'} flex items-center justify-center`}>
+                        <category.icon className={`w-4 h-4 ${categoryColors[category.name] || 'text-primary'}`} />
                       </div>
                       <span className="text-base font-medium">{category.name}</span>
                     </div>
                     <span className="text-base font-semibold">${category.amount}</span>
                   </div>
                   <div
-                    className={`h-5 ${category.color} rounded transition-all`}
-                    style={{ width: `${maxCategory > 0 ? (category.amount / maxCategory) * 100 : 0}%`, minWidth: category.amount > 0 ? '8px' : '0' }}
+                    className={`h-8 ${category.color} rounded-md transition-all`}
+                    style={{ width: `${maxCategory > 0 ? (category.amount / maxCategory) * 100 : 0}%`, minWidth: category.amount > 0 ? '12px' : '0' }}
                   />
                 </div>
               ))}
