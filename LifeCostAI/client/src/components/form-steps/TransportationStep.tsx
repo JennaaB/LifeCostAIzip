@@ -24,7 +24,18 @@ export default function TransportationStep({ data, onChange }: TransportationSte
     "A few times a month",
     "Weekly (1-2x)",
     "Several times a week",
+    "Daily",
   ];
+  
+  const isRideshareCommuter = data.transportation.commuteMethod === "Rideshare (Uber/Lyft)";
+  
+  const filteredRideshareFrequencies = rideshareFrequencies.filter((freq) => {
+    if (isRideshareCommuter) {
+      return freq !== "Never";
+    } else {
+      return freq !== "Daily";
+    }
+  });
   const parkingOptions = [
     { value: "Yes", label: "Yes, I pay for parking" },
     { value: "No", label: "No, parking is free" },
@@ -202,9 +213,7 @@ export default function TransportationStep({ data, onChange }: TransportationSte
           })}
           className="grid grid-cols-2 sm:grid-cols-3 gap-3"
         >
-          {rideshareFrequencies
-            .filter((freq) => data.transportation.commuteMethod === "Rideshare (Uber/Lyft)" ? freq !== "Never" : true)
-            .map((frequency) => (
+          {filteredRideshareFrequencies.map((frequency) => (
             <div key={frequency} className="relative">
               <RadioGroupItem value={frequency} id={`rideshare-${frequency}`} className="peer sr-only" data-testid={`radio-rideshare-${frequency.toLowerCase()}`} />
               <Label 
