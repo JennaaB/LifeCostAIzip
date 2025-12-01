@@ -343,12 +343,12 @@ export default function Dashboard({ onEdit, onBackToHome, onSimulator, onCityCom
                 <div key={category.name} className="space-y-1">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
-                      <div className={`w-5 h-5 rounded ${categoryBgColors[category.name] || 'bg-muted'} flex items-center justify-center`}>
-                        <category.icon className={`w-3 h-3 ${categoryColors[category.name] || 'text-primary'}`} />
+                      <div className={`w-6 h-6 rounded ${categoryBgColors[category.name] || 'bg-muted'} flex items-center justify-center`}>
+                        <category.icon className={`w-3.5 h-3.5 ${categoryColors[category.name] || 'text-primary'}`} />
                       </div>
-                      <span className="text-sm font-medium">{category.name}</span>
+                      <span className="text-base font-medium">{category.name}</span>
                     </div>
-                    <span className="text-sm font-semibold">${category.amount}</span>
+                    <span className="text-base font-semibold">${category.amount}</span>
                   </div>
                   <div
                     className={`h-5 ${category.color} rounded transition-all`}

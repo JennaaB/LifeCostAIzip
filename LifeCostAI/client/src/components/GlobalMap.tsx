@@ -266,13 +266,13 @@ export default function GlobalMap({ baseAmount, baseCity, onDeepDive }: GlobalMa
                   <div className="flex justify-between items-center gap-3">
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2 flex-wrap">
-                        <h4 className="font-semibold text-sm truncate">{city.name}</h4>
-                        {isBase && <Badge variant="secondary" className="text-xs">Base</Badge>}
-                        {"name" in mostExpensive && city.name === mostExpensive.name && <Badge variant="secondary" className="text-xs">Most Expensive</Badge>}
-                        {"name" in mostSimilar && city.name === mostSimilar.name && <Badge variant="secondary" className="text-xs">Most Similar</Badge>}
-                        {"name" in leastExpensive && city.name === leastExpensive.name && <Badge variant="secondary" className="text-xs">Least Expensive</Badge>}
+                        <h4 className="font-semibold text-base truncate">{city.name}</h4>
+                        {isBase && <Badge variant="secondary" className="text-sm">Base</Badge>}
+                        {"name" in mostExpensive && city.name === mostExpensive.name && <Badge variant="secondary" className="text-sm">Most Expensive</Badge>}
+                        {"name" in mostSimilar && city.name === mostSimilar.name && <Badge variant="secondary" className="text-sm">Most Similar</Badge>}
+                        {"name" in leastExpensive && city.name === leastExpensive.name && <Badge variant="secondary" className="text-sm">Least Expensive</Badge>}
                       </div>
-                      <p className="text-xs text-muted-foreground">{city.country}</p>
+                      <p className="text-sm text-muted-foreground">{city.country}</p>
                     </div>
                     
                     <div className="text-right shrink-0">
