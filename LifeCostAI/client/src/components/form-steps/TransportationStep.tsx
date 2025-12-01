@@ -202,7 +202,9 @@ export default function TransportationStep({ data, onChange }: TransportationSte
           })}
           className="grid grid-cols-2 sm:grid-cols-3 gap-3"
         >
-          {rideshareFrequencies.map((frequency) => (
+          {rideshareFrequencies
+            .filter((freq) => data.transportation.commuteMethod === "Rideshare (Uber/Lyft)" ? freq !== "Never" : true)
+            .map((frequency) => (
             <div key={frequency} className="relative">
               <RadioGroupItem value={frequency} id={`rideshare-${frequency}`} className="peer sr-only" data-testid={`radio-rideshare-${frequency.toLowerCase()}`} />
               <Label 
