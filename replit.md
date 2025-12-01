@@ -105,16 +105,20 @@ Preferred communication style: Simple, everyday language.
 - Reset button to restore default values
 - Category colors and naming consistent with main Dashboard
 
-**City Lifestyle Comparison (Deep Dive):**
+**City Lifestyle Comparison (AI-Powered Deep Dive):**
 - Dedicated page for detailed multi-city cost comparisons
+- **AI-Powered Cost Estimation**: Uses GPT-4o-mini to calculate personalized cost estimates based on user's specific habits and current city prices
+- API endpoint (`/api/compare-cities`) analyzes user's lifestyle habits (coffee, dining, transportation, fitness, etc.) against selected cities
 - Multi-city selection with checkboxes (up to 4 cities)
 - Tabbed interface: Overview, Categories, Housing, Transport
-- Overview tab: City cards with totals, radar chart for cost index comparison
+- Overview tab: AI-generated city cards with exact cost totals and city-specific insights, plus radar chart for cost index comparison
 - Categories tab: Horizontal bar chart comparison, per-category breakdown cards with progress bars
 - Housing tab: Rent comparison table (studio, 1-bed, 2-bed), city-specific housing tips
 - Transport tab: Monthly pass costs, gas prices, rideshare base fares comparison
-- 15 global cities with detailed data: category multipliers, rent estimates, transport costs
-- Uses user's baseline spending data for personalized comparisons
+- 25+ global cities supported with AI-generated personalized cost data
+- Loading states with skeleton screens while AI calculates city-specific costs
+- Falls back to static multipliers if AI is unavailable
+- Uses user's baseline spending data and form responses for personalized comparisons
 - Accessible from Global Cost Comparison section via "Explore" button
 
 **AI-Powered Personalization:**
