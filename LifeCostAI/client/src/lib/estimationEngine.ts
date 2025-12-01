@@ -124,10 +124,11 @@ export function calculateEstimates(formData: FormData): Omit<EstimationResult, '
   
   // Additional rideshare trips per week
   const rideshareFreqMap: Record<string, number> = {
-    "10+ times": 400,
-    "6-10 times": 250,
-    "3-5 times": 150,
-    "1-2 times": 60,
+    "Several times a week": 400,
+    "Weekly (1-2x)": 150,
+    "A few times a month": 80,
+    "About once a month": 30,
+    "Rarely (less than monthly)": 10,
     "Never": 0,
   };
   transportation += rideshareFreqMap[formData.transportation.rideshareTripsPerWeek] || 0;

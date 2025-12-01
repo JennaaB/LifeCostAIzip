@@ -17,7 +17,14 @@ export default function TransportationStep({ data, onChange }: TransportationSte
     { value: "Work from Home", label: "Work from Home", icon: Home },
   ];
   
-  const rideshareFrequencies = ["Never", "1-2 times", "3-5 times", "6-10 times", "10+ times"];
+  const rideshareFrequencies = [
+    "Never",
+    "Rarely (less than monthly)",
+    "About once a month",
+    "A few times a month",
+    "Weekly (1-2x)",
+    "Several times a week",
+  ];
   const parkingOptions = [
     { value: "Yes", label: "Yes, I pay for parking" },
     { value: "No", label: "No, parking is free" },
@@ -186,14 +193,14 @@ export default function TransportationStep({ data, onChange }: TransportationSte
       )}
 
       <div className="space-y-4">
-        <Label className="text-base sm:text-lg font-semibold block">How many rideshare trips (Uber/Lyft) do you take per week?</Label>
+        <Label className="text-base sm:text-lg font-semibold block">How often do you use rideshare services (Uber/Lyft)?</Label>
         <RadioGroup
           value={data.transportation.rideshareTripsPerWeek}
           onValueChange={(value) => onChange({
             ...data,
             transportation: { ...data.transportation, rideshareTripsPerWeek: value }
           })}
-          className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3"
+          className="grid grid-cols-2 sm:grid-cols-3 gap-3"
         >
           {rideshareFrequencies.map((frequency) => (
             <div key={frequency} className="relative">
